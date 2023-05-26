@@ -81,5 +81,20 @@
 
   "powered by": "desarrollado por",
   "and": "y",
-  "with": "con"
+  "with": "con",
+
+  "number_of_containers": "nro. contenedores",
+  "type of transport": "transporte",
+  "single_cargo_name": "tipo de carga",
+  "product": "producto",
+  "quote name": "nombre de cotización",
+  "registration date": "fecha",
+  "choose an option": "escoja una opción",
+  "cargo type": "tipo de carga",
+  "containerized cargo type": "carga contenerizada",
+  "weight": "peso",
+  "unit of measurement": "unidad de medida",
+  "length": "longitud",
+  "amount of charge": "cantidad de carga",
+  "single cargo name": "nombre de carga"
 }

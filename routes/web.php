@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\QuoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/', fn () => Inertia::render('Dashboard'))->name('dashboard');
 
     Route::middleware(['role:superuser'])->prefix('superuser')->name('superuser.')->group(fn () => require __DIR__ . '/web/superuser.php');
+
+    Route::resource('quotes', QuoteController::class);
 });
 
 Route::get('/test', [App\Http\Controllers\Test::class, 'index']);

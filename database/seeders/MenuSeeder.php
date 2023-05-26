@@ -146,5 +146,22 @@ class MenuSeeder extends Seeder
             Permission::where('name', 'update menu')->first()->id,
             Permission::where('name', 'delete menu')->first()->id,
         ]);
+
+        $quote = Menu::create([
+            'name' => 'cotización',
+            'route_or_url' => 'quotes.index',
+            'icon' => 'rectangle-list',
+            'active' => true,
+            'position' => 3,
+            'routes' => [
+                'quotes.index',
+                'quotes.create',
+                'quotes.store',
+                'quotes.edit',
+                'quotes.update',
+                'quotes.destroy'
+            ],
+            'deleteable' => true,
+        ]);
     }
 }
