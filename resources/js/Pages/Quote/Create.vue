@@ -40,6 +40,14 @@
                     </p>
                 </transition>
 
+                <ul
+                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                >
+                    <li class="first-letter:capitalize lowercase">
+                        {{ __("enter the name you give to the quotation") }}
+                    </li>
+                </ul>
+
                 <label
                     for="product"
                     class="first-letter:capitalize lowercase text-sm"
@@ -61,6 +69,14 @@
                         {{ form.errors.product }}
                     </p>
                 </transition>
+
+                <ul
+                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                >
+                    <li class="first-letter:capitalize lowercase">
+                        {{ __("detail the product to be mobilized") }}
+                    </li>
+                </ul>
 
                 <div
                     class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
@@ -136,11 +152,7 @@
                                 class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                             >
                                 <li class="first-letter:capitalize lowercase">
-                                    {{
-                                        __(
-                                            "choose a route name or write your own url if the route doesn't have a name / the route leads to an external link"
-                                        )
-                                    }}
+                                    {{ __("choose the type of cargo") }}
                                 </li>
                             </ul>
                         </div>
@@ -176,6 +188,18 @@
                                 {{ form.errors.number_of_containers }}
                             </p>
                         </transition>
+
+                        <ul
+                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        >
+                            <li class="first-letter:capitalize lowercase">
+                                {{
+                                    __(
+                                        "enter the number of load(s) or package(s)"
+                                    )
+                                }}
+                            </li>
+                        </ul>
                     </div>
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
@@ -202,6 +226,14 @@
                                 {{ form.errors.single_cargo_name }}
                             </p>
                         </transition>
+
+                        <ul
+                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        >
+                            <li class="first-letter:capitalize lowercase">
+                                {{ __("choose the cargo name") }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -359,7 +391,7 @@
                         <li class="first-letter:capitalize lowercase">
                             {{
                                 __(
-                                    "choose a route name or write your own url if the route doesn't have a name / the route leads to an external link"
+                                    "if you chose the type of containerized cargo, choose the type that corresponds to the containerized cargo"
                                 )
                             }}
                         </li>

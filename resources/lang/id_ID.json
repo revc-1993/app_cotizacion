@@ -96,5 +96,13 @@
   "unit of measurement": "unidad de medida",
   "length": "longitud",
   "amount of charge": "cantidad de carga",
-  "single cargo name": "nombre de carga"
+  "single cargo name": "nombre de carga",
+
+  "enter the name you give to the quotation": "coloque el nombre que se la da a la cotización",
+  "detail the product to be mobilized": "detalle el producto que se va a movilizar",
+  "choose the type of transport": "escoja el tipo de transporte",
+  "choose the type of cargo": "escoja el tipo de carga",
+  "choose the cargo name": "escoja el nombre de carga",
+  "enter the number of load(s) or package(s)": "ingrese el numero de carga o bultos",
+  "if you chose the type of containerized cargo, choose the type that corresponds to the containerized cargo": "si escogió el tipo de carga contenerizada, escoja el tipo que corresponde a la carga contenerizada"
 }
