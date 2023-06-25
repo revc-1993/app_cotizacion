@@ -5,6 +5,9 @@ import { createInertiaApp, usePage } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import { Inertia } from '@inertiajs/inertia';
 
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 Object.defineProperty(window, '$flashes', {
@@ -103,6 +106,9 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
+            .use(Toast, {
+                transition: "Vue-Toastification__fade",
+            })
             .mixin({
                 methods: {
                     __,

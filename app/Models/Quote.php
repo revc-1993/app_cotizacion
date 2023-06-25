@@ -23,5 +23,18 @@ class Quote extends Model
         'number_of_containers',
         'single_cargo_name',
         'registration_date',
+
+        // foreign key
+        'customer_id',
     ];
+
+    /**
+     * Get the User that owns the Commitment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
 }

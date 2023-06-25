@@ -35,6 +35,7 @@ class QuoteRequest extends FormRequest
             'containerized_cargo_type' => $this->cargo_type === "Contenerizada" ? ['required'] : ['nullable'],
             'number_of_containers' => ['required', 'min:1'],
             'single_cargo_name' => ['required'],
+            'customer_id' => ['required'],
         ];
     }
 
@@ -55,6 +56,7 @@ class QuoteRequest extends FormRequest
             'number_of_containers.required' => "El campo :attribute es obligatorio",
             'number_of_containers.min' => "El campo :attribute debe ser mayor que 0",
             'single_cargo_name.required' => "El campo :attribute es obligatorio",
+            'customer_id.required' => "El campo :attribute no debe estar vacío",
         ];
     }
 
@@ -72,6 +74,7 @@ class QuoteRequest extends FormRequest
             'containerized_cargo_type' => "Tipo de carga contenerizada",
             'number_of_containers' => "Nro. de carga",
             'single_cargo_name' => "Nombre de carga",
+            'customer_id' => "Cliente",
         ];
     }
 }

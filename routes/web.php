@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['role:superuser'])->prefix('superuser')->name('superuser.')->group(fn () => require __DIR__ . '/web/superuser.php');
 
     Route::resource('quotes', QuoteController::class);
+
+    Route::get('/customers/getCustomerByRuc', [CustomerController::class, 'getCustomerByRuc'])->name('customers.getCustomerByRuc');
+    Route::resource('customers', CustomerController::class);
 });
 
 Route::get('/test', [App\Http\Controllers\Test::class, 'index']);

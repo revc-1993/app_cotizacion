@@ -1,5 +1,7 @@
 <template>
     <DashboardLayout title="Crear cotización">
+        <Toast v-if="toast" v-model="toast" :message="messageResource" />
+
         <h1>Crear cotización</h1>
 
         <form
@@ -18,35 +20,99 @@
                 </label>
             </div>
             <div class="flex flex-col space-y-2 p-4">
-                <label
-                    for="name"
-                    class="first-letter:capitalize lowercase text-sm"
-                    >{{ __("quote name") }}</label
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label
+                            for="ruc"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("ruc") }}</label
+                        >
+                        <form @submit.prevent="searchCustomerByRuc('alert')">
+                            <div class="relative">
+                                <div class="w-full">
+                                    <div class="flex">
+                                        <input
+                                            v-model="formSearchCustomer.ruc"
+                                            type="text"
+                                            name="ruc"
+                                            class="flex w-full bg-white text-sm border border-slate-300 rounded-tl-md rounded-bl-md shadow placeholder:capitalize"
+                                            :placeholder="__('ruc')"
+                                            autofocus
+                                            autocomplete="off"
+                                        />
 
-                <input
-                    v-model="form.name"
-                    type="text"
-                    name="name"
-                    class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                    :placeholder="__('quote name')"
-                    autofocus
-                    autocomplete="off"
-                />
+                                        <button
+                                            type="submit"
+                                            class="inline-flex bg-blue-600 border border-blue-700 shadow px-3 py-1 text-xs uppercase"
+                                        >
+                                            <div
+                                                class="flex items-center content-center space-x-2"
+                                            >
+                                                <Icon
+                                                    src="search"
+                                                    class="text-white pt-1 w-3 h-3"
+                                                />
+                                            </div>
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            class="inline-flex rounded-tr-md rounded-br-md bg-green-600 border border-green-700 shadow px-3 py-1 text-xs uppercase"
+                                        >
+                                            <div
+                                                class="flex items-center content-center space-x-2"
+                                            >
+                                                <Icon
+                                                    src="add"
+                                                    class="text-white pt-1 w-3 h-3"
+                                                />
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
-                <transition name="fade">
-                    <p v-if="form.errors.name" class="text-xs text-red-500">
-                        {{ form.errors.name }}
-                    </p>
-                </transition>
+                        <ul
+                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        >
+                            <li class="first-letter:capitalize lowercase">
+                                {{
+                                    __(
+                                        "enter the name you give to the quotation"
+                                    )
+                                }}
+                            </li>
+                        </ul>
+                    </div>
 
-                <ul
-                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                >
-                    <li class="first-letter:capitalize lowercase">
-                        {{ __("enter the name you give to the quotation") }}
-                    </li>
-                </ul>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label
+                            for="name"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("name") }}</label
+                        >
+
+                        <input
+                            v-model="form.name"
+                            type="text"
+                            name="name"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            :placeholder="__('name')"
+                            autofocus
+                            disabled
+                        />
+                        <transition name="fade">
+                            <p
+                                v-if="form.errors.customer_id"
+                                class="text-xs text-red-500"
+                            >
+                                {{ form.errors.customer_id }}
+                            </p>
+                        </transition>
+                    </div>
+                </div>
 
                 <label
                     for="product"
@@ -441,6 +507,7 @@ import Multiselect from "@vueform/multiselect";
 import Card from "./Card";
 import Icon from "@/Components/Icon";
 import axios from "axios";
+import Toast from "@/Components/Toast.vue";
 
 export default defineComponent({
     props: {
@@ -457,6 +524,7 @@ export default defineComponent({
         Multiselect,
         Card,
         Icon,
+        Toast,
     },
 
     data() {
@@ -473,6 +541,10 @@ export default defineComponent({
                 containerized_cargo_type: new String(),
                 number_of_containers: new Number(),
                 single_cargo_name: new String(),
+                customer_id: new String(),
+            }),
+            formSearchCustomer: useForm({
+                ruc: new String(),
             }),
             modal: {
                 show: false,
@@ -493,6 +565,8 @@ export default defineComponent({
             ],
             unit_of_weight_measurement: ["KG", "LB", "TON"],
             unit_of_length_measurement: ["M", "CM"],
+            toast: false,
+            messageResource: "",
         };
     },
     methods: {
@@ -500,6 +574,45 @@ export default defineComponent({
             this.form.post(route("quotes.store"), {
                 onSuccess: () => this.form.reset(),
             });
+        },
+        searchCustomerByRuc(alert = "alert") {
+            axios
+                .get(
+                    "/customers/getCustomerByRuc?ruc=" +
+                        this.formSearchCustomer.ruc
+                )
+                .then((response) => {
+                    if (response) {
+                        this.form.clearErrors("customer_id");
+                        this.form.customer_id = response.data.customer.id;
+                        this.formSearchCustomer.ruc =
+                            response.data.customer.ruc;
+                        this.form.name =
+                            response.data.customer.name +
+                            " " +
+                            response.data.customer.last_name;
+
+                        this.toast = true;
+                        this.messageResource = {
+                            response:
+                                "Se encontró el cliente con RUC " +
+                                response.data.customer.ruc,
+                            operation: 1,
+                        };
+                    }
+                })
+                .catch((error) => {
+                    if (this.form.customer_id !== null)
+                        this.form.customer_id = null;
+                    this.form.name = "";
+                    console.log(error);
+
+                    this.toast = true;
+                    this.messageResource = {
+                        response: "No se encontró un cliente con este RUC",
+                        operation: 4,
+                    };
+                });
         },
     },
 });

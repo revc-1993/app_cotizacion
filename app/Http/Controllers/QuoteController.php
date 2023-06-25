@@ -82,12 +82,15 @@ class QuoteController extends Controller
 
         $quote = Quote::create($post);
 
-        $message = [
-            "response" => "Registro creado correctamente.",
-            "operation" => 1,
-        ];
+        if ($quote) {
+            $type = 'success';
+            $message = "Registro creado exitosamente";
+        } else {
+            $type = 'error';
+            $message = "Ha ocurrido un error. Registro no creado";
+        }
 
-        return to_route('quotes.index')->with(compact('message'));
+        return to_route('quotes.index')->with($type, $message);
     }
 
     /**
@@ -107,11 +110,17 @@ class QuoteController extends Controller
      * @param  \App\Models\Quote  $quote
      * @return \Illuminate\Http\Response
      */
-    public function edit(Quote $quote)
+    public function edit($id)
     {
-        return Inertia::render('Quote/Edit', [
-            'quote' => $quote,
-        ]);
+        $quote = Quote::with([
+            'customer' => function ($query) {
+                $query->select('id', 'ruc', 'name', 'last_name');
+            },
+        ])
+            ->where('quotes.id', '=', $id)
+            ->first();
+
+        return Inertia::render('Quote/Edit', compact('quote'));
     }
 
     /**
@@ -125,12 +134,15 @@ class QuoteController extends Controller
     {
         $quote->update($request->validated());
 
-        $message = [
-            "response" => "Registro modificado correctamente.",
-            "operation" => 1,
-        ];
+        if ($quote) {
+            $type = 'success';
+            $message = "Registro modificado exitosamente";
+        } else {
+            $type = 'error';
+            $message = "Ha ocurrido un error. Registro no modificado";
+        }
 
-        return to_route('quotes.index')->with(compact('message'));
+        return to_route('quotes.index')->with($type, $message);
     }
 
     /**
@@ -143,11 +155,14 @@ class QuoteController extends Controller
     {
         $quote->delete();
 
-        $message = [
-            "response" => "Registro eliminado correctamente.",
-            "operation" => 4,
-        ];
+        if ($quote) {
+            $type = 'error';
+            $message = "Registro eliminado exitosamente";
+        } else {
+            $type = 'error';
+            $message = "Ha ocurrido un error. Registro no eliminado";
+        }
 
-        return to_route('quotes.index')->with(compact('message'));
+        return to_route('quotes.index')->with($type, $message);
     }
 }

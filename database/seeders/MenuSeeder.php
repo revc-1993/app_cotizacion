@@ -147,12 +147,61 @@ class MenuSeeder extends Seeder
             Permission::where('name', 'delete menu')->first()->id,
         ]);
 
-        $quote = Menu::create([
-            'name' => 'cotización',
-            'route_or_url' => 'quotes.index',
+        // FLDSFÑLDSKFÑLDSFKÑSÑF
+
+        $customer = Menu::create([
+            'name' => 'clientes',
+            'route_or_url' => '#',
             'icon' => 'rectangle-list',
             'active' => true,
             'position' => 3,
+            'routes' => [
+                'customers.index',
+                'customers.create',
+                'customers.store',
+                'customers.edit',
+                'customers.update',
+                'customers.destroy'
+            ],
+            'deleteable' => true,
+        ]);
+
+        $new_customer = $customer->childs()->create([
+            'name' => 'nuevo cliente',
+            'route_or_url' => 'customers.create',
+            'icon' => 'customer',
+            'active' => true,
+            'position' => 1,
+            'routes' => [
+                'customers.create',
+            ],
+            'deleteable' => false,
+        ]);
+
+        $customers = $customer->childs()->create([
+            'name' => 'Todos los clientes',
+            'route_or_url' => 'customers.index',
+            'icon' => 'customer',
+            'active' => true,
+            'position' => 2,
+            'routes' => [
+                'customers.index',
+                'customers.store',
+                'customers.edit',
+                'customers.update',
+                'customers.destroy'
+            ],
+            'deleteable' => false,
+        ]);
+
+        // DSFDSFKSFKSLKLFLFSLFDSL
+
+        $quote = Menu::create([
+            'name' => 'cotizaciones',
+            'route_or_url' => '#',
+            'icon' => 'rectangle-list',
+            'active' => true,
+            'position' => 4,
             'routes' => [
                 'quotes.index',
                 'quotes.create',
@@ -162,6 +211,34 @@ class MenuSeeder extends Seeder
                 'quotes.destroy'
             ],
             'deleteable' => true,
+        ]);
+
+        $new_quote = $quote->childs()->create([
+            'name' => 'nueva cotización',
+            'route_or_url' => 'quotes.create',
+            'icon' => 'user',
+            'active' => true,
+            'position' => 1,
+            'routes' => [
+                'quotes.create',
+            ],
+            'deleteable' => false,
+        ]);
+
+        $quotes = $quote->childs()->create([
+            'name' => 'todas las cotizaciones',
+            'route_or_url' => 'quotes.index',
+            'icon' => 'user',
+            'active' => true,
+            'position' => 2,
+            'routes' => [
+                'quotes.index',
+                'quotes.store',
+                'quotes.edit',
+                'quotes.update',
+                'quotes.destroy'
+            ],
+            'deleteable' => false,
         ]);
     }
 }

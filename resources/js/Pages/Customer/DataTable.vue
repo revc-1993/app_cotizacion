@@ -9,7 +9,7 @@
                 :placeholder="__('search something')"
             />
             <Link
-                :href="route('quotes.create')"
+                :href="route('customers.create')"
                 as="button"
                 class="px-3 py-1 bg-slate-800 text-slate-100 text-sm border border-slate-700 rounded-md shadow-md uppercase"
             >
@@ -33,19 +33,19 @@
                             {{ __("no") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("client") }}
+                            {{ __("name") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("number_of_containers") }}
+                            {{ __("last_name") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("single_cargo_name") }}
+                            {{ __("ruc") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("type_of_transport") }}
+                            {{ __("address") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("product") }}
+                            {{ __("email") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("action") }}
@@ -55,10 +55,10 @@
 
                 <tbody class="bg-white">
                     <tr
-                        v-for="(quote, i) in quotes.filter((quote) =>
+                        v-for="(customer, i) in customers.filter((customer) =>
                             search.trim()
-                                ? quote.name.includes(search.trim()) ||
-                                  quote.product.includes(search.trim())
+                                ? customer.name.includes(search.trim()) ||
+                                  customer.product.includes(search.trim())
                                 : true
                         )"
                         :key="i"
@@ -70,24 +70,24 @@
                             {{ i + 1 }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.name) }}
+                            {{ __(customer.name) }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.number_of_containers) }}
+                            {{ __(customer.last_name) }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.single_cargo_name) }}
+                            {{ __(customer.ruc) }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.type_of_transport) }}
+                            {{ __(customer.address) }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.product) }}
+                            {{ __(customer.email) }}
                         </td>
                         <td class="border border-inherit px-3 py-1">
                             <div class="flex-wrap">
                                 <Link
-                                    :href="route('quotes.edit', quote.id)"
+                                    :href="route('customers.edit', customer.id)"
                                     as="button"
                                     class="bg-blue-600 border border-blue-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase"
                                 >
@@ -107,7 +107,7 @@
                                 </Link>
 
                                 <button
-                                    @click.prevent="destroy(quote)"
+                                    @click.prevent="destroy(customer)"
                                     class="bg-red-600 border border-red-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase"
                                 >
                                     <div class="flex items-center space-x-2">
@@ -168,7 +168,7 @@ import Icon from "@/Components/Icon";
 
 export default defineComponent({
     props: {
-        quotes: Array,
+        customers: Array,
     },
 
     components: {
@@ -183,7 +183,7 @@ export default defineComponent({
     },
 
     methods: {
-        destroy(quote) {
+        destroy(customer) {
             return Swal.fire({
                 text: __("are you sure want to delete") + "?",
                 icon: "question",
@@ -191,7 +191,7 @@ export default defineComponent({
             }).then((response) => {
                 if (response.isConfirmed) {
                     return Inertia.delete(
-                        route("quotes.destroy", { id: quote.id })
+                        route("customers.destroy", { id: customer.id })
                     );
                 }
             });
