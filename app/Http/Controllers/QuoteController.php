@@ -76,9 +76,7 @@ class QuoteController extends Controller
      */
     public function store(QuoteRequest $request)
     {
-        $post = array_merge($request->validated(), [
-            'registration_date' => Carbon::now(),
-        ]);
+        $post = $request->validated();
 
         $quote = Quote::create($post);
 

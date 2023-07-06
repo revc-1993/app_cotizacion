@@ -150,7 +150,7 @@ class MenuSeeder extends Seeder
         // FLDSFÑLDSKFÑLDSFKÑSÑF
 
         $customer = Menu::create([
-            'name' => 'clientes',
+            'name' => 'importadores',
             'route_or_url' => '#',
             'icon' => 'rectangle-list',
             'active' => true,
@@ -179,7 +179,7 @@ class MenuSeeder extends Seeder
         ]);
 
         $customers = $customer->childs()->create([
-            'name' => 'Todos los clientes',
+            'name' => 'todos los clientes',
             'route_or_url' => 'customers.index',
             'icon' => 'customer',
             'active' => true,

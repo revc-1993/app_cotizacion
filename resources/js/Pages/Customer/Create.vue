@@ -51,11 +51,7 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{
-                                    __(
-                                        "enter the number of load(s) or package(s)"
-                                    )
-                                }}
+                                {{ __("enter customer name") }}
                             </li>
                         </ul>
                     </div>
@@ -89,7 +85,7 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{ __("choose the cargo name") }}
+                                {{ __("enter the customer's last name") }}
                             </li>
                         </ul>
                     </div>
@@ -110,7 +106,7 @@
                             type="text"
                             name="ruc"
                             class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('ruc')"
+                            :placeholder="__('example of ruc')"
                             autofocus
                             autocomplete="off"
                         />
@@ -130,7 +126,7 @@
                             <li class="first-letter:capitalize lowercase">
                                 {{
                                     __(
-                                        "enter the number of load(s) or package(s)"
+                                        "enter the customer's registered ruc number"
                                     )
                                 }}
                             </li>
@@ -148,7 +144,7 @@
                             type="text"
                             name="email"
                             class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('email')"
+                            :placeholder="__('example of email')"
                             autofocus
                             autocomplete="off"
                         />
@@ -166,7 +162,7 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{ __("choose the cargo name") }}
+                                {{ __("enter the customer's email address") }}
                             </li>
                         </ul>
                     </div>
@@ -183,7 +179,7 @@
                     type="text"
                     name="address"
                     class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                    :placeholder="__('address')"
+                    :placeholder="__('example of address')"
                     autofocus
                     autocomplete="off"
                 />
@@ -198,7 +194,7 @@
                     class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                 >
                     <li class="first-letter:capitalize lowercase">
-                        {{ __("enter the name you give to the quotation") }}
+                        {{ __("enter the customer's address") }}
                     </li>
                 </ul>
             </div>

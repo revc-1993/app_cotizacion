@@ -128,7 +128,7 @@ class CustomerController extends Controller
     public function getCustomerByRuc(Request $request)
     {
         $customer = Customer::where('ruc', $request->get('ruc'))
-            ->first(['id', 'ruc', 'name', 'last_name']);
+            ->first(['id', 'ruc', 'name', 'last_name', 'address']);
 
         // if ($customer) {
         //     $type = 'error';

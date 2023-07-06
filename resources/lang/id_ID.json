@@ -87,6 +87,7 @@
   "type of transport": "transporte",
   "single_cargo_name": "tipo de carga",
   "product": "producto",
+  "product name": "nombre de producto",
   "quote name": "nombre de cotización",
   "registration date": "fecha",
   "choose an option": "escoja una opción",
@@ -106,6 +107,18 @@
   "enter the number of load(s) or package(s)": "ingrese el numero de carga o bultos",
   "if you chose the type of containerized cargo, choose the type that corresponds to the containerized cargo": "si escogió el tipo de carga contenerizada, escoja el tipo que corresponde a la carga contenerizada",
   "last_name": "apellidos",
-  "ruc": "ruc",
-  "address": "dirección"
+  "last name": "apellidos",
+  "ruc": "RUC",
+  "address": "dirección",
+
+  "enter customer name": "ingrese los nombres del cliente",
+  "enter the customer's last name": "ingrese los apellidos del cliente",
+  "example of ruc": "Ej: 0999999999001",
+  "enter the customer's registered ruc number": "ingrese el número de ruc registrado del cliente",
+  "example of email": "Ej: direccion@dominio.com",
+  "enter the customer's email address": "ingrese el correo electrónico del cliente",
+  "example of address": "Ej: Av. Amazonas y Roca 230",
+  "enter the customer's address": "ingrese la dirección del cliente",
+  "customer data": "datos del cliente",
+  "incoterm":"incoterm"
 }

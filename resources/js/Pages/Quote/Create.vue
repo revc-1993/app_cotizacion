@@ -1,8 +1,6 @@
 <template>
-    <DashboardLayout title="Crear cotización">
+    <DashboardLayout title="Crear Cotización">
         <Toast v-if="toast" v-model="toast" :message="messageResource" />
-
-        <h1>Crear cotización</h1>
 
         <form
             @submit.prevent="submit"
@@ -11,12 +9,8 @@
             <div
                 class="flex items-center justify-start bg-slate-200 px-4 py-2 space-x-2 text-xs"
             >
-                <label
-                    for="registration_date"
-                    class="first-letter:capitalize lowercase text-sm"
-                >
-                    <b> {{ __("registration date") }}: </b>
-                    {{ new Date().toLocaleDateString() }}
+                <label class="capitalize text-sm">
+                    <b> crear cotización </b>
                 </label>
             </div>
             <div class="flex flex-col space-y-2 p-4">
@@ -74,6 +68,15 @@
                             </div>
                         </form>
 
+                        <transition name="fade">
+                            <p
+                                v-if="form.errors.customer_id"
+                                class="text-xs text-red-500"
+                            >
+                                {{ form.errors.customer_id }}
+                            </p>
+                        </transition>
+
                         <ul
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
@@ -86,29 +89,47 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize"></div>
+                </div>
 
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
+                >
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label class="first-letter:capitalize text-sm">{{
+                            __("customer data")
+                        }}</label>
+                        <div class="border border-slate-300 p-2 rounded-md">
+                            <label class="capitalize text-sm"
+                                ><b> {{ __("name") }} </b>:
+                                {{ formSearchCustomer.name }}
+                            </label>
+                            <br />
+                            <label class="capitalize text-sm"
+                                ><b> {{ __("address") }} </b>:
+                                {{ formSearchCustomer.address }}
+                            </label>
+                        </div>
+                    </div>
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
-                            for="name"
+                            for="registration_date"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("name") }}</label
+                            >{{ __("registration date") }}</label
                         >
-
                         <input
-                            v-model="form.name"
-                            type="text"
-                            name="name"
+                            v-model="form.registration_date"
+                            type="date"
+                            name="registration_date"
                             class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('name')"
                             autofocus
-                            disabled
                         />
                         <transition name="fade">
                             <p
-                                v-if="form.errors.customer_id"
+                                v-if="form.errors.registration_date"
                                 class="text-xs text-red-500"
                             >
-                                {{ form.errors.customer_id }}
+                                {{ form.errors.registration_date }}
                             </p>
                         </transition>
                     </div>
@@ -125,7 +146,7 @@
                     type="text"
                     name="product"
                     class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                    :placeholder="__('product')"
+                    :placeholder="__('product name')"
                     autofocus
                     autocomplete="off"
                 />
@@ -230,58 +251,60 @@
                 >
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
-                            for="number_of_containers"
+                            for="containerized_cargo_type"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("amount of charge") }}</label
+                            >{{ __("containerized cargo type") }}</label
                         >
 
-                        <input
-                            v-model="form.number_of_containers"
-                            type="number"
-                            name="number_of_containers"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('amount of charge')"
-                            autofocus
-                            min="0"
-                            autocomplete="off"
-                        />
+                        <div class="w-full">
+                            <Multiselect
+                                v-model="form.containerized_cargo_type"
+                                :options="containerized_cargo_type"
+                                :clearOnSearch="false"
+                                :clearOnSelect="false"
+                                :searchable="true"
+                                :createTag="true"
+                                class="capitalize placeholder:capitalize"
+                                :disabled="form.cargo_type !== 'Contenerizada'"
+                                :placeholder="__('choose an option')"
+                            />
 
-                        <transition name="fade">
-                            <p
-                                v-if="form.errors.number_of_containers"
-                                class="text-xs text-red-500"
+                            <transition name="fade">
+                                <p
+                                    v-if="form.errors.containerized_cargo_type"
+                                    class="text-xs text-red-500"
+                                >
+                                    {{ form.errors.containerized_cargo_type }}
+                                </p>
+                            </transition>
+
+                            <ul
+                                class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                             >
-                                {{ form.errors.number_of_containers }}
-                            </p>
-                        </transition>
-
-                        <ul
-                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                        >
-                            <li class="first-letter:capitalize lowercase">
-                                {{
-                                    __(
-                                        "enter the number of load(s) or package(s)"
-                                    )
-                                }}
-                            </li>
-                        </ul>
+                                <li class="first-letter:capitalize lowercase">
+                                    {{
+                                        __(
+                                            "if you chose the type of containerized cargo, choose the type that corresponds to the containerized cargo"
+                                        )
+                                    }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
-                        <label
-                            for="single_cargo_name"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("single cargo name") }}</label
-                        >
+                        <label for="incoterm" class="capitalize text-sm">{{
+                            __("incoterm")
+                        }}</label>
 
-                        <input
+                        <Multiselect
                             v-model="form.single_cargo_name"
-                            type="text"
-                            name="single_cargo_name"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('single cargo name')"
-                            autofocus
-                            autocomplete="off"
+                            :options="incoterm"
+                            :clearOnSearch="false"
+                            :clearOnSelect="false"
+                            :searchable="true"
+                            :createTag="true"
+                            class="capitalize placeholder:capitalize"
+                            :placeholder="__('choose an option')"
                         />
 
                         <transition name="fade">
@@ -302,6 +325,40 @@
                         </ul>
                     </div>
                 </div>
+
+                <label
+                    for="number_of_containers"
+                    class="first-letter:capitalize lowercase text-sm"
+                    >{{ __("amount of charge") }}</label
+                >
+
+                <input
+                    v-model="form.number_of_containers"
+                    type="number"
+                    name="number_of_containers"
+                    class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                    :placeholder="__('amount of charge')"
+                    autofocus
+                    min="0"
+                    autocomplete="off"
+                />
+
+                <transition name="fade">
+                    <p
+                        v-if="form.errors.number_of_containers"
+                        class="text-xs text-red-500"
+                    >
+                        {{ form.errors.number_of_containers }}
+                    </p>
+                </transition>
+
+                <ul
+                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                >
+                    <li class="first-letter:capitalize lowercase">
+                        {{ __("enter the number of load(s) or package(s)") }}
+                    </li>
+                </ul>
 
                 <div
                     class="grid grid-cols-2 gap-x-3 lg:grid-cols-4 space-y-2 p-4 w-full"
@@ -423,46 +480,6 @@
                         </div>
                     </div>
                 </div>
-
-                <label
-                    for="containerized_cargo_type"
-                    class="first-letter:capitalize lowercase text-sm"
-                    >{{ __("containerized cargo type") }}</label
-                >
-
-                <div class="w-full">
-                    <Multiselect
-                        v-model="form.containerized_cargo_type"
-                        :options="containerized_cargo_type"
-                        :clearOnSearch="false"
-                        :clearOnSelect="false"
-                        :searchable="true"
-                        :createTag="true"
-                        class="capitalize placeholder:capitalize"
-                        :disabled="form.cargo_type !== 'Contenerizada'"
-                    />
-
-                    <transition name="fade">
-                        <p
-                            v-if="form.errors.containerized_cargo_type"
-                            class="text-xs text-red-500"
-                        >
-                            {{ form.errors.containerized_cargo_type }}
-                        </p>
-                    </transition>
-
-                    <ul
-                        class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                    >
-                        <li class="first-letter:capitalize lowercase">
-                            {{
-                                __(
-                                    "if you chose the type of containerized cargo, choose the type that corresponds to the containerized cargo"
-                                )
-                            }}
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             <div
@@ -529,6 +546,7 @@ export default defineComponent({
 
     data() {
         return {
+            currentDate: new Date("yyyy-MM-dd"),
             form: useForm({
                 name: new String(),
                 type_of_transport: new String(),
@@ -542,9 +560,12 @@ export default defineComponent({
                 number_of_containers: new Number(),
                 single_cargo_name: new String(),
                 customer_id: new String(),
+                registration_date: new Date().toLocaleString(),
             }),
             formSearchCustomer: useForm({
                 ruc: new String(),
+                name: new String(),
+                address: new String(),
             }),
             modal: {
                 show: false,
@@ -562,6 +583,10 @@ export default defineComponent({
                 "OPEN TOP",
                 "FLAT RACK",
                 "CISTERNA",
+            ],
+            incoterm: [
+                "Exw - Puesto en fabrica",
+                "Fob - Libre al costado del buque",
             ],
             unit_of_weight_measurement: ["KG", "LB", "TON"],
             unit_of_length_measurement: ["M", "CM"],
@@ -587,10 +612,12 @@ export default defineComponent({
                         this.form.customer_id = response.data.customer.id;
                         this.formSearchCustomer.ruc =
                             response.data.customer.ruc;
-                        this.form.name =
+                        this.formSearchCustomer.name =
                             response.data.customer.name +
                             " " +
                             response.data.customer.last_name;
+                        this.formSearchCustomer.address =
+                            response.data.customer.address;
 
                         this.toast = true;
                         this.messageResource = {
@@ -605,6 +632,8 @@ export default defineComponent({
                     if (this.form.customer_id !== null)
                         this.form.customer_id = null;
                     this.form.name = "";
+                    this.formSearchCustomer.name = "";
+                    this.formSearchCustomer.address = "";
                     console.log(error);
 
                     this.toast = true;
@@ -615,6 +644,9 @@ export default defineComponent({
                 });
         },
     },
+    // mounted() {
+    //     this.form.registration_date = this.currentDate.toLocaleDateString();
+    // },
 });
 </script>
 
