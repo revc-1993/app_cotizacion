@@ -593,11 +593,15 @@
                     :amount-of-charge="form.number_of_containers"
                     :cargo-type="form.cargo_type"
                     :product-name="form.product"
+                    :weight="weight"
+                    :volumen="volumen"
                     @update:amount-of-charge="
                         form.number_of_containers = $event
                     "
                     @update:cargo-type="form.cargo_type = $event"
                     @update:product-name="form.product = $event"
+                    @update:weight="weight = $event"
+                    @update:volumen="volumen = $event"
                 />
             </div>
 
@@ -663,7 +667,6 @@ export default defineComponent({
         Icon,
         Toast,
         SummaryTable,
-        SummaryTable,
     },
 
     data() {
@@ -684,7 +687,7 @@ export default defineComponent({
                 number_of_containers: new Number(),
                 single_cargo_name: new String(),
                 customer_id: new String(),
-                registration_date: new Date().toLocaleString(),
+                registration_date: new Date("yyyy-MM-dd").toLocaleString(),
             }),
             formSearchCustomer: useForm({
                 ruc: new String(),
@@ -717,6 +720,24 @@ export default defineComponent({
             toast: false,
             messageResource: "",
         };
+    },
+    computed: {
+        weight: function () {
+            return this.form.unit_of_weight_measurement === "KG"
+                ? this.form.weight / 1000
+                : this.form.unit_of_weight_measurement === "LB"
+                ? this.form.weight / 2205
+                : this.form.unit_of_weight_measurement === "TON"
+                ? this.form.weight
+                : "";
+        },
+        volumen: function () {
+            return this.form.unit_of_length_measurement === "CM"
+                ? (this.form.width * this.form.length * this.form.high) / 100
+                : this.form.unit_of_length_measurement === "M"
+                ? this.form.width * this.form.length * this.form.high
+                : "";
+        },
     },
     methods: {
         submit() {

@@ -61,10 +61,32 @@
                         </td>
                     </tr>
                     <tr v-else>
-                        <td>1</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
+                        <td
+                            class="border border-slate-200 px-3 py-1 text-center"
+                        >
+                            {{ amountOfCharge }}
+                        </td>
+                        <td
+                            class="border border-slate-200 px-3 py-1 text-center"
+                        >
+                            {{ cargoType }}
+                        </td>
+                        <td
+                            class="border border-slate-200 px-3 py-1 text-center"
+                        >
+                            {{ productName }}
+                        </td>
+                        <td
+                            class="border border-slate-200 px-3 py-1 text-center"
+                        >
+                            {{ weight }}
+                        </td>
+                        <td
+                            class="border border-slate-200 px-3 py-1 text-center"
+                        >
+                            {{ volumen }}
+                        </td>
                     </tr>
                     <!-- <tr
                         v-for="(quote, i) in quotes.filter((quote) =>
@@ -160,6 +182,8 @@ export default defineComponent({
         amountOfCharge: Number,
         cargoType: String,
         productName: String,
+        weight: Number,
+        volumen: Number,
     },
 
     components: {

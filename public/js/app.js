@@ -22558,8 +22558,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _Components_Toast_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/Components/Toast.vue */ "./resources/js/Components/Toast.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -22577,7 +22575,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     perPage: Number,
     search: String
   },
-  components: _defineProperty({
+  components: {
     DashboardLayout: _Layouts_DashboardLayout__WEBPACK_IMPORTED_MODULE_2__["default"],
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Link,
     DataTable: _DataTable__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -22586,7 +22584,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     Icon: _Components_Icon__WEBPACK_IMPORTED_MODULE_7__["default"],
     Toast: _Components_Toast_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
     SummaryTable: _SummaryTable__WEBPACK_IMPORTED_MODULE_4__["default"]
-  }, "SummaryTable", _SummaryTable__WEBPACK_IMPORTED_MODULE_4__["default"]),
+  },
   data: function data() {
     return {
       currentDate: new Date("yyyy-MM-dd"),
@@ -22605,7 +22603,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         number_of_containers: new Number(),
         single_cargo_name: new String(),
         customer_id: new String(),
-        registration_date: new Date().toLocaleString()
+        registration_date: new Date("yyyy-MM-dd").toLocaleString()
       }),
       formSearchCustomer: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
         ruc: new String(),
@@ -22625,6 +22623,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       toast: false,
       messageResource: ""
     };
+  },
+  computed: {
+    weight: function weight() {
+      return this.form.unit_of_weight_measurement === "KG" ? this.form.weight / 1000 : this.form.unit_of_weight_measurement === "LB" ? this.form.weight / 2205 : this.form.unit_of_weight_measurement === "TON" ? this.form.weight : "";
+    },
+    volumen: function volumen() {
+      return this.form.unit_of_length_measurement === "CM" ? this.form.width * this.form.length * this.form.high / 100 : this.form.unit_of_length_measurement === "M" ? this.form.width * this.form.length * this.form.high : "";
+    }
   },
   methods: {
     submit: function submit() {
@@ -22945,7 +22951,9 @@ __webpack_require__.r(__webpack_exports__);
     looseCargo: Boolean,
     amountOfCharge: Number,
     cargoType: String,
-    productName: String
+    productName: String,
+    weight: Number,
+    volumen: Number
   },
   components: {
     Link: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Link,
@@ -30568,7 +30576,7 @@ var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
     "class": "flex items-center justify-start bg-slate-200 px-4 py-2 space-x-2 text-xs"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "capitalize text-sm"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" import SummaryTable from \"./SummaryTable.vue\"; "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, " crear cotización ")])], -1
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, " crear cotización ")])], -1
   /* HOISTED */
   );
 });
@@ -30925,7 +30933,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["modelValue", "message"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        onSubmit: _cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+        onSubmit: _cache[21] || (_cache[21] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return _ctx.submit && _ctx.submit.apply(_ctx, arguments);
         }, ["prevent"])),
         "class": "w-full bg-white border border-slate-200 rounded-md shadow-xl"
@@ -31346,6 +31354,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "amount-of-charge": _ctx.form.number_of_containers,
         "cargo-type": _ctx.form.cargo_type,
         "product-name": _ctx.form.product,
+        weight: _ctx.weight,
+        volumen: _ctx.volumen,
         "onUpdate:amountOfCharge": _cache[16] || (_cache[16] = function ($event) {
           return _ctx.form.number_of_containers = $event;
         }),
@@ -31354,10 +31364,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
         "onUpdate:productName": _cache[18] || (_cache[18] = function ($event) {
           return _ctx.form.product = $event;
+        }),
+        "onUpdate:weight": _cache[19] || (_cache[19] = function ($event) {
+          return _ctx.weight = $event;
+        }),
+        "onUpdate:volumen": _cache[20] || (_cache[20] = function ($event) {
+          return _ctx.volumen = $event;
         })
       }, null, 8
       /* PROPS */
-      , ["loose-cargo", "amount-of-charge", "cargo-type", "product-name"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__("create")), 1
+      , ["loose-cargo", "amount-of-charge", "cargo-type", "product-name", "weight", "volumen"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", _hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__("create")), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
         href: _ctx.route('quotes.index'),
@@ -32353,23 +32369,25 @@ var _hoisted_19 = {
   key: 1
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "1", -1
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_24 = [_hoisted_20, _hoisted_21, _hoisted_22, _hoisted_23];
+var _hoisted_21 = {
+  "class": "border border-slate-200 px-3 py-1 text-center"
+};
+var _hoisted_22 = {
+  "class": "border border-slate-200 px-3 py-1 text-center"
+};
+var _hoisted_23 = {
+  "class": "border border-slate-200 px-3 py-1 text-center"
+};
+var _hoisted_24 = {
+  "class": "border border-slate-200 px-3 py-1 text-center"
+};
+var _hoisted_25 = {
+  "class": "border border-slate-200 px-3 py-1 text-center"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
@@ -32399,7 +32417,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.productName), 1
   /* TEXT */
-  )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_19, _hoisted_24)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr\r\n                        v-for=\"(quote, i) in quotes.filter((quote) =>\r\n                            search.trim()\r\n                                ? quote.name.includes(search.trim()) ||\r\n                                  quote.product.includes(search.trim())\r\n                                : true\r\n                        )\"\r\n                        :key=\"i\"\r\n                        class=\"hover:bg-slate-100\"\r\n                    >\r\n                        <td\r\n                            class=\"border border-slate-200 px-3 py-1 text-center\"\r\n                        >\r\n                            {{ i + 1 }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.name) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.number_of_containers) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.single_cargo_name) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.type_of_transport) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.product) }}\r\n                        </td>\r\n                        <td class=\"border border-inherit px-3 py-1\">\r\n                            <div class=\"flex-wrap\">\r\n                                <Link\r\n                                    :href=\"route('quotes.edit', quote.id)\"\r\n                                    as=\"button\"\r\n                                    class=\"bg-blue-600 border border-blue-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase\"\r\n                                >\r\n                                    <div class=\"flex items-center space-x-2\">\r\n                                        <Icon\r\n                                            src=\"pen\"\r\n                                            class=\"text-white flex-none w-3 h-3\"\r\n                                        />\r\n\r\n                                        <div class=\"flex-wrap pr-1\">\r\n                                            <span\r\n                                                class=\"text-white font-semibold\"\r\n                                                >{{ __(\"edit\") }}</span\r\n                                            >\r\n                                        </div>\r\n                                    </div>\r\n                                </Link>\r\n\r\n                                <button\r\n                                    @click.prevent=\"destroy(quote)\"\r\n                                    class=\"bg-red-600 border border-red-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase\"\r\n                                >\r\n                                    <div class=\"flex items-center space-x-2\">\r\n                                        <Icon\r\n                                            src=\"trash\"\r\n                                            class=\"text-white flex-none w-3 h-3\"\r\n                                        />\r\n\r\n                                        <div class=\"flex-wrap pr-1\">\r\n                                            <span\r\n                                                class=\"text-white font-semibold\"\r\n                                                >{{ __(\"delete\") }}</span\r\n                                            >\r\n                                        </div>\r\n                                    </div>\r\n                                </button>\r\n                            </div>\r\n                        </td>\r\n                    </tr> ")])])])]);
+  )])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.amountOfCharge), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.cargoType), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.productName), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.weight), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.volumen), 1
+  /* TEXT */
+  )])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <tr\r\n                        v-for=\"(quote, i) in quotes.filter((quote) =>\r\n                            search.trim()\r\n                                ? quote.name.includes(search.trim()) ||\r\n                                  quote.product.includes(search.trim())\r\n                                : true\r\n                        )\"\r\n                        :key=\"i\"\r\n                        class=\"hover:bg-slate-100\"\r\n                    >\r\n                        <td\r\n                            class=\"border border-slate-200 px-3 py-1 text-center\"\r\n                        >\r\n                            {{ i + 1 }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.name) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.number_of_containers) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.single_cargo_name) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.type_of_transport) }}\r\n                        </td>\r\n                        <td class=\"border border-slate-200 px-3 py-1 uppercase\">\r\n                            {{ __(quote.product) }}\r\n                        </td>\r\n                        <td class=\"border border-inherit px-3 py-1\">\r\n                            <div class=\"flex-wrap\">\r\n                                <Link\r\n                                    :href=\"route('quotes.edit', quote.id)\"\r\n                                    as=\"button\"\r\n                                    class=\"bg-blue-600 border border-blue-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase\"\r\n                                >\r\n                                    <div class=\"flex items-center space-x-2\">\r\n                                        <Icon\r\n                                            src=\"pen\"\r\n                                            class=\"text-white flex-none w-3 h-3\"\r\n                                        />\r\n\r\n                                        <div class=\"flex-wrap pr-1\">\r\n                                            <span\r\n                                                class=\"text-white font-semibold\"\r\n                                                >{{ __(\"edit\") }}</span\r\n                                            >\r\n                                        </div>\r\n                                    </div>\r\n                                </Link>\r\n\r\n                                <button\r\n                                    @click.prevent=\"destroy(quote)\"\r\n                                    class=\"bg-red-600 border border-red-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase\"\r\n                                >\r\n                                    <div class=\"flex items-center space-x-2\">\r\n                                        <Icon\r\n                                            src=\"trash\"\r\n                                            class=\"text-white flex-none w-3 h-3\"\r\n                                        />\r\n\r\n                                        <div class=\"flex-wrap pr-1\">\r\n                                            <span\r\n                                                class=\"text-white font-semibold\"\r\n                                                >{{ __(\"delete\") }}</span\r\n                                            >\r\n                                        </div>\r\n                                    </div>\r\n                                </button>\r\n                            </div>\r\n                        </td>\r\n                    </tr> ")])])])]);
 }
 
 /***/ }),
