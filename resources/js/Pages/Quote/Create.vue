@@ -13,7 +13,7 @@
                     <b> crear cotización </b>
                 </label>
             </div>
-            <div class="flex flex-col space-y-2 p-4">
+            <div class="flex flex-col space-y-2 p-4 mb-2 lg:mb-0 last:mb-0">
                 <div
                     class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
@@ -249,7 +249,7 @@
                 <div
                     class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
-                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                    <div class="first-letter:capitalize">
                         <label
                             for="containerized_cargo_type"
                             class="first-letter:capitalize lowercase text-sm"
@@ -291,7 +291,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                    <div class="first-letter:capitalize">
                         <label for="incoterm" class="capitalize text-sm">{{
                             __("incoterm")
                         }}</label>
@@ -326,160 +326,279 @@
                     </div>
                 </div>
 
-                <label
-                    for="number_of_containers"
-                    class="first-letter:capitalize lowercase text-sm"
-                    >{{ __("amount of charge") }}</label
-                >
+                <hr class="my-8 -mx-3 border-t border-gray-200" />
 
-                <input
-                    v-model="form.number_of_containers"
-                    type="number"
-                    name="number_of_containers"
-                    class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                    :placeholder="__('amount of charge')"
-                    autofocus
-                    min="0"
-                    autocomplete="off"
-                />
+                <div class="mb-2 first-letter:capitalize lowercase text-sm">
+                    <label for="number_of_containers">{{
+                        __("amount of charge")
+                    }}</label>
 
-                <transition name="fade">
-                    <p
-                        v-if="form.errors.number_of_containers"
-                        class="text-xs text-red-500"
+                    <input
+                        v-model="form.number_of_containers"
+                        type="number"
+                        name="number_of_containers"
+                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                        :placeholder="__('amount of charge')"
+                        autofocus
+                        min="0"
+                        autocomplete="off"
+                    />
+
+                    <transition name="fade">
+                        <p
+                            v-if="form.errors.number_of_containers"
+                            class="text-xs text-red-500"
+                        >
+                            {{ form.errors.number_of_containers }}
+                        </p>
+                    </transition>
+
+                    <ul
+                        class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                     >
-                        {{ form.errors.number_of_containers }}
-                    </p>
-                </transition>
-
-                <ul
-                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                >
-                    <li class="first-letter:capitalize lowercase">
-                        {{ __("enter the number of load(s) or package(s)") }}
-                    </li>
-                </ul>
+                        <li class="first-letter:capitalize lowercase">
+                            {{
+                                __("enter the number of load(s) or package(s)")
+                            }}
+                        </li>
+                    </ul>
+                </div>
 
                 <div
-                    class="grid grid-cols-2 gap-x-3 lg:grid-cols-4 space-y-2 p-4 w-full"
+                    v-show="form.cargo_type === 'Suelta'"
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
-                    <div>
-                        <label
-                            for="weight"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("weight") }}</label
+                    <div class="first-letter:capitalize mb-2 lg:mb-0 last:mb-0">
+                        <div
+                            class="mb-2 lg:mb-0 last:mb-0 first-letter:capitalize lowercase text-sm"
                         >
-
-                        <input
-                            v-model="form.weight"
-                            type="number"
-                            name="weight"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('weight')"
-                            autofocus
-                            autocomplete="off"
-                            min="0"
-                            :disabled="form.cargo_type !== 'Suelta'"
-                        />
-
-                        <transition name="fade">
-                            <p
-                                v-if="form.errors.weight"
-                                class="text-xs text-red-500"
-                            >
-                                {{ form.errors.weight }}
-                            </p>
-                        </transition>
-                    </div>
-
-                    <div>
-                        <label
-                            for="unit_of_weight_measurement"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("unit of measurement") }}</label
-                        >
-
-                        <div class="w-full">
-                            <Multiselect
-                                v-model="form.unit_of_weight_measurement"
-                                :options="unit_of_weight_measurement"
-                                :clearOnSearch="false"
-                                :clearOnSelect="false"
-                                :searchable="true"
-                                :createTag="true"
-                                class="capitalize placeholder:capitalize"
-                                :disabled="form.cargo_type !== 'Suelta'"
-                            />
-                        </div>
-                        <transition name="fade">
-                            <p
-                                v-if="form.errors.unit_of_weight_measurement"
-                                class="text-xs text-red-500"
-                            >
-                                {{ form.errors.unit_of_weight_measurement }}
-                            </p>
-                        </transition>
-                    </div>
-                    <div>
-                        <label
-                            for="length"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("length") }}</label
-                        >
-
-                        <input
-                            v-model="form.length"
-                            type="number"
-                            name="length"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('length')"
-                            autofocus
-                            autocomplete="off"
-                            min="0"
-                            :disabled="form.cargo_type !== 'Suelta'"
-                        />
-
-                        <transition name="fade">
-                            <p
-                                v-if="form.errors.length"
-                                class="text-xs text-red-500"
-                            >
-                                {{ form.errors.length }}
-                            </p>
-                        </transition>
-                    </div>
-                    <div>
-                        <label
-                            for="unit_of_length_measurement"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("unit of measurement") }}</label
-                        >
-
-                        <div class="w-full">
-                            <Multiselect
-                                v-model="form.unit_of_length_measurement"
-                                :options="unit_of_length_measurement"
-                                :clearOnSearch="false"
-                                :clearOnSelect="false"
-                                :searchable="true"
-                                :createTag="true"
-                                class="capitalize placeholder:capitalize"
-                                :disabled="form.cargo_type !== 'Suelta'"
-                            />
-
-                            <transition name="fade">
-                                <p
-                                    v-if="
-                                        form.errors.unit_of_length_measurement
-                                    "
-                                    class="text-xs text-red-500"
+                            <label>{{ __("weight") }}</label>
+                            <div class="border border-slate-300 p-2 rounded-md">
+                                <div
+                                    class="mb-2 first-letter:capitalize lowercase text-sm"
                                 >
-                                    {{ form.errors.unit_of_length_measurement }}
-                                </p>
-                            </transition>
+                                    <label
+                                        for="unit_of_weight_measurement"
+                                        class="first-letter:capitalize lowercase text-sm"
+                                        >{{ __("unit of measurement") }}</label
+                                    >
+
+                                    <div class="w-full">
+                                        <Multiselect
+                                            v-model="
+                                                form.unit_of_weight_measurement
+                                            "
+                                            :options="
+                                                unit_of_weight_measurement
+                                            "
+                                            :clearOnSearch="false"
+                                            :clearOnSelect="false"
+                                            :searchable="true"
+                                            :createTag="true"
+                                            class="capitalize placeholder:capitalize"
+                                            :disabled="
+                                                form.cargo_type !== 'Suelta'
+                                            "
+                                        />
+                                    </div>
+                                    <transition name="fade">
+                                        <p
+                                            v-if="
+                                                form.errors
+                                                    .unit_of_weight_measurement
+                                            "
+                                            class="text-xs text-red-500"
+                                        >
+                                            {{
+                                                form.errors
+                                                    .unit_of_weight_measurement
+                                            }}
+                                        </p>
+                                    </transition>
+                                </div>
+
+                                <div
+                                    class="mb-2 first-letter:capitalize lowercase text-sm"
+                                >
+                                    <label
+                                        for="weight"
+                                        class="first-letter:capitalize lowercase text-sm"
+                                        >{{ __("count") }}</label
+                                    >
+
+                                    <input
+                                        v-model="form.weight"
+                                        type="number"
+                                        name="weight"
+                                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                        :placeholder="__('weight')"
+                                        autofocus
+                                        autocomplete="off"
+                                        min="0"
+                                        :disabled="form.cargo_type !== 'Suelta'"
+                                    />
+
+                                    <transition name="fade">
+                                        <p
+                                            v-if="form.errors.weight"
+                                            class="text-xs text-red-500"
+                                        >
+                                            {{ form.errors.weight }}
+                                        </p>
+                                    </transition>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="mb-2 lg:mb-0 last:mb-0 first-letter:capitalize lowercase text-sm"
+                    >
+                        <label>{{ __("measures") }}</label>
+                        <div class="border border-slate-300 p-2 rounded-md">
+                            <div
+                                class="mb-2 first-letter:capitalize lowercase text-sm"
+                            >
+                                <label
+                                    for="unit_of_length_measurement"
+                                    class="first-letter:capitalize lowercase text-sm"
+                                    >{{ __("unit of measurement") }}</label
+                                >
+                                <Multiselect
+                                    v-model="form.unit_of_length_measurement"
+                                    :options="unit_of_length_measurement"
+                                    :clearOnSearch="false"
+                                    :clearOnSelect="false"
+                                    :searchable="true"
+                                    :createTag="true"
+                                    class="capitalize placeholder:capitalize"
+                                    :disabled="form.cargo_type !== 'Suelta'"
+                                />
+                                <transition name="fade">
+                                    <p
+                                        v-if="
+                                            form.errors
+                                                .unit_of_length_measurement
+                                        "
+                                        class="text-xs text-red-500"
+                                    >
+                                        {{
+                                            form.errors
+                                                .unit_of_length_measurement
+                                        }}
+                                    </p>
+                                </transition>
+                            </div>
+                            <div
+                                class="grid grid-cols-1 gap-x-3 lg:grid-cols-3 mb-2 lg:mb-0 last:mb-0"
+                            >
+                                <div
+                                    class="mb-2 first-letter:capitalize lowercase text-sm"
+                                >
+                                    <label
+                                        for="length"
+                                        class="first-letter:capitalize lowercase text-sm"
+                                        >{{ __("length") }}</label
+                                    >
+
+                                    <input
+                                        v-model="form.length"
+                                        type="number"
+                                        name="length"
+                                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                        :placeholder="__('length')"
+                                        autofocus
+                                        autocomplete="off"
+                                        min="0"
+                                        :disabled="form.cargo_type !== 'Suelta'"
+                                    />
+
+                                    <transition name="fade">
+                                        <p
+                                            v-if="form.errors.length"
+                                            class="text-xs text-red-500"
+                                        >
+                                            {{ form.errors.length }}
+                                        </p>
+                                    </transition>
+                                </div>
+                                <div
+                                    class="mb-2 first-letter:capitalize lowercase text-sm"
+                                >
+                                    <label
+                                        for="width"
+                                        class="first-letter:capitalize lowercase text-sm"
+                                        >{{ __("width") }}</label
+                                    >
+
+                                    <input
+                                        v-model="form.width"
+                                        type="number"
+                                        name="width"
+                                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                        :placeholder="__('width')"
+                                        autofocus
+                                        autocomplete="off"
+                                        min="0"
+                                        :disabled="form.cargo_type !== 'Suelta'"
+                                    />
+
+                                    <transition name="fade">
+                                        <p
+                                            v-if="form.errors.width"
+                                            class="text-xs text-red-500"
+                                        >
+                                            {{ form.errors.width }}
+                                        </p>
+                                    </transition>
+                                </div>
+                                <div
+                                    class="mb-2 first-letter:capitalize lowercase text-sm"
+                                >
+                                    <label
+                                        for="high"
+                                        class="first-letter:capitalize lowercase text-sm"
+                                        >{{ __("high") }}</label
+                                    >
+
+                                    <input
+                                        v-model="form.high"
+                                        type="number"
+                                        name="high"
+                                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                        :placeholder="__('high')"
+                                        autofocus
+                                        autocomplete="off"
+                                        min="0"
+                                        :disabled="form.cargo_type !== 'Suelta'"
+                                    />
+
+                                    <transition name="fade">
+                                        <p
+                                            v-if="form.errors.high"
+                                            class="text-xs text-red-500"
+                                        >
+                                            {{ form.errors.high }}
+                                        </p>
+                                    </transition>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <hr class="my-8 -mx-3 border-t border-gray-200" />
+
+                <SummaryTable
+                    :loose-cargo="form.cargo_type === 'Suelta'"
+                    :amount-of-charge="form.number_of_containers"
+                    :cargo-type="form.cargo_type"
+                    :product-name="form.product"
+                    @update:amount-of-charge="
+                        form.number_of_containers = $event
+                    "
+                    @update:cargo-type="form.cargo_type = $event"
+                    @update:product-name="form.product = $event"
+                />
             </div>
 
             <div
@@ -516,10 +635,11 @@
 </style>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, toRef } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import DataTable from "./DataTable";
+import SummaryTable from "./SummaryTable";
 import Multiselect from "@vueform/multiselect";
 import Card from "./Card";
 import Icon from "@/Components/Icon";
@@ -542,6 +662,8 @@ export default defineComponent({
         Card,
         Icon,
         Toast,
+        SummaryTable,
+        SummaryTable,
     },
 
     data() {
@@ -553,6 +675,8 @@ export default defineComponent({
                 product: new String(),
                 cargo_type: new String(),
                 weight: new Number(),
+                width: new Number(),
+                high: new Number(),
                 unit_of_weight_measurement: new String(),
                 length: new Number(),
                 unit_of_length_measurement: new String(),
@@ -600,7 +724,7 @@ export default defineComponent({
                 onSuccess: () => this.form.reset(),
             });
         },
-        searchCustomerByRuc(alert = "alert") {
+        searchCustomerByRuc() {
             axios
                 .get(
                     "/customers/getCustomerByRuc?ruc=" +

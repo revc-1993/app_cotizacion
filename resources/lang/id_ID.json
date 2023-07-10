@@ -94,6 +94,8 @@
   "cargo type": "tipo de carga",
   "containerized cargo type": "carga contenerizada",
   "weight": "peso",
+  "weight in tons": "peso (ton)",
+  "volume in mt": "volumen (mt3)",
   "unit of measurement": "unidad de medida",
   "length": "longitud",
   "amount of charge": "cantidad de carga",
@@ -120,5 +122,9 @@
   "example of address": "Ej: Av. Amazonas y Roca 230",
   "enter the customer's address": "ingrese la dirección del cliente",
   "customer data": "datos del cliente",
-  "incoterm":"incoterm"
+  "incoterm":"incoterm",
+  "count": "cantidad",
+  "measures": "medidas",
+  "width": "ancho",
+  "high": "altura"
 }

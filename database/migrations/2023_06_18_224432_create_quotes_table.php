@@ -21,10 +21,17 @@ return new class extends Migration
             $table->string('cargo_type');
 
             // Si cargo_type es "suelta"
-            $table->float('weight')->nullable();
+            // Peso - Weight
             $table->string('unit_of_weight_measurement')->nullable();
-            $table->float('length')->nullable();
+            $table->float('weight')->nullable();
+            // Medidas - Measures
             $table->string('unit_of_length_measurement')->nullable();
+            // Largo - Length
+            $table->float('length')->nullable();
+            // Ancho - Width
+            $table->float('width')->nullable();
+            // Alto - High
+            $table->float('high')->nullable();
             // Si cargo_type es "contenedor"
             $table->string('containerized_cargo_type')->nullable();
             $table->integer('number_of_containers');
