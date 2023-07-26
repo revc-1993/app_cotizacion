@@ -11,32 +11,50 @@ class Quote extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
         'type_of_transport',
-        'product',
         'cargo_type',
-        'unit_of_weight_measurement',
-        'weight',
-        'unit_of_length_measurement',
-        'length',
-        'width',
-        'high',
         'containerized_cargo_type',
-        'number_of_containers',
-        'single_cargo_name',
+        'incoterm',
         'registration_date',
+
+        'subtotal_12',
+        'subtotal_0',
+        'iva',
+        'total',
+
+        'international_freight_information',
+        'additional_information',
+        'transit_time',
+        'quote_validity',
 
         // foreign key
         'customer_id',
     ];
 
     /**
-     * Get the User that owns the Commitment
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productDetails()
+    {
+        return $this->hasMany(ProductDetail::class, 'quote_id');
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function serviceDetails()
+    {
+        return $this->hasMany(ServiceDetail::class, 'quote_id');
     }
 }

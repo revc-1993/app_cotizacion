@@ -10,13 +10,6 @@ use App\Http\Requests\CustomerRequest;
 class CustomerController extends Controller
 {
 
-    public function __construct()
-    {
-        Inertia::share([
-            'customers' => Customer::get(),
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +17,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Customer/Index');
+        return Inertia::render('Customer/Index', [
+            'customers' => Customer::get(),
+        ]);
     }
 
     /**
@@ -59,17 +54,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Customer  $customer
@@ -77,9 +61,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        return Inertia::render('Customer/Edit', [
-            'customer' => $customer,
-        ]);
+        return Inertia::render('Customer/Edit', compact('customer'));
     }
 
     /**
@@ -129,14 +111,6 @@ class CustomerController extends Controller
     {
         $customer = Customer::where('ruc', $request->get('ruc'))
             ->first(['id', 'ruc', 'name', 'last_name', 'address']);
-
-        // if ($customer) {
-        //     $type = 'error';
-        //     $message = "Registro eliminado exitosamente";
-        // } else {
-        //     $type = 'error';
-        //     $message = "Ha ocurrido un error. Registro no eliminado";
-        // }
 
         return response()->json(compact('customer'));
     }

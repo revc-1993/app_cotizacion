@@ -24,67 +24,60 @@ class QuoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
             'type_of_transport' => ['required'],
-            'product' => ['required'],
             'cargo_type' => ['required'],
-            'unit_of_weight_measurement' => $this->weight > 0 ? ['required'] : ['nullable'],
-            'weight' => $this->cargo_type === "Suelta" ? ['numeric', 'min:1'] : ['nullable'],
-            'unit_of_length_measurement' => $this->length > 0 ? ['required'] : ['nullable'],
-            'length' => $this->cargo_type === "Suelta" ? ['numeric', 'min:1'] : ['nullable'],
-            'width' => $this->cargo_type === "Suelta" ? ['numeric', 'min:1'] : ['nullable'],
-            'high' => $this->cargo_type === "Suelta" ? ['numeric', 'min:1'] : ['nullable'],
             'containerized_cargo_type' => $this->cargo_type === "Contenerizada" ? ['required'] : ['nullable'],
-            'number_of_containers' => ['required', 'min:1'],
-            'single_cargo_name' => ['required'],
-            'registration_date' => ['required', 'before_or_equal:' . now()->format('Y-m-d')],
+            'incoterm' => ['required'],
             'customer_id' => ['required'],
+            'registration_date' => ['required', 'before_or_equal:' . now()->format('Y-m-d')],
+
+            'details_charge' => ['array', 'min:1'],
+            'details_service' => ['array', 'min:1'],
+
+            'subtotal_12' => ['nullable'],
+            'subtotal_0' => ['nullable'],
+            'iva' => ['nullable'],
+            'total' => ['nullable'],
+
+            'international_freight_information' => ['nullable'],
+            'additional_information' => ['nullable'],
+            'transit_time' => ['required'],
+            'quote_validity' => ['required'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => "El campo :attribute es obligatorio",
             'type_of_transport.required' => "El campo :attribute es obligatorio",
-            'product.required' => "El campo :attribute es obligatorio",
             'cargo_type.required' => "El campo :attribute es obligatorio",
-            'weight.numeric' => "El campo :attribute debe ser numérico",
-            'weight.min' => "El campo :attribute debe ser mayor que 0",
-            'unit_of_weight_measurement.required' => "El campo :attribute es obligatorio",
-            'length.numeric' => "El campo :attribute debe ser numérico",
-            'length.min' => "El campo :attribute debe ser mayor que 0",
-            'width.min' => "El campo :attribute debe ser mayor que 0",
-            'high.min' => "El campo :attribute debe ser mayor que 0",
-            'unit_of_length_measurement.required' => "El campo :attribute es obligatorio",
             'containerized_cargo_type.required' => "El campo :attribute es obligatorio",
-            'number_of_containers.required' => "El campo :attribute es obligatorio",
-            'number_of_containers.min' => "El campo :attribute debe ser mayor que 0",
-            'single_cargo_name.required' => "El campo :attribute es obligatorio",
+            'incoterm.required' => "El campo :attribute es obligatorio",
             'registration_date.required' => "El campo :attribute es requerido",
             'registration_date.before_or_equal' => "El campo :attribute no puede ser mayor a hoy",
-            'customer_id.required' => "El campo :attribute no debe estar vacío",
+            'customer_id.required' => "El campo :attribute debe tener un dato válido",
+            'details_charge.min' => "Debe existir al menos un detalle de carga",
+            'details_service.min' => "Debe existir al menos un detalle de servicio",
+            'international_freight_information.required' => "El campo :attribute es obligatorio",
+            'additional_information.required' => "El campo :attribute es obligatorio",
+            'transit_time.required' => "El campo :attribute es obligatorio",
+            'quote_validity.required' => "El campo :attribute es obligatorio",
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => "Nombre",
             'type_of_transport' => "Tipo de transporte",
-            'product' => "Producto",
             'cargo_type' => "Tipo de carga",
-            'weight' => "Peso",
-            'width' => "Ancho",
-            'high' => "Altura",
-            'unit_of_weight_measurement' => "Unidad de medida de peso",
-            'length' => "Longitud",
-            'unit_of_length_measurement' => "Unidad de medida de longitud",
             'containerized_cargo_type' => "Tipo de carga contenerizada",
-            'number_of_containers' => "Nro. de carga",
-            'single_cargo_name' => "Nombre de carga",
+            'incoterm' => "Incoterm",
             'registration_date' => "Fecha de registro",
             'customer_id' => "Cliente",
+            'international_freight_information' => "Información de flete internacional",
+            'additional_information' => "Información adicional",
+            'transit_time' => "Tiempo de tránsito",
+            'quote_validity' => "Validez de cotización"
         ];
     }
 }

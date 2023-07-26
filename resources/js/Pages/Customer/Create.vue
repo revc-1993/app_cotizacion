@@ -205,7 +205,7 @@
                 <button
                     class="bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
                 >
-                    {{ __("create") }}
+                    {{ __("save") }}
                 </button>
 
                 <Link

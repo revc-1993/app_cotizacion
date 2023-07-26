@@ -150,7 +150,7 @@ class MenuSeeder extends Seeder
         // FLDSFÑLDSKFÑLDSFKÑSÑF
 
         $customer = Menu::create([
-            'name' => 'importadores',
+            'name' => 'clientes',
             'route_or_url' => '#',
             'icon' => 'rectangle-list',
             'active' => true,

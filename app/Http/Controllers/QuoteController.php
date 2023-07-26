@@ -7,16 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Requests\QuoteRequest;
+use App\Models\ProductDetail;
+use App\Models\ServiceDetail;
 
 class QuoteController extends Controller
 {
-
-    public function __construct()
-    {
-        Inertia::share([
-            'quotes' => Quote::get(),
-        ]);
-    }
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -55,7 +50,9 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Quote/Index');
+        return Inertia::render('Quote/Index', [
+            'quotes' => Quote::get(),
+        ]);
     }
 
     /**
@@ -78,7 +75,47 @@ class QuoteController extends Controller
     {
         $post = $request->validated();
 
+        // dd($post);
         $quote = Quote::create($post);
+
+        $detailsProductRequest = $request->details_charge;
+
+        // Detalles de producto
+        $product_details = [];
+        foreach ($detailsProductRequest as $detail) {
+            $product_details[] = new ProductDetail([
+                'cargo_name' => $detail['cargo_name'],
+                'amount_of_charge' => $detail['amount_of_charge'],
+                'unit_of_weight_measurement' =>
+                $detail['unit_of_weight_measurement'],
+                'weight' => $detail['weight'],
+                'unit_of_length_measurement' =>
+                $detail['unit_of_length_measurement'],
+                'length' => $detail['length'],
+                'width' => $detail['width'],
+                'high' => $detail['high'],
+                'volumen' => $detail['volumen'],
+                'weight_calculated' => $detail['weight_calculated'],
+            ]);
+        }
+        $quote->productDetails()->saveMany($product_details);
+
+        $detailsServiceRequest = $request->details_service;
+
+        // Detalles de servicio
+        $service_details = [];
+        foreach ($detailsServiceRequest as $detail) {
+            $service_details[] = new ServiceDetail([
+                'type_of_service' => $detail['type_of_service'],
+                'amount_of_service' => $detail['amount_of_service'],
+                'service' => $detail['service'],
+                'pvp_provider' => $detail['pvp_provider'],
+                'utility' => $detail['utility'],
+                'utility_usd' => $detail['utility_usd'],
+                'subtotal' => $detail['subtotal']
+            ]);
+        }
+        $quote->serviceDetails()->saveMany($service_details);
 
         if ($quote) {
             $type = 'success';
@@ -89,17 +126,6 @@ class QuoteController extends Controller
         }
 
         return to_route('quotes.index')->with($type, $message);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Quote  $quote
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Quote $quote)
-    {
-        //
     }
 
     /**
@@ -114,6 +140,8 @@ class QuoteController extends Controller
             'customer' => function ($query) {
                 $query->select('id', 'ruc', 'name', 'last_name');
             },
+            'productDetails',
+            'serviceDetails',
         ])
             ->where('quotes.id', '=', $id)
             ->first();
@@ -131,6 +159,49 @@ class QuoteController extends Controller
     public function update(QuoteRequest $request, Quote $quote)
     {
         $quote->update($request->validated());
+
+        $detailsProductRequest = $request->details_charge;
+
+        // dd($details);
+
+        // Detalles de producto
+        $product_details = [];
+        foreach ($detailsProductRequest as $detail) {
+            $product_details[] = new ProductDetail([
+                'cargo_name' => $detail['cargo_name'],
+                'amount_of_charge' => $detail['amount_of_charge'],
+                'unit_of_weight_measurement' =>
+                $detail['unit_of_weight_measurement'],
+                'weight' => $detail['weight'],
+                'unit_of_length_measurement' =>
+                $detail['unit_of_length_measurement'],
+                'length' => $detail['length'],
+                'width' => $detail['width'],
+                'high' => $detail['high'],
+                'volumen' => $detail['volumen'],
+                'weight_calculated' => $detail['weight_calculated'],
+            ]);
+        }
+        $quote->productDetails()->delete();
+        $quote->productDetails()->saveMany($product_details);
+
+        $detailsServiceRequest = $request->details_service;
+
+        // Detalles de servicio
+        $service_details = [];
+        foreach ($detailsServiceRequest as $detail) {
+            $service_details[] = new ServiceDetail([
+                'type_of_service' => $detail['type_of_service'],
+                'amount_of_service' => $detail['amount_of_service'],
+                'service' => $detail['service'],
+                'pvp_provider' => $detail['pvp_provider'],
+                'utility' => $detail['utility'],
+                'utility_usd' => $detail['utility_usd'],
+                'subtotal' => $detail['subtotal']
+            ]);
+        }
+        $quote->serviceDetails()->delete();
+        $quote->serviceDetails()->saveMany($service_details);
 
         if ($quote) {
             $type = 'success';

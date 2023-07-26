@@ -946,6 +946,10 @@ select {
   bottom: 0px;
   left: 0px;
 }
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
 .left-0 {
   left: 0px;
 }
@@ -1012,6 +1016,14 @@ select {
 .-mx-3 {
   margin-left: -0.75rem;
   margin-right: -0.75rem;
+}
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .ml-3 {
   margin-left: 0.75rem;
@@ -1899,6 +1911,9 @@ select {
 .pr-1 {
   padding-right: 0.25rem;
 }
+.pr-10 {
+  padding-right: 2.5rem;
+}
 .text-left {
   text-align: left;
 }
@@ -2211,6 +2226,9 @@ select {
 }
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+.first-letter\:uppercase::first-letter {
+  text-transform: uppercase;
 }
 .first-letter\:capitalize::first-letter {
   text-transform: capitalize;
@@ -2801,10 +2819,6 @@ select {
 
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:px-8 {

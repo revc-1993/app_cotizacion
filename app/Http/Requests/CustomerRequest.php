@@ -27,7 +27,7 @@ class CustomerRequest extends FormRequest
             'name' => ['required'],
             'last_name' => ['required'],
             'ruc' => ['digits:13'],
-            'email' => ['email:rfc,dns'],
+            'email' => ['email'],
             'address' => ['required'],
         ];
     }

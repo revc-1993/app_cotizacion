@@ -135,18 +135,22 @@
                 <footer
                     class="text-center w-full h-10 p-2 bg-cyan-500 first-letter:capitalize lowercase text-sm"
                 >
-                    {{ __("powered by") }}
+                    <span class="capitalize font-bold"
+                        >App Web Cotizador Internacional</span
+                    >
+                    <!-- {{ __("powered by") }}
                     <span class="capitalize font-bold">laravel</span>
                     {{ __("and") }}
                     <span class="capitalize font-bold">vue.js</span>
                     {{ __("with") }}
-                    <span class="capitalize font-bold">inertia.js</span>
+                    <span class="capitalize font-bold">inertia.js</span> -->
                 </footer>
                 <!-- Footer -->
 
                 <!-- Flash Message -->
                 <div
                     class="flex flex-col space-y-2 absolute top-14 sm:top-10 right-0 sm:right-4 w-full sm:max-w-md max-h-96 overflow-auto px-2 sm:px-0 z-10"
+                    v-if="showMessage"
                 >
                     <transition-group name="slide-left">
                         <div
@@ -275,6 +279,7 @@ export default defineComponent({
         return {
             showingSidebar: window.innerWidth > 639,
             showingNavigationDropdown: false,
+            showMessage: false,
             name: usePage().props.value.app.name,
         };
     },
@@ -295,6 +300,11 @@ export default defineComponent({
                 usePage().props.value.token
             }`;
         }
+
+        this.showMessage = true;
+        setTimeout(() => {
+            this.showMessage = false;
+        }, 10000);
     },
 });
 </script>

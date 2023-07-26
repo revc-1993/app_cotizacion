@@ -15,29 +15,24 @@ return new class extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('type_of_transport');
-            $table->string('product');
             $table->string('cargo_type');
-
-            // Si cargo_type es "suelta"
-            // Peso - Weight
-            $table->string('unit_of_weight_measurement')->nullable();
-            $table->float('weight')->nullable();
-            // Medidas - Measures
-            $table->string('unit_of_length_measurement')->nullable();
-            // Largo - Length
-            $table->float('length')->nullable();
-            // Ancho - Width
-            $table->float('width')->nullable();
-            // Alto - High
-            $table->float('high')->nullable();
             // Si cargo_type es "contenedor"
             $table->string('containerized_cargo_type')->nullable();
-            $table->integer('number_of_containers');
-            $table->string('single_cargo_name');
+            $table->string('incoterm');
 
             $table->timestamp('registration_date');
+
+            $table->float('subtotal_12')->nullable();
+            $table->float('subtotal_0')->nullable();
+            $table->float('iva')->nullable();
+            $table->float('total')->nullable();
+
+            $table->string('international_freight_information')->nullable();
+            $table->string('additional_information')->nullable();
+            $table->integer('transit_time')->nullable();
+            $table->integer('quote_validity')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
 
