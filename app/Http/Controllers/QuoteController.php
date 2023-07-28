@@ -27,12 +27,12 @@ class QuoteController extends Controller
         ]);
 
         return Quote::withTrashed((bool) $request->input('withTrashed', 0))
-            ->orderBy($request->input('sort.key', 'name'), $request->input('sort.order', 'asc'))
+            ->orderBy($request->input('sort.key', 'registration_date'), $request->input('sort.order', 'asc'))
             ->whereNotIn('id', [1])
             ->where(function ($query) use ($request) {
                 $search = '%' . $request->input('search') . '%';
 
-                $query->where('name', 'like', $search);
+                $query->where('total', 'like', $search);
                 // ->orWhere('username', 'like', $search)
                 // ->orWhere('email', 'like', $search)
                 // ->orWhere('email_verified_at', 'like', $search)
@@ -51,7 +51,11 @@ class QuoteController extends Controller
     public function index()
     {
         return Inertia::render('Quote/Index', [
-            'quotes' => Quote::get(),
+            'quotes' => Quote::with([
+                'customer' => function ($query) {
+                    $query->select('id', 'ruc', 'name', 'last_name');
+                }
+            ])->get()
         ]);
     }
 

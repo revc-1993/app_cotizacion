@@ -114,4 +114,18 @@ class CustomerController extends Controller
 
         return response()->json(compact('customer'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\CustomerRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeWithModal(CustomerRequest $request)
+    {
+        $customer = Customer::create($request->validated());
+
+        // return response()->json(compact('customer'));
+        return redirect()->back()->with(compact('customer'));
+    }
 }

@@ -1,104 +1,115 @@
-require('./bootstrap');
+require("./bootstrap");
 
-import { createApp, h, ref } from 'vue';
-import { createInertiaApp, usePage } from '@inertiajs/inertia-vue3';
-import { InertiaProgress } from '@inertiajs/progress';
-import { Inertia } from '@inertiajs/inertia';
+import { createApp, h, ref } from "vue";
+import { createInertiaApp, usePage } from "@inertiajs/inertia-vue3";
+import { InertiaProgress } from "@inertiajs/progress";
+import { Inertia } from "@inertiajs/inertia";
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName =
+    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
-Object.defineProperty(window, '$flashes', {
+Object.defineProperty(window, "$flashes", {
     value: ref([]),
-})
+});
 
-Object.defineProperty(window, '__', {
-    value: text => {
-        const translations = usePage().props.value.$translations
+Object.defineProperty(window, "__", {
+    value: (text) => {
+        const translations = usePage().props.value.$translations;
 
         for (let key in usePage().props.value.translations) {
-            translations[key] = usePage().props.value.translations[key]
+            translations[key] = usePage().props.value.translations[key];
         }
 
         if (translations && translations.hasOwnProperty(text)) {
-            return translations[text]
+            return translations[text];
         }
 
-        return text
-    }
-})
+        return text;
+    },
+});
 
-Object.defineProperty(window, 'showFlashMessage', {
+Object.defineProperty(window, "showFlashMessage", {
     value() {
         for (let flash of usePage().props.value.flash) {
-            window.$flashes.value.push(flash)
+            window.$flashes.value.push(flash);
 
             if (flash.timer) {
                 setTimeout(() => {
-                    window.$flashes.value = window.$flashes.value.filter((f, i) => i !== window.$flashes.value.indexOf(flash))
-                }, 5000)
+                    window.$flashes.value = window.$flashes.value.filter(
+                        (f, i) => i !== window.$flashes.value.indexOf(flash)
+                    );
+                }, 5000);
             }
         }
-    }
-})
+    },
+});
 
-Object.defineProperty(window, 'pushFlashMessage', {
+Object.defineProperty(window, "pushFlashMessage", {
     value(flash) {
-        window.$flashes.value.push(flash)
+        window.$flashes.value.push(flash);
 
         if (flash.timer) {
             setTimeout(() => {
-                window.$flashes.value = window.$flashes.value.filter((f, i) => i !== window.$flashes.value.indexOf(flash))
-            }, flash.timer)
+                window.$flashes.value = window.$flashes.value.filter(
+                    (f, i) => i !== window.$flashes.value.indexOf(flash)
+                );
+            }, flash.timer);
         }
     },
-})
+});
 
-Object.defineProperty(window, 'removeFlashMessage', {
+Object.defineProperty(window, "removeFlashMessage", {
     value(flash) {
-        window.$flashes.value = window.$flashes.value.filter((f, i) => i !== window.$flashes.value.indexOf(flash))
-    }
-})
-
-Object.defineProperty(window, '$token', {
-    value() {
-        return usePage().props.value.token
+        window.$flashes.value = window.$flashes.value.filter(
+            (f, i) => i !== window.$flashes.value.indexOf(flash)
+        );
     },
-})
+});
 
-Object.defineProperty(window, 'can', {
+Object.defineProperty(window, "$token", {
     value() {
-        const abilities = Array.isArray(arguments[0]) ? arguments[0] : (arguments.length > 1 ? [...arguments] : arguments[0])
-        const roles = usePage().props.value.$roles || []
-        const permissions = usePage().props.value.$permission || []
+        return usePage().props.value.token;
+    },
+});
+
+Object.defineProperty(window, "can", {
+    value() {
+        const abilities = Array.isArray(arguments[0])
+            ? arguments[0]
+            : arguments.length > 1
+            ? [...arguments]
+            : arguments[0];
+        const roles = usePage().props.value.$roles || [];
+        const permissions = usePage().props.value.$permission || [];
 
         if (Array.isArray(abilities)) {
             for (let ability of abilities) {
                 if (window.can(ability)) {
-                    return true
+                    return true;
                 }
             }
         } else {
             for (let role of roles) {
                 for (let permission of role.permissions) {
                     if (permission.name === abilities) {
-                        return true
+                        return true;
                     }
                 }
             }
 
             for (let permission of permissions) {
                 if (permission.name === abilities) {
-                    return true
+                    return true;
                 }
             }
         }
 
-        return false
+        return false;
     },
-})
+});
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -119,24 +130,24 @@ createInertiaApp({
                     pushFlashMessage,
                     removeFlashMessage,
                     $flashes() {
-                        return window.$flashes.value
+                        return window.$flashes.value;
                     },
                     $token() {
-                        return window.$token
+                        return window.$token;
                     },
-                }
+                },
             })
             .mount(el);
     },
 });
 
-window.usePage = usePage
+window.usePage = usePage;
 
-Inertia.on('finish', e => {
-    showFlashMessage()
-})
+Inertia.on("finish", (e) => {
+    showFlashMessage();
+});
 
 InertiaProgress.init({
     delay: 0,
-    color: '#fff',
-})
+    color: "#fff",
+});

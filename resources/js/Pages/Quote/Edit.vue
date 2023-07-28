@@ -14,11 +14,6 @@
                 </label>
             </div>
             <div class="flex flex-col space-y-2 p-4 mb-2 lg:mb-0 last:mb-0">
-                <h1
-                    class="first-letter:capitalize lowercase text-md text-slate-800 font-bold"
-                >
-                    {{ __("loading data") }}
-                </h1>
                 <div
                     class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
@@ -56,7 +51,7 @@
                                             </div>
                                         </button>
                                         <button
-                                            type="submit"
+                                            @click.prevent="show = !show"
                                             class="inline-flex rounded-tr-md rounded-br-md bg-green-600 border border-green-700 shadow px-3 py-1 text-xs uppercase"
                                         >
                                             <div
@@ -311,28 +306,30 @@
                     <div
                         class="mb-2 last:mb-0 first-letter:capitalize lowercase text-sm"
                     >
-                        <label
-                            for="cargo_name"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("cargo name") }}</label
-                        >
+                        <label for="number_of_containers">{{
+                            __("amount of charge")
+                        }}</label>
 
                         <input
-                            v-model="newDetailChargeData.cargoName"
-                            type="text"
-                            name="cargo_name"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('cargo name')"
+                            v-model="newDetailChargeData.amountOfCharge"
+                            type="number"
+                            name="number_of_containers"
+                            class="flex w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            :placeholder="__('amount of charge')"
                             autofocus
+                            min="0"
                             autocomplete="off"
                         />
-
                         <transition name="fade">
                             <p
-                                v-if="newDetailChargeErrors.cargoName.alert"
+                                v-if="
+                                    newDetailChargeErrors.amountOfCharge.alert
+                                "
                                 class="text-xs text-red-500"
                             >
-                                {{ newDetailChargeErrors.cargoName.message }}
+                                {{
+                                    newDetailChargeErrors.amountOfCharge.message
+                                }}
                             </p>
                         </transition>
 
@@ -340,29 +337,32 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{ __("detail the product to be mobilized") }}
+                                {{
+                                    __(
+                                        "enter the number of load(s) or package(s)"
+                                    )
+                                }}
                             </li>
                         </ul>
                     </div>
                     <div
                         class="mb-2 last:mb-0 first-letter:capitalize lowercase text-sm"
                     >
-                        <label for="number_of_containers">{{
-                            __("amount of charge")
-                        }}</label>
-
+                        <label
+                            for="cargo_name"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("cargo name") }}</label
+                        >
                         <div class="flex space-x-2">
                             <input
-                                v-model="newDetailChargeData.amountOfCharge"
-                                type="number"
-                                name="number_of_containers"
-                                class="flex w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                                :placeholder="__('amount of charge')"
+                                v-model="newDetailChargeData.cargoName"
+                                type="text"
+                                name="cargo_name"
+                                class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                :placeholder="__('cargo name')"
                                 autofocus
-                                min="0"
                                 autocomplete="off"
                             />
-
                             <button
                                 type="button"
                                 class="inline-flex rounded-tr-md rounded-br-md bg-slate-700 text-slate-200 border border-slate-800 rounded-md font-bold shadow px-3 py-1 text-xs text-center uppercase"
@@ -375,17 +375,12 @@
                                 {{ __("add") }}
                             </button>
                         </div>
-
                         <transition name="fade">
                             <p
-                                v-if="
-                                    newDetailChargeErrors.amountOfCharge.alert
-                                "
+                                v-if="newDetailChargeErrors.cargoName.alert"
                                 class="text-xs text-red-500"
                             >
-                                {{
-                                    newDetailChargeErrors.amountOfCharge.message
-                                }}
+                                {{ newDetailChargeErrors.cargoName.message }}
                             </p>
                         </transition>
 
@@ -402,11 +397,7 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{
-                                    __(
-                                        "enter the number of load(s) or package(s)"
-                                    )
-                                }}
+                                {{ __("detail the product to be mobilized") }}
                             </li>
                         </ul>
                     </div>
@@ -801,18 +792,27 @@
                                         class="first-letter:capitalize lowercase text-sm"
                                         >{{ __("transit time") }}</label
                                     >
-
-                                    <input
-                                        v-model="form.transit_time"
-                                        type="number"
-                                        name="transit_time"
-                                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                                        :placeholder="__('transit time')"
-                                        autofocus
-                                        autocomplete="off"
-                                        min="1"
-                                        max="60"
-                                    />
+                                    <div class="flex">
+                                        <div class="relative w-full">
+                                            <input
+                                                v-model="form.transit_time"
+                                                type="number"
+                                                name="transit_time"
+                                                class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                                :placeholder="
+                                                    __('transit time')
+                                                "
+                                                autofocus
+                                                autocomplete="off"
+                                                min="1"
+                                                max="60"
+                                            />
+                                            <span
+                                                class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
+                                                >{{ __("days") }}</span
+                                            >
+                                        </div>
+                                    </div>
 
                                     <transition name="fade">
                                         <p
@@ -825,55 +825,44 @@
                                 </div>
 
                                 <div
-                                    class="mb-2 first-letter:capitalize lowercase text-sm"
+                                    class="mb-2 last:mb-0 first-letter:capitalize lowercase text-sm"
                                 >
                                     <label
                                         for="quote_validity"
                                         class="first-letter:capitalize lowercase text-sm"
                                         >{{ __("quote validity") }}</label
                                     >
-
                                     <div
-                                        class="grid grid-cols-1 gap-x-3 lg:grid-cols-3 mb-2 lg:mb-0 last:mb-0"
+                                        class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                                     >
-                                        <div
-                                            class="mb-2 first-letter:capitalize lowercase text-sm"
-                                        >
-                                            <input
-                                                v-model="form.quote_validity"
-                                                type="number"
-                                                name="quote_validity"
-                                                class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                                                :placeholder="
-                                                    __('quote_validity')
-                                                "
-                                                autofocus
-                                                autocomplete="off"
-                                                min="0"
-                                            />
-
-                                            <transition name="fade">
-                                                <p
-                                                    v-if="
-                                                        form.errors
-                                                            .quote_validity
+                                        <div class="flex">
+                                            <div class="relative w-full">
+                                                <input
+                                                    v-model="
+                                                        form.quote_validity
                                                     "
-                                                    class="text-xs text-red-500"
+                                                    type="number"
+                                                    name="quote_validity"
+                                                    class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                                    :placeholder="
+                                                        __('quote_validity')
+                                                    "
+                                                    autofocus
+                                                    autocomplete="off"
+                                                    min="0"
+                                                />
+                                                <span
+                                                    class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
+                                                    >{{ __("days") }}</span
                                                 >
-                                                    {{
-                                                        form.errors
-                                                            .quote_validity
-                                                    }}
-                                                </p>
-                                            </transition>
+                                            </div>
                                         </div>
                                         <div
-                                            class="mb-2 first-letter:capitalize lowercase text-sm flex justify-center items-center"
+                                            class="mb-2 first-letter:capitalize lowercase text-sm text-center justify-center items-center"
                                         >
                                             {{ quoteValidity }}
                                         </div>
                                     </div>
-
                                     <transition name="fade">
                                         <p
                                             v-if="form.errors.quote_validity"
@@ -906,8 +895,11 @@
                                                 class="border border-slate-200 px-3 py-1 text-center"
                                             >
                                                 <b>
-                                                    $
-                                                    {{ subtotal0 }}
+                                                    {{
+                                                        formattedNumber(
+                                                            subtotal0
+                                                        )
+                                                    }}
                                                 </b>
                                             </td>
                                         </tr>
@@ -922,8 +914,11 @@
                                                 class="border border-slate-200 px-3 py-1 text-center"
                                             >
                                                 <b>
-                                                    $
-                                                    {{ subtotal12 }}
+                                                    {{
+                                                        formattedNumber(
+                                                            subtotal12
+                                                        )
+                                                    }}
                                                 </b>
                                             </td>
                                         </tr>
@@ -937,7 +932,9 @@
                                             <td
                                                 class="border border-slate-200 px-3 py-1 text-center"
                                             >
-                                                <b> $ {{ iva12 }} </b>
+                                                <b>
+                                                    {{ formattedNumber(iva12) }}
+                                                </b>
                                             </td>
                                         </tr>
                                         <tr>
@@ -950,7 +947,9 @@
                                             <td
                                                 class="border border-slate-200 px-3 py-1 text-center"
                                             >
-                                                <b> $ {{ total }} </b>
+                                                <b>
+                                                    {{ formattedNumber(total) }}
+                                                </b>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -978,6 +977,14 @@
                 </Link>
             </div>
         </form>
+        <transition name="fade">
+            <Modal
+                v-if="show"
+                @close="closeModal"
+                :new-customer="newCustomer"
+                ref="Modal"
+            />
+        </transition>
     </DashboardLayout>
 </template>
 
@@ -1000,6 +1007,7 @@ import { Link, useForm } from "@inertiajs/inertia-vue3";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import DataTable from "./DataTable";
 import SummaryTable from "./SummaryTable";
+import Modal from "./Modal";
 import ServiceTable from "./ServiceTable";
 import Multiselect from "@vueform/multiselect";
 import Card from "./Card";
@@ -1025,6 +1033,7 @@ export default defineComponent({
         Toast,
         SummaryTable,
         ServiceTable,
+        Modal,
     },
 
     data() {
@@ -1124,6 +1133,8 @@ export default defineComponent({
             messageResource: "",
             detailsService: [],
             detailsCharge: [],
+            show: false,
+            newCustomer: {},
         };
     },
     computed: {
@@ -1278,7 +1289,7 @@ export default defineComponent({
 
             let count = 0;
 
-            // Nombre de carga
+            // Unidad de medida: Peso
             if (this.newDetailChargeData.cargoName === "") {
                 this.newDetailChargeErrors.cargoName.alert = true;
                 this.newDetailChargeErrors.cargoName.message =
@@ -1350,7 +1361,6 @@ export default defineComponent({
             return count === 0;
         },
         resetInputChargeErrors() {
-            this.newDetailChargeErrors.cargoName.alert = false;
             this.newDetailChargeErrors.amountOfCharge.alert = false;
             this.newDetailChargeErrors.unitOfWeightMeasurement.alert = false;
             this.newDetailChargeErrors.weight.alert = false;
@@ -1359,7 +1369,6 @@ export default defineComponent({
             this.newDetailChargeErrors.width.alert = false;
             this.newDetailChargeErrors.high.alert = false;
 
-            this.newDetailChargeErrors.cargoName.message = "";
             this.newDetailChargeErrors.amountOfCharge.message = "";
             this.newDetailChargeErrors.unitOfWeightMeasurement.message = "";
             this.newDetailChargeErrors.weight.message = "";
@@ -1367,6 +1376,23 @@ export default defineComponent({
             this.newDetailChargeErrors.length.message = "";
             this.newDetailChargeErrors.width.message = "";
             this.newDetailChargeErrors.high.message = "";
+        },
+        formattedNumber(number) {
+            const f = new Intl.NumberFormat("eng-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+
+            return f.format(number);
+        },
+        closeModal() {
+            this.formSearchCustomer.ruc = this.newCustomer.ruc;
+
+            this.searchCustomerByRuc();
+
+            this.show = false;
         },
     },
     mounted() {

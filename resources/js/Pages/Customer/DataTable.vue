@@ -36,7 +36,7 @@
                             {{ __("name") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("last_name") }}
+                            {{ __("last name") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("ruc") }}
@@ -58,7 +58,7 @@
                         v-for="(customer, i) in customers.filter((customer) =>
                             search.trim()
                                 ? customer.name.includes(search.trim()) ||
-                                  customer.product.includes(search.trim())
+                                  customer.last_name.includes(search.trim())
                                 : true
                         )"
                         :key="i"

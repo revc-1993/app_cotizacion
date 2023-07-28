@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('quotes', QuoteController::class);
 
     Route::get('/customers/getCustomerByRuc', [CustomerController::class, 'getCustomerByRuc'])->name('customers.getCustomerByRuc');
+    Route::post('/customers/storeWithModal', [CustomerController::class, 'storeWithModal'])->name('customers.storeWithModal');
     Route::resource('customers', CustomerController::class);
 });
 

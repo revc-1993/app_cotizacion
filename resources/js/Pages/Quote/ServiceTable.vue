@@ -91,26 +91,42 @@
                     </Multiselect>
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    <input
-                        v-model="newDetailServiceData.pvpProvider"
-                        type="number"
-                        name="pvp_provider"
-                        class="flex w-full bg-white text-xs border border-slate-300 rounded-md shadow placeholder:capitalize text-center"
-                        :placeholder="__('pvp provider')"
-                        autofocus
-                        autocomplete="off"
-                    />
+                    <div class="flex">
+                        <div class="relative w-full">
+                            <input
+                                v-model="newDetailServiceData.pvpProvider"
+                                type="number"
+                                name="pvp_provider"
+                                class="w-full bg-white text-xs border border-slate-300 rounded-md shadow placeholder:capitalize text-center"
+                                :placeholder="__('pvp provider')"
+                                autofocus
+                                autocomplete="off"
+                            />
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-6 text-md text-gray-500"
+                                >$</span
+                            >
+                        </div>
+                    </div>
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    <input
-                        v-model="newDetailServiceData.utility"
-                        type="number"
-                        name="utility"
-                        class="flex w-full bg-white text-xs border border-slate-300 rounded-md shadow placeholder:capitalize text-center"
-                        :placeholder="__('utility') + ' %'"
-                        autofocus
-                        autocomplete="off"
-                    />
+                    <div class="flex">
+                        <div class="relative w-full">
+                            <input
+                                v-model="newDetailServiceData.utility"
+                                type="number"
+                                name="utility"
+                                class="w-full bg-white text-xs border border-slate-300 rounded-md shadow placeholder:capitalize text-center"
+                                :placeholder="__('utility')"
+                                autofocus
+                                autocomplete="off"
+                            />
+                            <span
+                                class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
+                                >%</span
+                            >
+                        </div>
+                    </div>
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
                     <b> $ {{ utility }} </b>
@@ -139,16 +155,16 @@
                     {{ row.service }}
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    {{ row.pvp_provider }}
+                    {{ formattedNumber(row.pvp_provider) }}
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    {{ row.utility }}
+                    {{ row.utility }}%
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    {{ row.utility_usd }}
+                    {{ formattedNumber(row.utility_usd) }}
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
-                    {{ row.subtotal }}
+                    {{ formattedNumber(row.subtotal) }}
                 </td>
                 <td class="border border-slate-200 px-3 py-1 text-center">
                     <button
@@ -344,14 +360,14 @@ export default defineComponent({
             if (!this.newDetailServiceData.pvpProvider > 0) {
                 this.newDetailServiceErrors.pvpProvider.alert = true;
                 this.newDetailServiceErrors.pvpProvider.message =
-                    "El campo Cantidad de servicios no puede ser cero (0)";
+                    "El campo PVP Proveedor no puede ser cero (0)";
                 count++;
             }
             // Utilidad %
             if (!this.newDetailServiceData.utility > 0) {
                 this.newDetailServiceErrors.utility.alert = true;
                 this.newDetailServiceErrors.utility.message =
-                    "El campo Cantidad de servicios no puede ser cero (0)";
+                    "El campo Utilidad no puede ser cero (0)";
                 count++;
             }
 
@@ -385,10 +401,20 @@ export default defineComponent({
                 ? this.without_iva_services
                 : [];
         },
+        formattedNumber(number) {
+            const f = new Intl.NumberFormat("eng-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+
+            return f.format(number);
+        },
     },
     mounted() {
         this.newDetailServiceData.typeOfService = "";
-        this.newDetailServiceData.amountOfService = 0;
+        this.newDetailServiceData.amountOfService = 1;
         this.newDetailServiceData.service = "";
         this.newDetailServiceData.pvpProvider = 0;
         this.newDetailServiceData.utility = 0;

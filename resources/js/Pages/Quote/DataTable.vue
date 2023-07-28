@@ -33,19 +33,19 @@
                             {{ __("no") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("client") }}
+                            {{ __("registration date") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("number_of_containers") }}
+                            {{ __("amount") }} USD
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("single_cargo_name") }}
+                            {{ __("client ruc") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("type_of_transport") }}
+                            {{ __("client name") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("product") }}
+                            {{ __("state") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("action") }}
@@ -57,8 +57,9 @@
                     <tr
                         v-for="(quote, i) in quotes.filter((quote) =>
                             search.trim()
-                                ? quote.name.includes(search.trim()) ||
-                                  quote.product.includes(search.trim())
+                                ? quote.registration_date.includes(
+                                      search.trim()
+                                  ) || quote.total.includes(search.trim())
                                 : true
                         )"
                         :key="i"
@@ -70,19 +71,27 @@
                             {{ i + 1 }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.name) }}
+                            {{
+                                new Date(quote.registration_date)
+                                    .toISOString()
+                                    .split("T")[0]
+                            }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.number_of_containers) }}
+                            $ {{ quote.total }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.single_cargo_name) }}
+                            {{ quote.customer.ruc }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.type_of_transport) }}
+                            {{
+                                quote.customer.name +
+                                " " +
+                                quote.customer.last_name
+                            }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __(quote.product) }}
+                            ESTATE
                         </td>
                         <td class="border border-inherit px-3 py-1">
                             <div class="flex-wrap">

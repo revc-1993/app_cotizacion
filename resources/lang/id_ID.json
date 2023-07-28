@@ -94,7 +94,7 @@
   "registration date": "fecha de cotización",
   "choose an option": "escoja una opción",
   "cargo type": "tipo de carga",
-  "containerized cargo type": "carga contenerizada",
+  "containerized cargo type": "subcontenerizada",
   "weight": "peso",
   "weight in tons": "peso (ton)",
   "volume in mt": "volumen (mt3)",
@@ -114,7 +114,7 @@
   "last name": "apellidos",
   "ruc": "RUC",
   "address": "dirección",
-  "table title": "resumen de cotización",
+  "table title": "resumen de carga",
   "load detail": "detalle de carga",
   "loading data": "datos de carga",
 
@@ -140,6 +140,7 @@
   "service": "servicio",
   "pvp provider": "pvp proveedor",
   "utility": "utilidad",
+  "amount": "monto",
   "amount of service": "cantidad",
   "code of service": "codigo",
   "type of service": "categoría de servicio",
@@ -152,5 +153,9 @@
   "subtotal12": "subtotal 12%",
   "create quote": "crear cotización",
   "edit quote": "editar cotización",
-  "days": "días"
+  "days": "días",
+  "client ruc": "ruc cliente",
+  "client name": "nombre cliente",
+  "state": "estado",
+  "new customer": "nuevo cliente"
 }
