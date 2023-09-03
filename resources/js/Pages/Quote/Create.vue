@@ -19,20 +19,20 @@
                 >
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
-                            for="ruc"
+                            for="client"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("ruc") }}</label
+                            >{{ __("client") }}</label
                         >
                         <form @submit.prevent="searchCustomerByRuc('alert')">
                             <div class="relative">
                                 <div class="w-full">
                                     <div class="flex">
                                         <input
-                                            v-model="formSearchCustomer.ruc"
+                                            v-model="formSearchCustomer.search"
                                             type="text"
-                                            name="ruc"
+                                            name="search"
                                             class="flex w-full bg-white text-sm border border-slate-300 rounded-tl-md rounded-bl-md shadow placeholder:capitalize"
-                                            :placeholder="__('ruc')"
+                                            :placeholder="__('ruc or name')"
                                             autofocus
                                             autocomplete="off"
                                         />
@@ -51,7 +51,11 @@
                                             </div>
                                         </button>
                                         <button
-                                            @click.prevent="show = !show"
+                                            type="button"
+                                            @click.prevent="
+                                                showModalCustomer =
+                                                    !showModalCustomer
+                                            "
                                             class="inline-flex rounded-tr-md rounded-br-md bg-green-600 border border-green-700 shadow px-3 py-1 text-xs uppercase"
                                         >
                                             <div
@@ -81,7 +85,7 @@
                             class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                         >
                             <li class="first-letter:capitalize lowercase">
-                                {{ __("enter the customer's ruc") }}
+                                {{ __("enter the customer's ruc or name") }}
                             </li>
                         </ul>
                     </div>
@@ -96,6 +100,11 @@
                             __("customer data")
                         }}</label>
                         <div class="border border-slate-300 p-2 rounded-md">
+                            <label class="capitalize text-sm"
+                                ><b> {{ __("ruc") }} </b>:
+                                {{ formSearchCustomer.ruc }}
+                            </label>
+                            <br />
                             <label class="capitalize text-sm"
                                 ><b> {{ __("name") }} </b>:
                                 {{ formSearchCustomer.name }}
@@ -792,36 +801,71 @@
                                         class="first-letter:capitalize lowercase text-sm"
                                         >{{ __("transit time") }}</label
                                     >
-                                    <div class="flex">
-                                        <div class="relative w-full">
+                                    <div
+                                        class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
+                                    >
+                                        <div
+                                            class="mb-2 last:mb-0 first-letter:capitalize"
+                                        >
                                             <input
                                                 v-model="form.transit_time"
-                                                type="number"
+                                                type="date"
                                                 name="transit_time"
-                                                class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize"
-                                                :placeholder="
-                                                    __('transit time')
-                                                "
+                                                class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
                                                 autofocus
-                                                autocomplete="off"
-                                                min="1"
-                                                max="60"
                                             />
-                                            <span
-                                                class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
-                                                >{{ __("days") }}</span
+                                            <transition name="fade">
+                                                <p
+                                                    v-if="
+                                                        form.errors.transit_time
+                                                    "
+                                                    class="text-xs text-red-500"
+                                                >
+                                                    {{
+                                                        form.errors.transit_time
+                                                    }}
+                                                </p>
+                                            </transition>
+                                            <ul
+                                                class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
                                             >
+                                                <li
+                                                    class="first-letter:capitalize lowercase"
+                                                >
+                                                    {{
+                                                        __(
+                                                            "enter the date of quotation"
+                                                        )
+                                                    }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div
+                                            class="mb-2 last:mb-0 first-letter:capitalize"
+                                        >
+                                            <div class="flex">
+                                                <div class="relative w-full">
+                                                    <input
+                                                        v-model="transitTime"
+                                                        type="number"
+                                                        name="transit_time"
+                                                        class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize disabled:text-gray-600"
+                                                        :placeholder="
+                                                            __('transit time')
+                                                        "
+                                                        autofocus
+                                                        autocomplete="off"
+                                                        min="0"
+                                                        disabled
+                                                    />
+                                                    <span
+                                                        class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
+                                                        >{{ __("days") }}</span
+                                                    >
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <transition name="fade">
-                                        <p
-                                            v-if="form.errors.transit_time"
-                                            class="text-xs text-red-500"
-                                        >
-                                            {{ form.errors.transit_time }}
-                                        </p>
-                                    </transition>
                                 </div>
 
                                 <div
@@ -835,42 +879,70 @@
                                     <div
                                         class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                                     >
-                                        <div class="flex">
-                                            <div class="relative w-full">
-                                                <input
-                                                    v-model="
-                                                        form.quote_validity
+                                        <div
+                                            class="mb-2 last:mb-0 first-letter:capitalize"
+                                        >
+                                            <input
+                                                v-model="form.quote_validity"
+                                                type="date"
+                                                name="quote_validity"
+                                                class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                                                autofocus
+                                            />
+                                            <transition name="fade">
+                                                <p
+                                                    v-if="
+                                                        form.errors
+                                                            .quote_validity
                                                     "
-                                                    type="number"
-                                                    name="quote_validity"
-                                                    class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize"
-                                                    :placeholder="
-                                                        __('quote_validity')
-                                                    "
-                                                    autofocus
-                                                    autocomplete="off"
-                                                    min="0"
-                                                />
-                                                <span
-                                                    class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
-                                                    >{{ __("days") }}</span
+                                                    class="text-xs text-red-500"
                                                 >
-                                            </div>
+                                                    {{
+                                                        form.errors
+                                                            .quote_validity
+                                                    }}
+                                                </p>
+                                            </transition>
+                                            <ul
+                                                class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                                            >
+                                                <li
+                                                    class="first-letter:capitalize lowercase"
+                                                >
+                                                    {{
+                                                        __(
+                                                            "enter the date of quotation"
+                                                        )
+                                                    }}
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div
-                                            class="mb-2 first-letter:capitalize lowercase text-sm text-center justify-center items-center"
+                                            class="mb-2 last:mb-0 first-letter:capitalize"
                                         >
-                                            {{ quoteValidity }}
+                                            <div class="flex">
+                                                <div class="relative w-full">
+                                                    <input
+                                                        v-model="quoteValidity"
+                                                        type="number"
+                                                        name="quote_validity"
+                                                        class="w-full bg-white text-sm text-center border border-slate-300 rounded-md shadow placeholder:capitalize disabled:text-gray-600"
+                                                        :placeholder="
+                                                            __('quote_validity')
+                                                        "
+                                                        autofocus
+                                                        autocomplete="off"
+                                                        min="0"
+                                                        disabled
+                                                    />
+                                                    <span
+                                                        class="absolute inset-y-0 right-0 flex items-center pr-10 text-md text-gray-500"
+                                                        >{{ __("days") }}</span
+                                                    >
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <transition name="fade">
-                                        <p
-                                            v-if="form.errors.quote_validity"
-                                            class="text-xs text-red-500"
-                                        >
-                                            {{ form.errors.quote_validity }}
-                                        </p>
-                                    </transition>
                                 </div>
                             </div>
                         </div>
@@ -955,14 +1027,51 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="mb-2 last:mb-0 first-letter:capitalize">
+                                <div class="p-2 rounded-md">
+                                    <label class="capitalize text-sm"
+                                        ><b> {{ __("user") }} </b>:
+                                        {{ form.user }}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="mb-2 first-letter:capitalize lowercase text-sm">
+                    <label
+                        for="comments"
+                        class="first-letter:capitalize lowercase text-sm"
+                        >{{ __("comments") }}</label
+                    >
+                    <textarea
+                        v-model="form.comments"
+                        name="comments"
+                        class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                        :placeholder="__('comments')"
+                        autofocus
+                        autocomplete="off"
+                    />
+                    <transition name="fade">
+                        <p
+                            v-if="form.errors.comments"
+                            class="text-xs text-red-500"
+                        >
+                            {{ form.errors.comments }}
+                        </p>
+                    </transition>
                 </div>
             </div>
 
             <div
                 class="flex items-center justify-end bg-slate-200 px-4 py-2 space-x-2 text-xs"
             >
+                <button
+                    @click.prevent="generatePDF"
+                    class="bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
+                >
+                    {{ __("preview") }}
+                </button>
                 <button
                     class="bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
                 >
@@ -978,11 +1087,21 @@
             </div>
         </form>
         <transition name="fade">
-            <Modal
-                v-if="show"
+            <ModalCustomer
+                v-if="showModalCustomer"
                 @close="closeModal"
                 :new-customer="newCustomer"
-                ref="Modal"
+                ref="ModalCustomer"
+            />
+        </transition>
+        <transition name="fade">
+            <ModalPDF
+                v-if="showModalPDF"
+                :quote="form"
+                :company="company"
+                :client="formSearchCustomer"
+                @close="showModalPDF = false"
+                ref="modalPDF"
             />
         </transition>
     </DashboardLayout>
@@ -1007,7 +1126,8 @@ import { Link, useForm } from "@inertiajs/inertia-vue3";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import DataTable from "./DataTable";
 import SummaryTable from "./SummaryTable";
-import Modal from "./Modal";
+import ModalCustomer from "./ModalCustomer";
+import ModalPDF from "./ModalPDF";
 import ServiceTable from "./ServiceTable";
 import Multiselect from "@vueform/multiselect";
 import Card from "./Card";
@@ -1020,6 +1140,7 @@ export default defineComponent({
         count: Object,
         perPage: Number,
         search: String,
+        company: Object,
     },
 
     components: {
@@ -1032,7 +1153,8 @@ export default defineComponent({
         Toast,
         SummaryTable,
         ServiceTable,
-        Modal,
+        ModalCustomer,
+        ModalPDF,
     },
 
     data() {
@@ -1053,10 +1175,14 @@ export default defineComponent({
                 total: new Number(),
                 international_freight_information: new String(),
                 additional_information: new String(),
-                transit_time: new Number(),
-                quote_validity: new Number(),
+                transit_time: new Date().toISOString().split("T")[0],
+                quote_validity: new Date().toISOString().split("T")[0],
+                state: new String(),
+                comments: new String(),
+                user: new String(),
             }),
             formSearchCustomer: useForm({
+                search: new String(),
                 ruc: new String(),
                 name: new String(),
                 address: new String(),
@@ -1132,7 +1258,8 @@ export default defineComponent({
             messageResource: "",
             detailsService: [],
             detailsCharge: [],
-            show: false,
+            showModalCustomer: false,
+            showModalPDF: false,
             newCustomer: {},
         };
     },
@@ -1184,24 +1311,44 @@ export default defineComponent({
         total: function () {
             return this.subtotal0 + this.subtotal12 + this.iva12;
         },
+        transitTime: function () {
+            if (this.form.registration_date && this.form.transit_time) {
+                const start = new Date(this.form.registration_date);
+                const end = new Date(this.form.transit_time);
+                const timeDiff = Math.abs(end - start);
+                const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                return days;
+            }
+            return 0;
+        },
         quoteValidity: function () {
-            const rdate = new Date(this.form.registration_date);
-            rdate.setDate(rdate.getDate() + this.form.quote_validity);
-            return rdate.toISOString().substr(0, 10);
+            if (this.form.registration_date && this.form.quote_validity) {
+                const start = new Date(this.form.registration_date);
+                const end = new Date(this.form.quote_validity);
+                const timeDiff = Math.abs(end - start);
+                const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                return days;
+            }
+            return 0;
+        },
+        state: function () {
+            // current date
+            const currentDate = new Date();
+
+            // registration date
+            const effectiveDate = new Date(this.form.registration_date);
+            // suma los días válidos
+            effectiveDate.setDate(
+                effectiveDate.getDate() + this.form.quote_validity
+            );
+
+            // compara fechas
+            return currentDate <= effectiveDate ? "pendiente" : "denegada";
         },
     },
     methods: {
         submit() {
-            // Detalle de carga
-            this.form.details_charge = this.detailsCharge;
-
-            // Detalle de servicio
-            this.form.details_service = this.detailsService;
-
-            // Subtotales
-            this.form.subtotal_0 = this.subtotal0;
-            this.form.subtotal_12 = this.subtotal12;
-            this.form.total = this.total;
+            this.prepareTotal();
 
             this.form.post(route("quotes.store"), {
                 onSuccess: () => this.form.reset(),
@@ -1210,8 +1357,8 @@ export default defineComponent({
         searchCustomerByRuc(alert = "") {
             axios
                 .get(
-                    "/customers/getCustomerByRuc?ruc=" +
-                        this.formSearchCustomer.ruc
+                    "/customers/getCustomerByRuc?search=" +
+                        this.formSearchCustomer.search
                 )
                 .then((response) => {
                     if (response) {
@@ -1240,6 +1387,7 @@ export default defineComponent({
                 .catch((error) => {
                     if (this.form.customer_id !== null)
                         this.form.customer_id = null;
+                    this.formSearchCustomer.ruc = "";
                     this.formSearchCustomer.name = "";
                     this.formSearchCustomer.address = "";
                     console.log(error);
@@ -1391,7 +1539,26 @@ export default defineComponent({
 
             this.searchCustomerByRuc();
 
-            this.show = false;
+            this.showModalCustomer = false;
+        },
+        generatePDF() {
+            this.prepareTotal();
+            this.showModalPDF = true;
+        },
+        prepareTotal() {
+            // Detalle de carga
+            this.form.details_charge = this.detailsCharge;
+
+            // Detalle de servicio
+            this.form.details_service = this.detailsService;
+
+            // Subtotales
+            this.form.subtotal_0 = this.subtotal0;
+            this.form.subtotal_12 = this.subtotal12;
+            this.form.iva = this.iva12;
+            this.form.total = this.total;
+
+            this.form.state = this.state;
         },
     },
     mounted() {
@@ -1405,7 +1572,8 @@ export default defineComponent({
         this.newDetailChargeData.width = 0;
         this.newDetailChargeData.high = 0;
         this.form.international_freight_information = "";
-        this.form.quote_validity = 5;
+        this.form.state = "";
+        this.form.user = this.$page.props.user.name;
     },
 });
 </script>

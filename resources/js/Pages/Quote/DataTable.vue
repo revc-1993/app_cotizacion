@@ -91,10 +91,42 @@
                             }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            ESTATE
+                            <div
+                                v-if="
+                                    quote.registration_date &&
+                                    quote.quote_validity
+                                "
+                            ></div>
+                            <SpanState
+                                v-if="
+                                    quote.registration_date &&
+                                    quote.quote_validity
+                                "
+                                :state="quote.state"
+                            />
+                            <div v-else>-</div>
                         </td>
-                        <td class="border border-inherit px-3 py-1">
+                        <td class="border border-inherit px-2 py-1">
                             <div class="flex-wrap">
+                                <button
+                                    @click.prevent="viewPdf(quote.id)"
+                                    class="bg-slate-600 border border-slate-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase"
+                                >
+                                    <div class="flex items-center space-x-2">
+                                        <Icon
+                                            src="view"
+                                            class="text-white flex-none w-3 h-3"
+                                        />
+
+                                        <div class="flex-wrap pr-1">
+                                            <span
+                                                class="text-white font-semibold"
+                                                >{{ __("view pdf") }}</span
+                                            >
+                                        </div>
+                                    </div>
+                                </button>
+
                                 <Link
                                     :href="route('quotes.edit', quote.id)"
                                     as="button"
@@ -137,43 +169,30 @@
                         </td>
                     </tr>
                 </tbody>
-
-                <!-- <tfoot class="bg-slate-200">
-                    <tr>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("no") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("name") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("number_of_containers") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("single_cargo_name") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("type_of_transport") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("product") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-1 uppercase">
-                            {{ __("action") }}
-                        </th>
-                    </tr>
-                </tfoot> -->
             </table>
         </div>
     </div>
+    <transition name="fade">
+        <ModalPDF
+            v-if="showPdf"
+            :quote="quote"
+            :preview="false"
+            :client="quote.customer"
+            @close="showPdf = false"
+            ref="modalPDF"
+        />
+    </transition>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import ModalPDF from "./ModalPDF";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 import Icon from "@/Components/Icon";
+import SpanState from "@/Components/SpanState";
+import axios from "axios";
 
 export default defineComponent({
     props: {
@@ -183,11 +202,15 @@ export default defineComponent({
     components: {
         Link,
         Icon,
+        ModalPDF,
+        SpanState,
     },
 
     data() {
         return {
             search: new String(),
+            showPdf: false,
+            quote: Object,
         };
     },
 
@@ -204,6 +227,24 @@ export default defineComponent({
                     );
                 }
             });
+        },
+        viewPdf(id) {
+            axios.get(route("quotes.show", { id: id })).then((response) => {
+                this.quote = response.data.quote;
+                this.showPdf = true;
+            });
+        },
+        state(registration_date, quote_validity) {
+            // current date
+            const currentDate = new Date();
+
+            // registration date
+            const effectiveDate = new Date(registration_date);
+            // suma los días válidos
+            effectiveDate.setDate(effectiveDate.getDate() + quote_validity);
+
+            // compara fechas
+            return currentDate <= effectiveDate ? "pendiente" : "denegada";
         },
     },
 });

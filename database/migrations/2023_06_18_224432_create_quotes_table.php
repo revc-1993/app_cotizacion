@@ -30,15 +30,22 @@ return new class extends Migration
 
             $table->string('international_freight_information')->nullable();
             $table->string('additional_information')->nullable();
-            $table->integer('transit_time')->nullable();
-            $table->integer('quote_validity')->nullable();
+            $table->timestamp('transit_time')->nullable();
+            $table->timestamp('quote_validity')->nullable();
+            $table->string('comments')->nullable();
+            $table->string('state')->nullable();
+
+            $table->boolean('is_billed')->default(false);
+            $table->timestamp('invoice_date')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
 
             $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
 
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

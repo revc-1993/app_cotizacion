@@ -1,6 +1,13 @@
 <template>
     <DashboardLayout title="Clientes">
-        <h1>Clientes</h1>
+        <div class="flex-none w-full">
+            <h1
+                class="first-letter:capitalize lowercase text-xl text-slate-800 font-semibold"
+            >
+                {{ __("customers") }}
+            </h1>
+        </div>
+
         <Toast
             v-if="$page.props.jetstream.flash.token"
             :message="$page.props.flash.message"

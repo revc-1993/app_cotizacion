@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Quote;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\BillRequest;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Requests\QuoteRequest;
+use App\Models\Quote;
+use Illuminate\Http\Request;
 use App\Models\ProductDetail;
 use App\Models\ServiceDetail;
+use App\Http\Requests\QuoteRequest;
+use App\Mail\MailStoreQuote;
+use App\Models\Configuration;
+use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
 {
@@ -42,7 +47,6 @@ class QuoteController extends Controller
             ->paginate($request->input('perPage', 10));
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -53,8 +57,8 @@ class QuoteController extends Controller
         return Inertia::render('Quote/Index', [
             'quotes' => Quote::with([
                 'customer' => function ($query) {
-                    $query->select('id', 'ruc', 'name', 'last_name');
-                }
+                    $query->select('id', 'ruc', 'name', 'last_name', 'address');
+                },
             ])->get()
         ]);
     }
@@ -66,7 +70,13 @@ class QuoteController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Quote/Create');
+        if (!$this->hasConfiguration()) {
+            $company = null;
+        } else {
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+        }
+
+        return Inertia::render('Quote/Create', compact('company'));
     }
 
     /**
@@ -78,6 +88,8 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request)
     {
         $post = $request->validated();
+        $post['user_id'] = $this->getIdUser();
+        $post['state'] = $this->getState($request);
 
         // dd($post);
         $quote = Quote::create($post);
@@ -121,15 +133,50 @@ class QuoteController extends Controller
         }
         $quote->serviceDetails()->saveMany($service_details);
 
+        $configuration = Configuration::all()->first();
+
+        $pdfData = [
+            'quote' => $quote,
+            'configuration' => $configuration
+        ];
+
+        // Notifica
+        foreach ([$quote->customer->email] as $emailAddress) {
+            Mail::to($emailAddress)->send(new MailStoreQuote($pdfData));
+        }
+
         if ($quote) {
             $type = 'success';
             $message = "Registro creado exitosamente";
+
+            // Mail::to("ronny.verac.1993@gmail.com")->send(new MailStoreQuote());
         } else {
             $type = 'error';
             $message = "Ha ocurrido un error. Registro no creado";
         }
 
         return to_route('quotes.index')->with($type, $message);
+    }
+
+    public function show($id)
+    {
+        if (!$this->hasConfiguration()) {
+            $company = null;
+        } else {
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+        }
+
+        $quote = Quote::with([
+            'customer' => function ($query) {
+                $query->select('id', 'ruc', 'name', 'last_name', 'address');
+            },
+            'productDetails',
+            'serviceDetails',
+        ])
+            ->where('quotes.id', '=', $id)
+            ->first();
+
+        return response()->json(compact('quote', 'company'));
     }
 
     /**
@@ -140,9 +187,18 @@ class QuoteController extends Controller
      */
     public function edit($id)
     {
+        if (!$this->hasConfiguration()) {
+            $company = null;
+        } else {
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+        }
+
         $quote = Quote::with([
             'customer' => function ($query) {
-                $query->select('id', 'ruc', 'name', 'last_name');
+                $query->select('id', 'ruc', 'name', 'last_name', 'address');
+            },
+            'user' => function ($query) {
+                $query->select('id', 'name');
             },
             'productDetails',
             'serviceDetails',
@@ -150,7 +206,7 @@ class QuoteController extends Controller
             ->where('quotes.id', '=', $id)
             ->first();
 
-        return Inertia::render('Quote/Edit', compact('quote'));
+        return Inertia::render('Quote/Edit', compact('quote', 'company'));
     }
 
     /**
@@ -162,7 +218,11 @@ class QuoteController extends Controller
      */
     public function update(QuoteRequest $request, Quote $quote)
     {
-        $quote->update($request->validated());
+        $post = $request->validated();
+        $post['user_id'] = $this->getIdUser();
+        $post['state'] = $this->getState($request);
+
+        $quote->update($post);
 
         $detailsProductRequest = $request->details_charge;
 
@@ -237,5 +297,49 @@ class QuoteController extends Controller
         }
 
         return to_route('quotes.index')->with($type, $message);
+    }
+
+    public function markAsBilled(BillRequest $request, Quote $quote)
+    {
+        // dd($quote);
+        $quote->update([
+            'is_billed' => true,
+            'state' => 'aceptada',
+            'invoice_date' => now(),
+            'invoice_number' => $request->invoice_number,
+        ]);
+
+        if ($quote) {
+            $type = 'success';
+            $message = "Registro marcado como facturado";
+        } else {
+            $type = 'error';
+            $message = "Ha ocurrido un error. Registro no marcado como facturado";
+        }
+
+        return to_route('bills.index')->with($type, $message);
+    }
+
+    public function getIdUser()
+    {
+        if (Auth::check())
+            return Auth::id(); // Opción 1
+        return null;
+    }
+
+    public function hasConfiguration()
+    {
+        return Configuration::count() > 0;
+    }
+
+    public function getState(QuoteRequest $request)
+    {
+        if ($request->is_billed == true) {
+            return "aceptada";
+        } else if (now() <= $request->quote_validity) {
+            return "pendiente";
+        } else {
+            return "denegada";
+        }
     }
 }

@@ -26,12 +26,14 @@ class MenuSeeder extends Seeder
         ]);
 
         $builtin = Menu::create([
-            'name' => 'builtin',
+            'name' => 'configuración',
             'route_or_url' => '#',
             'icon' => 'cogs',
             'active' => true,
             'position' => 2,
             'routes' => [
+                'superuser.configuration.profile',
+                'superuser.configuration.mail',
                 'superuser.user.index',
                 'superuser.user.create',
                 'superuser.user.edit',
@@ -47,6 +49,7 @@ class MenuSeeder extends Seeder
         ]);
 
         $builtin->permissions()->attach([
+            // Permission::where('name', 'save company configuration')->first()->id,
             Permission::where('name', 'create user')->first()->id,
             Permission::where('name', 'read user')->first()->id,
             Permission::where('name', 'update user')->first()->id,
@@ -65,12 +68,40 @@ class MenuSeeder extends Seeder
             Permission::where('name', 'delete menu')->first()->id,
         ]);
 
+        $company = $builtin->childs()->create([
+            'name' => 'company',
+            'route_or_url' => 'superuser.configuration.profile',
+            'icon' => 'building',
+            'active' => true,
+            'position' => 1,
+            'routes' => [
+                'superuser.configuration.profile',
+            ],
+            'deleteable' => false,
+        ]);
+
+        $mailServer = $builtin->childs()->create([
+            'name' => 'mail server',
+            'route_or_url' => 'superuser.configuration.mail',
+            'icon' => 'envelope',
+            'active' => true,
+            'position' => 2,
+            'routes' => [
+                'superuser.configuration.mail',
+            ],
+            'deleteable' => false,
+        ]);
+
+        // $company->permissions()->attach([
+        //     Permission::where('name', 'save company configuration')->first()->id,
+        // ]);
+
         $user = $builtin->childs()->create([
             'name' => 'user',
             'route_or_url' => 'superuser.user.index',
             'icon' => 'user',
             'active' => true,
-            'position' => 1,
+            'position' => 3,
             'routes' => [
                 'superuser.user.index',
                 'superuser.user.create',
@@ -92,7 +123,7 @@ class MenuSeeder extends Seeder
             'route_or_url' => 'superuser.permission.index',
             'icon' => 'key',
             'active' => true,
-            'position' => 2,
+            'position' => 4,
             'routes' => [
                 'superuser.permission.index',
             ],
@@ -111,7 +142,7 @@ class MenuSeeder extends Seeder
             'route_or_url' => 'superuser.role.index',
             'icon' => 'users',
             'active' => true,
-            'position' => 3,
+            'position' => 5,
             'routes' => [
                 'superuser.role.index',
                 'superuser.role.create',
@@ -132,7 +163,7 @@ class MenuSeeder extends Seeder
             'route_or_url' => 'superuser.menu.index',
             'icon' => 'bars',
             'active' => true,
-            'position' => 4,
+            'position' => 6,
             'routes' => [
                 'superuser.menu.index',
                 'superuser.menu.edit',
@@ -152,7 +183,7 @@ class MenuSeeder extends Seeder
         $customer = Menu::create([
             'name' => 'clientes',
             'route_or_url' => '#',
-            'icon' => 'rectangle-list',
+            'icon' => 'briefcase',
             'active' => true,
             'position' => 3,
             'routes' => [
@@ -166,10 +197,10 @@ class MenuSeeder extends Seeder
             'deleteable' => true,
         ]);
 
-        $new_customer = $customer->childs()->create([
+        $customer->childs()->create([
             'name' => 'nuevo cliente',
             'route_or_url' => 'customers.create',
-            'icon' => 'customer',
+            'icon' => 'user-plus',
             'active' => true,
             'position' => 1,
             'routes' => [
@@ -178,10 +209,10 @@ class MenuSeeder extends Seeder
             'deleteable' => false,
         ]);
 
-        $customers = $customer->childs()->create([
+        $customer->childs()->create([
             'name' => 'todos los clientes',
             'route_or_url' => 'customers.index',
-            'icon' => 'customer',
+            'icon' => 'table',
             'active' => true,
             'position' => 2,
             'routes' => [
@@ -199,7 +230,7 @@ class MenuSeeder extends Seeder
         $quote = Menu::create([
             'name' => 'cotizaciones',
             'route_or_url' => '#',
-            'icon' => 'rectangle-list',
+            'icon' => 'wallet',
             'active' => true,
             'position' => 4,
             'routes' => [
@@ -213,10 +244,10 @@ class MenuSeeder extends Seeder
             'deleteable' => true,
         ]);
 
-        $new_quote = $quote->childs()->create([
+        $quote->childs()->create([
             'name' => 'nueva cotización',
             'route_or_url' => 'quotes.create',
-            'icon' => 'user',
+            'icon' => 'square-plus',
             'active' => true,
             'position' => 1,
             'routes' => [
@@ -225,10 +256,10 @@ class MenuSeeder extends Seeder
             'deleteable' => false,
         ]);
 
-        $quotes = $quote->childs()->create([
+        $quote->childs()->create([
             'name' => 'todas las cotizaciones',
             'route_or_url' => 'quotes.index',
-            'icon' => 'user',
+            'icon' => 'table',
             'active' => true,
             'position' => 2,
             'routes' => [
@@ -238,6 +269,26 @@ class MenuSeeder extends Seeder
                 'quotes.update',
                 'quotes.destroy'
             ],
+            'deleteable' => false,
+        ]);
+
+        $bill = Menu::create([
+            'name' => 'cobros',
+            'route_or_url' => 'bills.index',
+            'icon' => 'hand-holding-dollar',
+            'active' => true,
+            'position' => 5,
+            'routes' => ['bills.index', 'quotes.markAsBilled'],
+            'deleteable' => false,
+        ]);
+
+        $report = Menu::create([
+            'name' => 'reportes',
+            'route_or_url' => 'reports',
+            'icon' => 'square-poll-vertical',
+            'active' => true,
+            'position' => 6,
+            'routes' => ['reports.index'],
             'deleteable' => false,
         ]);
     }

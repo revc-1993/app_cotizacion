@@ -1,6 +1,12 @@
 <template>
     <DashboardLayout title="Cotizaciones">
-        <h1>Cotizaciones</h1>
+        <div class="flex-none w-full">
+            <h1
+                class="first-letter:capitalize lowercase text-xl text-slate-800 font-semibold"
+            >
+                {{ __("quotes") }}
+            </h1>
+        </div>
 
         <DataTable :quotes="quotes" />
     </DashboardLayout>

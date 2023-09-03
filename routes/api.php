@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::name('api.')->group(function () {
     Route::name('v1.')->prefix('v1')->group(fn () => require __DIR__ . '/api/v1.php');
 });
+
+Route::get('/reportes', [ReportController::class, 'search']);

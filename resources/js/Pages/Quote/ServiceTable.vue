@@ -46,7 +46,7 @@
                     {{ __("pvp provider") }}
                 </th>
                 <th class="border border-slate-200 px-3 py-2 uppercase">
-                    {{ __("utility") }} %
+                    {{ __("utility") }}
                 </th>
                 <th class="border border-slate-200 px-3 py-2 uppercase">
                     {{ __("utility") }} USD
@@ -305,24 +305,51 @@ export default defineComponent({
     methods: {
         addDetailService() {
             if (this.validateDetailService()) {
-                this.detailsService.push({
-                    type_of_service: this.newDetailServiceData.typeOfService,
-                    amount_of_service:
-                        this.newDetailServiceData.amountOfService,
-                    service: this.newDetailServiceData.service,
-                    pvp_provider: this.newDetailServiceData.pvpProvider,
-                    utility: this.newDetailServiceData.utility,
-                    utility_usd: this.utility,
-                    subtotal: this.subtotal,
-                });
+                if (this.newDetailServiceData.utility === 0) {
+                    return Swal.fire({
+                        text: __(
+                            "0% profit is recorded, do you want to continue?"
+                        ),
+                        icon: "question",
+                        showCancelButton: true,
+                    }).then((response) => {
+                        if (response.isConfirmed) {
+                            this.detailsService.push({
+                                type_of_service:
+                                    this.newDetailServiceData.typeOfService,
+                                amount_of_service:
+                                    this.newDetailServiceData.amountOfService,
+                                service: this.newDetailServiceData.service,
+                                pvp_provider:
+                                    this.newDetailServiceData.pvpProvider,
+                                utility: this.newDetailServiceData.utility,
+                                utility_usd: this.utility,
+                                subtotal: this.subtotal,
+                            });
 
-                this.emptyInputsDetailService();
+                            this.emptyInputsDetailService();
+                        }
+                    });
+                } else {
+                    this.detailsService.push({
+                        type_of_service:
+                            this.newDetailServiceData.typeOfService,
+                        amount_of_service:
+                            this.newDetailServiceData.amountOfService,
+                        service: this.newDetailServiceData.service,
+                        pvp_provider: this.newDetailServiceData.pvpProvider,
+                        utility: this.newDetailServiceData.utility,
+                        utility_usd: this.utility,
+                        subtotal: this.subtotal,
+                    });
+                    this.emptyInputsDetailService();
+                }
             }
         },
 
         emptyInputsDetailService() {
             this.newDetailServiceData.typeOfService = "";
-            this.newDetailServiceData.amountOfService = 0;
+            this.newDetailServiceData.amountOfService = 1;
             this.newDetailServiceData.service = "";
             this.newDetailServiceData.pvpProvider = 0;
             this.newDetailServiceData.utility = 0;
@@ -364,12 +391,12 @@ export default defineComponent({
                 count++;
             }
             // Utilidad %
-            if (!this.newDetailServiceData.utility > 0) {
-                this.newDetailServiceErrors.utility.alert = true;
-                this.newDetailServiceErrors.utility.message =
-                    "El campo Utilidad no puede ser cero (0)";
-                count++;
-            }
+            // if (!this.newDetailServiceData.utility > 0) {
+            //     this.newDetailServiceErrors.utility.alert = true;
+            //     this.newDetailServiceErrors.utility.message =
+            //         "El campo Utilidad no puede ser cero (0)";
+            //     count++;
+            // }
 
             return count === 0;
         },

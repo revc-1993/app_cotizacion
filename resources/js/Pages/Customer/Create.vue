@@ -264,6 +264,7 @@ export default defineComponent({
             form: useForm({
                 name: new String(),
                 last_name: new String(),
+                names: new String(),
                 ruc: new String(),
                 email: new String(),
                 address: new String(),
@@ -276,6 +277,7 @@ export default defineComponent({
     },
     methods: {
         submit() {
+            this.form.names = `${this.form.name} ${this.form.last_name}`;
             this.form.post(route("customers.store"), {
                 onSuccess: () => this.form.reset(),
             });

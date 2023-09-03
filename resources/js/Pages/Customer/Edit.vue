@@ -264,6 +264,7 @@ export default defineComponent({
             form: useForm({
                 name: new String(),
                 last_name: new String(),
+                names: new String(),
                 ruc: new String(),
                 email: new String(),
                 address: new String(),
@@ -276,6 +277,7 @@ export default defineComponent({
     },
     methods: {
         submit() {
+            this.form.names = `${this.form.name} ${this.form.last_name}`;
             this.form.patch(route("customers.update", this.customer.id), {
                 onSuccess: () => this.form.reset(),
             });
@@ -284,6 +286,7 @@ export default defineComponent({
     mounted() {
         this.form.name = this.customer.name;
         this.form.last_name = this.customer.last_name;
+        this.form.names = this.customer.names;
         this.form.ruc = this.customer.ruc;
         this.form.email = this.customer.email;
         this.form.address = this.customer.address;

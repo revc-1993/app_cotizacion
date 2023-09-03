@@ -109,7 +109,10 @@ class CustomerController extends Controller
 
     public function getCustomerByRuc(Request $request)
     {
-        $customer = Customer::where('ruc', $request->get('ruc'))
+        $query = $request->get('search');
+
+        $customer = Customer::where('ruc', 'LIKE', "%$query%")
+            ->orWhere('names', 'LIKE', "%$query%")
             ->first(['id', 'ruc', 'name', 'last_name', 'address']);
 
         return response()->json(compact('customer'));

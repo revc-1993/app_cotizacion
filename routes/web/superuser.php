@@ -2,6 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('configuration')->name('configuration.')->controller(App\Http\Controllers\ConfigurationController::class)->group(function () {
+  Route::get('/profile', 'profile')->name('profile');
+  Route::post('/submit', 'submit')->name('submit');
+  Route::get('/mail', 'mail')->name('mail');
+  Route::post('/submitMail', 'submitMail')->name('submitMail');
+});
+
 Route::resource('user', App\Http\Controllers\UserController::class);
 Route::prefix('user')->name('user.')->controller(App\Http\Controllers\UserController::class)->group(function () {
   Route::patch('/{user}/recovery', 'recovery')->name('recovery')->withTrashed();

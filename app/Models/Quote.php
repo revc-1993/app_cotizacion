@@ -26,9 +26,15 @@ class Quote extends Model
         'additional_information',
         'transit_time',
         'quote_validity',
+        'comments',
+        'state',
+
+        'is_billed',
+        'invoice_date',
 
         // foreign key
         'customer_id',
+        'user_id',
     ];
 
     /**
@@ -38,6 +44,15 @@ class Quote extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

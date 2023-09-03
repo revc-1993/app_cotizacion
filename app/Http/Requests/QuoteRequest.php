@@ -43,6 +43,9 @@ class QuoteRequest extends FormRequest
             'additional_information' => ['nullable'],
             'transit_time' => ['required'],
             'quote_validity' => ['required'],
+
+            'comments' => ['nullable'],
+            'state' => ['nullable'],
         ];
     }
 

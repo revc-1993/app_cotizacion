@@ -26,6 +26,7 @@ class CustomerRequest extends FormRequest
         return [
             'name' => ['required'],
             'last_name' => ['required'],
+            'names' => ['nullable'],
             'ruc' => ['digits:13'],
             'email' => ['email'],
             'address' => ['required'],
