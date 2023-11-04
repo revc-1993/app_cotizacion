@@ -14,8 +14,8 @@ return array (
       'password' => 'f9502c88ca4e91',
       'timeout' => NULL,
       'auth_mode' => NULL,
-      'from_address' => 'jerettearaujo@gmail.com',
-      'from_name' => 'ROnny',
+      'from_address' => '@correo.com',
+      'from_name' => 'Remitente Info',
     ),
     'ses' => 
     array (

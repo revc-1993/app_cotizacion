@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Configuration;
 use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -83,6 +84,15 @@ class HandleInertiaRequests extends Middleware
             '$user' => fn () => $request->user(),
             '$permissions' => fn () => $request->user()?->permissions,
             '$roles' => fn () => $request->user()?->roles,
+            '$logo' => function () {
+                $configuration = Configuration::find(1);
+
+                if ($configuration && $configuration->logo) {
+                    return asset('storage/' . $configuration->logo);
+                }
+
+                return null;
+            },
             '$translations' => function () {
                 $path = resource_path('lang/' . app()->getLocale() . '.json');
 
@@ -92,10 +102,10 @@ class HandleInertiaRequests extends Middleware
             '$menus' => function () {
                 if ($user = request()->user()) {
                     $menus = Menu::whereNull('parent_id')->orderBy('position')->with(['childs'])->get();
-    
+
                     return $menus->filter(function ($menu) use ($user) {
                         $permissions = $menu->permissions->pluck('name')->toArray();
-                        
+
                         return $permissions ? $user->can($permissions) : true;
                     });
                 }

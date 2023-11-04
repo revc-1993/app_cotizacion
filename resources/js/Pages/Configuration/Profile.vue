@@ -24,8 +24,9 @@
                         <label
                             for="company_name"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("company name") }}</label
-                        >
+                            >{{ __("company name") }}
+                            <b class="text-red-500">*</b>
+                        </label>
 
                         <input
                             v-model="form.company_name"
@@ -58,7 +59,8 @@
                         <label
                             for="ruc"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("ruc") }}</label
+                            >{{ __("ruc") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -97,7 +99,8 @@
                         <label
                             for="ruc"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("contact number") }}</label
+                            >{{ __("contact number") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -131,7 +134,8 @@
                         <label
                             for="email"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("email") }}</label
+                            >{{ __("email") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -163,35 +167,119 @@
                     </div>
                 </div>
 
-                <label
-                    for="address"
-                    class="first-letter:capitalize lowercase text-sm"
-                    >{{ __("address") }}</label
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label
+                            for="address"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("address") }}
+                            <b class="text-red-500">*</b></label
+                        >
 
-                <input
-                    v-model="form.address"
-                    type="text"
-                    name="address"
-                    class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                    :placeholder="__('example of address')"
-                    autofocus
-                    autocomplete="off"
-                />
+                        <input
+                            v-model="form.address"
+                            type="text"
+                            name="address"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            :placeholder="__('example of address')"
+                            autofocus
+                            autocomplete="off"
+                        />
 
-                <transition name="fade">
-                    <p v-if="form.errors.address" class="text-xs text-red-500">
-                        {{ form.errors.address }}
-                    </p>
-                </transition>
+                        <transition name="fade">
+                            <p
+                                v-if="form.errors.address"
+                                class="text-xs text-red-500"
+                            >
+                                {{ form.errors.address }}
+                            </p>
+                        </transition>
 
-                <ul
-                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        <ul
+                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        >
+                            <li class="first-letter:capitalize lowercase">
+                                {{ __("enter the customer's address") }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label
+                            for="regime_category"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("regime category") }}
+                            <b class="text-red-500">*</b></label
+                        >
+
+                        <input
+                            v-model="form.regime_category"
+                            type="text"
+                            name="regime_category"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            :placeholder="__('regime category')"
+                            autofocus
+                            autocomplete="off"
+                        />
+
+                        <transition name="fade">
+                            <p
+                                v-if="form.errors.regime_category"
+                                class="text-xs text-red-500"
+                            >
+                                {{ form.errors.regime_category }}
+                            </p>
+                        </transition>
+
+                        <ul
+                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
+                        >
+                            <li class="first-letter:capitalize lowercase">
+                                {{ __("enter the regime category") }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
-                    <li class="first-letter:capitalize lowercase">
-                        {{ __("enter the customer's address") }}
-                    </li>
-                </ul>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label
+                            for="logo"
+                            class="first-letter:capitalize lowercase text-sm"
+                            >{{ __("company logo") }}</label
+                        >
+
+                        <input
+                            type="file"
+                            name="logo"
+                            @change="handleLogoChange"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            autofocus
+                        />
+
+                        <transition name="fade">
+                            <p
+                                v-if="form.errors.logo"
+                                class="text-xs text-red-500"
+                            >
+                                {{ form.errors.logo }}
+                            </p>
+                        </transition>
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <img
+                            :src="form.logoUrl"
+                            alt="Logo de la empresa"
+                            style="max-width: 100px; max-height: 100px"
+                            accept="image/jpeg, image/png, image/jpg, image/gif"
+                        />
+                    </div>
+                </div>
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
+                ></div>
             </div>
 
             <div
@@ -252,15 +340,25 @@ export default defineComponent({
                 ruc: new String(),
                 address: new String(),
                 contact_number: new String(),
+                regime_category: new String(),
                 email: new String(),
+                logoUrl: new String(),
+                logo: null,
             }),
         };
     },
     methods: {
+        handleLogoChange(event) {
+            this.form.logo = event.target.files[0];
+            this.form.logoUrl = URL.createObjectURL(event.target.files[0]);
+            console.log(this.form.logo);
+        },
         submit() {
-            // this.form.id = 1;
             this.form.post(route("superuser.configuration.submit"), {
-                onSuccess: () => this.form.reset(),
+                onSuccess: () => {
+                    this.form.reset();
+                    this.form.logo = null;
+                },
             });
         },
     },
@@ -270,7 +368,9 @@ export default defineComponent({
             this.form.ruc = this.configuration.ruc;
             this.form.address = this.configuration.address;
             this.form.contact_number = this.configuration.contact_number;
+            this.form.regime_category = this.configuration.regime_category;
             this.form.email = this.configuration.email;
+            this.form.logoUrl = this.configuration.logoUrl;
         }
     },
 });

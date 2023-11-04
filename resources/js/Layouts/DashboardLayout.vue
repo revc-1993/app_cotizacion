@@ -281,6 +281,7 @@ export default defineComponent({
             showingNavigationDropdown: false,
             showMessage: false,
             name: usePage().props.value.app.name,
+            type: false,
         };
     },
 
@@ -288,9 +289,16 @@ export default defineComponent({
         logout() {
             this.$inertia.post(route("logout"));
         },
+        toggleMessageVisibility() {
+            this.showMessage = true;
+            setTimeout(() => {
+                this.showMessage = false;
+            }, 5000);
+        },
     },
 
     mounted() {
+        // console.log($flashes());
         window.addEventListener("resize", () => {
             this.showingSidebar = window.innerWidth > 639;
         });
@@ -301,10 +309,12 @@ export default defineComponent({
             }`;
         }
 
+        this.toggleMessageVisibility();
+
         this.showMessage = true;
         setTimeout(() => {
             this.showMessage = false;
-        }, 10000);
+        }, 5000);
     },
 });
 </script>

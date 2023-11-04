@@ -97,7 +97,7 @@ class CustomerController extends Controller
         $customer->delete();
 
         if ($customer) {
-            $type = 'error';
+            $type = 'warning';
             $message = "Registro eliminado exitosamente";
         } else {
             $type = 'error';

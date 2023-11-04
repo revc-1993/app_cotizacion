@@ -14,6 +14,7 @@
                     class="first-letter:capitalize lowercase text-sm"
                 >
                     <b> {{ __("mail protocol") }} </b>
+                    <b class="text-red-500">*</b>
                 </label>
             </div>
             <div class="flex flex-col space-y-2 p-4">
@@ -58,7 +59,8 @@
                         <label
                             for="ruc"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("host") }}</label
+                            >{{ __("host") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -97,7 +99,8 @@
                         <label
                             for="email"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("email") }}</label
+                            >{{ __("email") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -131,7 +134,8 @@
                         <label
                             for="password"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("password") }}</label
+                            >{{ __("password") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -168,43 +172,10 @@
                 >
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
-                            for="mail_from_address"
-                            class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("sender") }}</label
-                        >
-
-                        <input
-                            v-model="form.mail_from_address"
-                            type="text"
-                            name="mail_from_address"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                            :placeholder="__('sender')"
-                            autofocus
-                            autocomplete="off"
-                        />
-
-                        <transition name="fade">
-                            <p
-                                v-if="form.errors.mail_from_address"
-                                class="text-xs text-red-500"
-                            >
-                                {{ form.errors.mail_from_address }}
-                            </p>
-                        </transition>
-
-                        <ul
-                            class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                        >
-                            <li class="first-letter:capitalize lowercase">
-                                {{ __("enter sender") }}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mb-2 last:mb-0 first-letter:capitalize">
-                        <label
                             for="mail_from_name"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("sender") }}</label
+                            >{{ __("sender name") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -234,16 +205,12 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-
-                <div
-                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
-                >
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
                         <label
                             for="port"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("port") }}</label
+                            >{{ __("port") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -274,6 +241,10 @@
                         </ul>
                     </div>
                 </div>
+
+                <div
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
+                ></div>
             </div>
 
             <div
@@ -286,7 +257,7 @@
                 </button>
 
                 <Link
-                    :href="route('customers.index')"
+                    :href="route('dashboard')"
                     class="bg-slate-50 border border-slate-300 rounded-md shadow px-3 py-2 uppercase font-bold"
                 >
                     {{ __("back") }}
@@ -335,7 +306,6 @@ export default defineComponent({
                 email: new String(),
                 mail_password: new String(),
                 mail_port: new Number(),
-                mail_from_address: new String(),
                 mail_from_name: new String(),
             }),
         };
@@ -354,7 +324,6 @@ export default defineComponent({
             this.form.email = this.configuration.email;
             this.form.mail_password = this.configuration.mail_password;
             this.form.mail_port = this.configuration.mail_port;
-            this.form.mail_from_address = this.configuration.mail_from_address;
             this.form.mail_from_name = this.configuration.mail_from_name;
         }
     },

@@ -47,7 +47,7 @@ class InitialSeeder extends Seeder
         'guard_name' => 'web',
       ]),
     ];
-    
+
     $crud = function (string $key) {
       return [
         'create' => Permission::create([

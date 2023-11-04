@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Http\Controllers\CustomerController;
 */
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/', fn () => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
     Route::middleware(['role:superuser'])->prefix('superuser')->name('superuser.')->group(fn () => require __DIR__ . '/web/superuser.php');
 
@@ -29,6 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/customers/getCustomerByRuc', [CustomerController::class, 'getCustomerByRuc'])->name('customers.getCustomerByRuc');
     Route::post('/customers/storeWithModal', [CustomerController::class, 'storeWithModal'])->name('customers.storeWithModal');
     Route::resource('customers', CustomerController::class);
+
+    Route::post('/send-pdf-quote', 'PDFController@savePDF');
 
     Route::get('/bills', [BillController::class, 'index'])->name('bills.index');
 

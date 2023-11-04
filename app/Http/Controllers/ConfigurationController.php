@@ -8,6 +8,7 @@ use App\Models\Configuration;
 use App\Http\Requests\MailRequest;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ConfigurationRequest;
 
 class ConfigurationController extends Controller
@@ -18,9 +19,11 @@ class ConfigurationController extends Controller
         if (!$this->hasConfiguration()) {
             $configuration = null;
         } else {
-            $configuration = Configuration::all()
-                ->where('id', 1)
-                ->firstOrFail();
+            $configuration = Configuration::find(1);
+
+            if ($configuration->logo) {
+                $configuration->logoUrl = asset('storage/' . $configuration->logo);
+            }
         }
 
         return Inertia::render('Configuration/Profile', compact('configuration'));
@@ -41,12 +44,28 @@ class ConfigurationController extends Controller
 
     public function submit(ConfigurationRequest $request)
     {
-        if (!$this->hasConfiguration()) {
-            $configuration = Configuration::create($request->validated());
-        } else {
-            $configuration = Configuration::where('id', 1)->firstOrFail();
-            $configuration->update($request->validated());
+        // Obtener la configuración existente o crear una nueva
+        $configuration = Configuration::find(1) ?? new Configuration;
+
+        // Actualizar la configuración con los datos del formulario
+        $configuration->fill($request->only([
+            'company_name', 'ruc', 'contact_number', 'email', 'address', 'regime_category'
+        ]));
+
+        // Si se proporcionó un nuevo logotipo, almacenarlo
+        if ($request->hasFile('logo')) {
+            // Eliminar el logotipo anterior si existe
+            if ($configuration->logo) {
+                Storage::disk('public')->delete($configuration->logo);
+            }
+
+            // Almacenar el nuevo logotipo y guardar la ruta en la base de datos
+            $logoPath = $request->file('logo')->store('logos', 'public');
+            $configuration->logo = $logoPath;
         }
+
+        // Guardar la configuración
+        $configuration->save();
 
         if ($configuration) {
             $type = 'success';
@@ -73,7 +92,7 @@ class ConfigurationController extends Controller
         Config::set('mail.mailers.smtp.port', $request->mail_port);
         Config::set('mail.mailers.smtp.username', $request->email);
         Config::set('mail.mailers.smtp.password', $request->mail_password);
-        Config::set('mail.mailers.smtp.from_address', $request->mail_from_address);
+        Config::set('mail.mailers.smtp.from_address', $request->mail_from_address . "@correo.com");
         Config::set('mail.mailers.smtp.from_name', $request->mail_from_name);
 
         $this->saveMailConfig();
@@ -98,7 +117,6 @@ class ConfigurationController extends Controller
 
         // Limpiar y recargar la configuración para que los cambios surtan efecto
         Artisan::call('config:clear');
-        Artisan::call('config:cache');
     }
 
     public function hasConfiguration()

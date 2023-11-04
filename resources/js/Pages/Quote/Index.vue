@@ -8,7 +8,7 @@
             </h1>
         </div>
 
-        <DataTable :quotes="quotes" />
+        <DataTable :quotes="quotes" :company="company" />
     </DashboardLayout>
 </template>
 
@@ -37,6 +37,7 @@ import axios from "axios";
 export default defineComponent({
     props: {
         quotes: Object,
+        company: Object,
         count: Object,
         perPage: Number,
         search: String,

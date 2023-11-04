@@ -45,6 +45,18 @@
                             class="capitalize placeholder:capitalize"
                             :placeholder="__('state')"
                         />
+                        <input
+                            v-model="startDate"
+                            type="date"
+                            name="startDate"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                        />
+                        <input
+                            v-model="endDate"
+                            type="date"
+                            name="startDate"
+                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                        />
                         <button
                             @click.prevent="searchReport"
                             class="inline-flex rounded-tr-md bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
@@ -112,6 +124,8 @@ export default defineComponent({
             userss: [],
             customerss: [],
             state: "",
+            startDate: "",
+            endDate: "",
             usersMapping: {},
             customersMapping: {},
             states: ["aceptada", "pendiente", "denegada"],
@@ -130,9 +144,11 @@ export default defineComponent({
     methods: {
         searchReport() {
             const params = new URLSearchParams({
-                customer: this.selectedCustomerId || undefined,
-                user: this.selectedUserId || undefined,
-                state: this.state || undefined,
+                customer: this.selectedCustomerId || null,
+                user: this.selectedUserId || null,
+                state: this.state || null,
+                startDate: this.startDate || "",
+                endDate: this.endDate || "",
             });
 
             const url = `/api/reports?${params.toString()}`;

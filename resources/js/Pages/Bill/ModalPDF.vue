@@ -36,6 +36,16 @@
                     />
                 </h1>
             </div>
+            <!-- Botón "ENVIAR" -->
+            <div class="flex items-center justify-end bg-slate-200 p-2">
+                <button
+                    v-if="preview"
+                    @click="executeSubmit"
+                    class="px-3 py-1 bg-slate-800 text-slate-100 text-sm border border-slate-700 rounded-md shadow-md uppercase"
+                >
+                    {{ __("save and send") }}
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -66,15 +76,22 @@ export default defineComponent({
     props: {
         quote: Object,
         client: Object,
+        company: Object,
         preview: {
             type: Boolean,
             default: true,
         },
+        company: Object,
     },
     components: {
         DashboardLayout,
         Multiselect,
         Icon,
+    },
+    data() {
+        return {
+            // logoDataUrl: "",
+        };
     },
     mounted() {
         this.generatePDF();
@@ -82,19 +99,85 @@ export default defineComponent({
     methods: {
         generatePDF() {
             // Crear el contenido del PDF
-            const docDefinition = {
+            const docDefinition = this.getContent;
+
+            // Generar el PDF y mostrarlo en el iframe
+            const pdf = pdfMake.createPdf(docDefinition);
+            const pdfElement = this.$refs.pdfIframe;
+            pdf.getDataUrl((dataUrl) => {
+                pdfElement.src = dataUrl;
+            });
+        },
+        transitTime: function (registration_date, transit_time) {
+            if (registration_date && transit_time) {
+                const start = new Date(registration_date);
+                const end = new Date(transit_time);
+                const timeDiff = Math.abs(end - start);
+                const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                return days;
+            }
+            return 0;
+        },
+        quoteValidity: function (registration_date, quote_validity) {
+            if (registration_date && quote_validity) {
+                const start = new Date(registration_date);
+                const end = new Date(quote_validity);
+                const timeDiff = Math.abs(end - start);
+                const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                return days;
+            }
+            return 0;
+        },
+        executeSubmit: function () {
+            this.$emit("submit");
+        },
+    },
+    computed: {
+        getContent: function () {
+            return {
                 content: [
-                    { text: "TransAgency S.A.", style: "header" },
-                    { text: "RUC: 1234567890001", style: "header" },
+                    // {
+                    //     image: this.logoDataUrl,
+                    //     width: 100, // Ajusta el ancho según tus necesidades
+                    //     margin: [0, 0, 0, 10], // Márgenes si es necesario
+                    // },
                     {
-                        text: "Dirección: Calle Principal 123, Ciudad",
+                        text: `${this.company?.company_name ?? ""}`,
                         style: "header",
                     },
-                    { text: "Teléfono: (01) 234-5678", style: "header" },
-                    { text: "Email: info@tuempresa.com", style: "header" },
+                    {
+                        text: `RUC: ${this.company?.ruc ?? ""}`,
+                        style: "header",
+                    },
+                    {
+                        text: `Dirección: ${this.company?.address ?? ""}`,
+                        style: "header",
+                    },
+                    {
+                        text: `Teléfono: ${this.company?.contact_number ?? ""}`,
+                        style: "header",
+                    },
+                    {
+                        text: `Email: ${this.company?.email ?? ""}`,
+                        style: "header",
+                    },
+                    {
+                        text: `Categoría regimen: ${
+                            this.company?.regime_category ?? ""
+                        }`,
+                        style: "header",
+                    },
                     { text: "Cotización", style: "title" },
                     {
                         text: `Fecha de cotización: ${this.quote.registration_date}`,
+                        style: "customerInfo",
+                    },
+                    {
+                        text: `RUC / C.I.: ${
+                            this.preview
+                                ? this.client.ruc
+                                : this.quote.customer.ruc
+                        }`,
                         style: "customerInfo",
                     },
                     {
@@ -108,14 +191,6 @@ export default defineComponent({
                         style: "customerInfo",
                     },
                     {
-                        text: `RUC / C.I.: ${
-                            this.preview
-                                ? this.client.ruc
-                                : this.quote.customer.ruc
-                        }`,
-                        style: "customerInfo",
-                    },
-                    {
                         text: `Dirección: ${
                             this.preview
                                 ? this.client.address
@@ -124,12 +199,11 @@ export default defineComponent({
                         style: "customerInfo",
                     },
                     { text: "", margin: [0, 10] }, // Empty space for separation
-                    { text: "Detalles de la Cotización", style: "subTitle" },
+                    { text: "Detalle de carga", style: "subTitle" },
                     {
                         table: {
                             widths: [
                                 "auto",
-                                "*",
                                 "auto",
                                 "auto",
                                 "auto",
@@ -139,34 +213,100 @@ export default defineComponent({
                             body: [
                                 [
                                     "N.",
-                                    "Descripción",
                                     "Cantidad",
-                                    "PVP Proveedor",
-                                    "Utilidad (%)",
-                                    "Utilidad (USD)",
+                                    "Tipo de carga",
+                                    "Nombre de Producto",
+                                    "Peso (ton)",
+                                    "Volumen (m3)",
+                                ],
+                                ...(this.preview
+                                    ? this.quote.details_charge.map(
+                                          (detail, i) => [
+                                              i + 1,
+                                              {
+                                                  text: detail.amount_of_charge,
+                                                  alignment: "center",
+                                              },
+                                              this.quote.cargo_type,
+                                              detail.cargo_name,
+                                              {
+                                                  text:
+                                                      detail.weight_calculated ??
+                                                      "",
+                                                  alignment: "center",
+                                              },
+                                              {
+                                                  text: detail.volumen ?? "",
+                                                  alignment: "center",
+                                              },
+                                          ]
+                                      )
+                                    : this.quote.product_details.map(
+                                          (detail, i) => [
+                                              i + 1,
+                                              {
+                                                  text: detail.amount_of_charge,
+                                                  alignment: "center",
+                                              },
+                                              this.quote.cargo_type,
+                                              detail.cargo_name,
+                                              {
+                                                  text: detail.weight_calculated,
+                                                  alignment: "center",
+                                              },
+                                              {
+                                                  text: detail.volumen,
+                                                  alignment: "center",
+                                              },
+                                          ]
+                                      )),
+                            ],
+                        },
+                        layout: "lightHorizontalLines",
+                    },
+                    { text: "", margin: [0, 10] }, // Empty space for separation
+                    { text: "Detalles de la Cotización", style: "subTitle" },
+                    {
+                        table: {
+                            widths: ["auto", "auto", "*", "auto"],
+                            body: [
+                                [
+                                    "N.",
+                                    "Cantidad",
+                                    "Descripción",
                                     "Subtotal (USD)",
                                 ],
                                 ...(this.preview
                                     ? this.quote.details_service.map(
                                           (detail, i) => [
                                               i + 1,
+                                              {
+                                                  text: detail.amount_of_service,
+                                                  alignment: "right",
+                                              },
                                               detail.service,
-                                              detail.amount_of_service,
-                                              detail.pvp_provider.toFixed(2),
-                                              detail.utility,
-                                              detail.utility_usd.toFixed(2),
-                                              detail.subtotal.toFixed(2),
+                                              {
+                                                  text: `$${detail.subtotal.toFixed(
+                                                      2
+                                                  )}`,
+                                                  alignment: "right",
+                                              },
                                           ]
                                       )
                                     : this.quote.service_details.map(
                                           (detail, i) => [
                                               i + 1,
+                                              {
+                                                  text: detail.amount_of_service,
+                                                  alignment: "right",
+                                              },
                                               detail.service,
-                                              detail.amount_of_service,
-                                              detail.pvp_provider.toFixed(2),
-                                              detail.utility,
-                                              detail.utility_usd.toFixed(2),
-                                              detail.subtotal.toFixed(2),
+                                              {
+                                                  text: `$${detail.subtotal.toFixed(
+                                                      2
+                                                  )}`,
+                                                  alignment: "right",
+                                              },
                                           ]
                                       )),
                             ],
@@ -225,16 +365,30 @@ export default defineComponent({
                         style: "customerInfo",
                     },
                     {
-                        text: `Tiempo de tránsito: ${this.quote.transit_time} días`,
+                        text: `Tiempo de tránsito: ${this.transitTime(
+                            this.quote.registration_date,
+                            this.quote.transit_time
+                        )} días`,
                         style: "customerInfo",
                     },
                     {
-                        text: `Validez de cotización: ${this.quote.quote_validity} días`,
+                        text: `Validez de cotización: ${this.quoteValidity(
+                            this.quote.registration_date,
+                            this.quote.quote_validity
+                        )} días`,
+                        style: "customerInfo",
+                    },
+                    {
+                        text: `Usuario: ${
+                            this.preview
+                                ? this.quote.user
+                                : this.quote.user?.name
+                        }`,
                         style: "customerInfo",
                     },
                     { text: "", margin: [0, 10] }, // Empty space for separation
                     {
-                        text: "Documento generado por www.transagency.net - Página 1/1",
+                        text: `${this.quote.comments}`,
                         style: "footer",
                     },
                 ],
@@ -255,13 +409,6 @@ export default defineComponent({
                     },
                 },
             };
-
-            // Generar el PDF y mostrarlo en el iframe
-            const pdfElement = this.$refs.pdfIframe;
-            const pdf = pdfMake.createPdf(docDefinition);
-            pdf.getDataUrl((dataUrl) => {
-                pdfElement.src = dataUrl;
-            });
         },
     },
 });

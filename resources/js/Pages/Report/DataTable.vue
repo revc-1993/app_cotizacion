@@ -8,6 +8,20 @@
                 class="bg-white text-xs border border-slate-200 rounded w-full sm:w-1/3 placeholder:capitalize"
                 :placeholder="__('search something')"
             />
+            <div class="w-full flex space-x-2">
+                <button
+                    @click.prevent="exportToExcel"
+                    class="bg-green-600 border border-green-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase text-white font-semibold"
+                >
+                    {{ __("excel") }}
+                </button>
+                <button
+                    @click.prevent="exportToPDF"
+                    class="bg-red-600 border border-red-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase text-white font-semibold"
+                >
+                    {{ __("pdf") }}
+                </button>
+            </div>
         </div>
 
         <div class="overflow-auto border border-slate-200 rounded">
@@ -31,9 +45,6 @@
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("state") }}
-                        </th>
-                        <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("action") }}
                         </th>
                     </tr>
                 </thead>
@@ -86,7 +97,6 @@
                             />
                             <div v-else>-</div>
                         </td>
-                        <td class="border border-inherit px-2 py-1"></td>
                     </tr>
                 </tbody>
             </table>
@@ -113,6 +123,9 @@ import Swal from "sweetalert2";
 import Icon from "@/Components/Icon";
 import SpanState from "@/Components/SpanState";
 import axios from "axios";
+import XLSX from "xlsx/dist/xlsx.full.min";
+import { jsPDF } from "jspdf";
+// import "jspdf-autotable";
 
 export default defineComponent({
     props: {
@@ -135,19 +148,34 @@ export default defineComponent({
     },
 
     methods: {
-        destroy(quote) {
-            return Swal.fire({
-                text: __("are you sure want to delete") + "?",
-                icon: "question",
-                showCancelButton: true,
-            }).then((response) => {
-                if (response.isConfirmed) {
-                    return Inertia.delete(
-                        route("quotes.destroy", { id: quote.id })
-                    );
-                }
-            });
+        exportToExcel() {
+            const quotesForExport = this.quotes.map((quote, i) => [
+                i + 1,
+                new Date(quote.registration_date).toISOString().split("T")[0],
+                `$ ${quote.total}`,
+                quote.customer.ruc,
+                quote.customer.name + " " + quote.customer.last_name,
+                this.state(quote.registration_date, quote.quote_validity),
+            ]);
+
+            const worksheet = XLSX.utils.aoa_to_sheet([
+                [
+                    "No",
+                    "Fecha de Registro",
+                    "Monto",
+                    "RUC del Cliente",
+                    "Nombre del Cliente",
+                    "Estado",
+                ],
+                ...quotesForExport,
+            ]);
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Quotes");
+            XLSX.writeFile(workbook, "quotes.xlsx");
         },
+
+        exportToPDF() {},
         viewPdf(id) {
             axios.get(route("quotes.show", { id: id })).then((response) => {
                 this.quote = response.data.quote;

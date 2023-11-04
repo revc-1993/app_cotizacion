@@ -18,9 +18,11 @@ class Configuration extends Model
         "mail_host",
         "mail_port",
         "email",
+        "regime_category",
         "mail_password",
         "mail_encryption",
         "mail_from_address",
         "mail_from_name",
+        "logo",
     ];
 }

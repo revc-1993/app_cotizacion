@@ -24,9 +24,11 @@ return new class extends Migration
             $table->integer("mail_port")->default(587);
             $table->string("email");
             $table->string("mail_password")->nullable();
+            $table->string("regime_category")->nullable();
             $table->string("mail_encryption")->default("tls");
             $table->string("mail_from_address")->nullable();
             $table->string("mail_from_name")->nullable();
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }

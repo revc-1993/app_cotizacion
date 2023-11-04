@@ -23,12 +23,15 @@ class ConfigurationRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->logo);
         return [
             'company_name' => ['required'],
             'ruc' => ['digits:13'],
             'contact_number' => ['digits:10'],
             'email' => ['required'],
             'address' => ['required'],
+            'regime_category' => ['required'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -39,7 +42,11 @@ class ConfigurationRequest extends FormRequest
             'ruc.digits' => "El campo :attribute debe tener 13 dígitos",
             'contact_number.digits' => "El campo :attribute debe tener 10 dígitos",
             'email' => "El campo :attribute es obligatorio",
+            'regime_category' => "El campo :attribute es obligatorio",
             'address.required' => "El campo :attribute es obligatorio",
+            'logo.image' => "El campo :attribute debe ser una imagen",
+            'logo.mimes' => "El campo :attribute debe ser una imagen en formato JPEG, PNG, JPG o GIF",
+            'logo.max' => "El campo :attribute no debe superar los 2MB",
         ];
     }
 
@@ -51,6 +58,8 @@ class ConfigurationRequest extends FormRequest
             'contact_number' => "Número de contacto",
             'email' => "Correo Electrónico",
             'address' => "Dirección",
+            'regime_category' => "Categoría régimen",
+            'logo' => "Logo de la empresa",
         ];
     }
 }

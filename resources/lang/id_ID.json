@@ -13,6 +13,7 @@
   "add": "agregar",
   "no" : "no",
   "name" : "nombre",
+  "name and lastname" : "nombres y apellidos",
   "username" : "nombre de usuario",
   "email" : "correo electrónico",
   "verified at" : "verificado en",
@@ -38,6 +39,7 @@
   "builtin" : "administrador",
   "profile" : "perfil",
   "save": "guardar",
+  "save and send": "guardar y enviar",
 
   "user has been created with default password \" :password\"" : "el usuario ha sido creado con la contraseña predeterminada \" :password\"",
   "user has been updated" : "el usuario ha sido actualizado",
@@ -173,7 +175,7 @@
   "invoice number": "número de factura",
 
   "company": "empresa",
-  "company name": "nombre de empresa",
+  "company name": "razón social",
   "contact number": "número de contacto",
   "enter company name": "ingrese el nombre de la empresa",
   "enter company ruc": "ingrese el ruc de la empresa",
@@ -185,18 +187,28 @@
   "0% profit is recorded, do you want to continue?": "se registra un 0% de utilidad, ¿desea continuar?",
   "are you sure you want to mark as billed": "estás seguro de que quieres marcar como facturado",
 
-  "mail protocol": "mailer",
-  "host": "host",
+  "mail protocol": "Protocolo",
+  "host": "Servidor SMTP",
   "port": "puerto",
   "password": "contraseña",
   "sender": "email de remitente",
+  "sender name": "Nombre de remitente",
   "name sender": "nombre de remitente",
   "enter name sender": "ingrese el nombre de remitente",
 
-  "enter mail protocol": "ingrese el protocolo de correo",
+  "enter mail protocol": "ingrese el protocolo de correo (SMTP)",
   "enter host": "ingrese el host del servidor de correo",
   "enter port": "ingrese el puerto",
   "enter password": "ingrese la contraseña",
   "enter the email address": "ingrese la dirección de correo",
-  "enter sender": "ingrese el remitente de correo eletrónico"
+  "enter sender": "ingrese el remitente de correo eletrónico",
+  "company logo": "logo de la compañía",
+
+  "enter the regime category": "ingrese la categoría régimen de la empresa",
+  "regime category": "categoría régimen",
+
+  "export to excel": "exportar a excel",
+  "export to pdf": "exportar a PDF",
+  "excel": "excel",
+  "pdf": "PDF"
 }

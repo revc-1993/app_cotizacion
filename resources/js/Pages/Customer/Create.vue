@@ -25,7 +25,8 @@
                         <label
                             for="name"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("name") }}</label
+                            >{{ __("name") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -59,7 +60,8 @@
                         <label
                             for="last_name"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("last name") }}</label
+                            >{{ __("last name") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -98,7 +100,8 @@
                         <label
                             for="ruc"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("ruc") }}</label
+                            >{{ __("ruc") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -136,7 +139,8 @@
                         <label
                             for="email"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("email") }}</label
+                            >{{ __("email") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <input
@@ -171,7 +175,7 @@
                 <label
                     for="address"
                     class="first-letter:capitalize lowercase text-sm"
-                    >{{ __("address") }}</label
+                    >{{ __("address") }} <b class="text-red-500">*</b></label
                 >
 
                 <input

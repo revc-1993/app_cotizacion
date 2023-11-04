@@ -7,28 +7,32 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 11px;
+            /* Reducir el tamaño de letra en general en -2 */
         }
 
         .cotizacion {
             width: 80%;
             margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .header {
-            font-size: 9;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .subtitle {
-            font-size: 5;
-            margin: 0 auto;
             text-align: left;
         }
 
+        .subtitle {
+            font-weight: bold;
+            text-align: left;
+            margin-top: 20px;
+        }
+
         .infor {
-            font-size: 7;
-            margin: 0 auto;
+            margin-top: 10px;
+            font-size: 9px;
+            /* Establecer un tamaño de letra más pequeño para la clase "infor" */
         }
 
         .bold {
@@ -38,14 +42,13 @@
         .tabla-cotizacion {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10;
-            font-size: 7;
+            margin-top: 10px;
         }
 
         .tabla-cotizacion th,
         .tabla-cotizacion td {
             border: 1px solid #ccc;
-            padding: 3px;
+            padding: 8px;
             text-align: center;
         }
 
@@ -58,27 +61,24 @@
 
 <body>
     <div class="cotizacion">
+        {{-- <img src="{{ asset('storage/' . $configuration->logo) }}" alt="Logo de la empresa"
+            style="max-width: 100px; margin-bottom: 20px;"> --}}
+
         <div class="header">
-            <h3><span class="bold">{{ $configuration->company_name }}</span></h3>
+            <h3>{{ $configuration->company_name }}</h3>
+            <p>{{ $configuration->ruc }}</p>
+            <p>{{ $configuration->address }}</p>
+            <p>{{ $configuration->contact_number }}</p>
+            <p>{{ $configuration->email }}</p>
         </div>
+        <div class="subtitle">Cliente</div>
         <div class="infor">
-            <p><span class="bold">RUC:</span> {{ $configuration->ruc }}</p>
-            <p><span class="bold">Dirección:</span> {{ $configuration->address }}</p>
-            <p><span class="bold">Teléfono:</span> {{ $configuration->contact_number }}</p>
-            <p><span class="bold">Email:</span> {{ $configuration->email }}</p>
+            <p><span class="bold">Fecha de cotización:</span> {{ $quote->registration_date }}</p>
+            <p><span class="bold">RUC/CI:</span> {{ $quote->customer->ruc }}</p>
+            <p><span class="bold">Cliente:</span> {{ $quote->customer->names }}</p>
+            <p><span class="bold">Dirección:</span> {{ $quote->customer->address }}</p>
         </div>
-        <div class="subtitle">
-            <h3><span class="bold">Cliente</span></h3>
-        </div>
-        <div class="infor">
-            <p><span class="bold">Fecha de cotización: </span> {{ $quote->registration_date }}</p>
-            <p><span class="bold">RUC/CI: </span> {{ $quote->customer->ruc }}</p>
-            <p><span class="bold">Cliente: </span> {{ $quote->customer->names }}</p>
-            <p><span class="bold">Dirección: </span> {{ $quote->customer->address }}</p>
-        </div>
-        <div class="subtitle">
-            <h3><span class="bold">Detalles de cotización</span></h3>
-        </div>
+        <div class="subtitle">Detalles de cotización</div>
         <table class="tabla-cotizacion">
             <thead>
                 <tr>
@@ -94,43 +94,40 @@
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->service }}</td>
                         <td>{{ $item->amount_of_service }}</td>
-                        <td>{{ $item->subtotal }}</td>
+                        <td>${{ $item->subtotal }}</td>
                     </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" class="total">Subtotal 0%: </td>
-                    <td class="total">$ {{ $quote->subtotal_0 }}</td>
+                    <td colspan="3" class="total">Subtotal 0%:</td>
+                    <td class="total">${{ $quote->subtotal_0 }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="total">Subtotal 12%: </td>
-                    <td class="total">$ {{ $quote->subtotal_12 }}</td>
+                    <td colspan="3" class="total">Subtotal 12%:</td>
+                    <td class="total">${{ $quote->subtotal_12 }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="total">IVA (12%): </td>
-                    <td class="total">$ {{ $quote->iva }}</td>
+                    <td colspan="3" class="total">IVA (12%):</td>
+                    <td class="total">${{ $quote->iva }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="total">Total: </td>
-                    <td class="total">$ {{ $quote->total }}</td>
+                    <td colspan="3" class="total">Total:</td>
+                    <td class="total">${{ $quote->total }}</td>
                 </tr>
             </tfoot>
         </table>
-        <div class="subtitle">
-            <h3><span class="bold">Información adicional</span></h3>
+        <div class="subtitle">Información adicional</div>
+        <div class="infor">
+            <p><span class="bold">Flete internacional:</span> {{ $quote->international_freight_information }}</p>
+            <p><span class="bold">Más detalles:</span> {{ $quote->additional_information }}</p>
+            <p><span class="bold">Tiempo de tránsito:</span> {{ $quote->transit_time }} días</p>
+            <p><span class="bold">Validez de cotización:</span> {{ $quote->quote_validity }} días</p>
+            <p><span class="bold">Usuario:</span> {{ $quote->user->name }}</p>
         </div>
         <div class="infor">
-            <p><span class="bold">Flete internacional: </span> {{ $quote->international_freight_information }}</p>
-            <p><span class="bold">Más detalles: </span> {{ $quote->additional_information }}</p>
-            <p><span class="bold">Tiempo de tránsito: </span> {{ $quote->transit_time }}</p>
-            <p><span class="bold">Validez de cotización: </span> {{ $quote->quote_validity }}</p>
-            <p><span class="bold">Usuario: </span> {{ $quote->user->name }}</p>
+            <p><span class="bold">Comentarios:</span> {{ $quote->comments }}</p>
         </div>
-        <div class="infor">
-            <p><span class="bold">Comentarios: </span> {{ $quote->comments }}</p>
-        </div>
-
     </div>
 </body>
 

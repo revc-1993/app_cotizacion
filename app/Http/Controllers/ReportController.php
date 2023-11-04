@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Quote;
+use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Quote;
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -20,27 +22,47 @@ class ReportController extends Controller
 
     public function search(Request $request)
     {
-        // dd($request->all());
+        $query = Quote::query()->with('customer');
 
-        $state = $request->state;
-        $user = $request->user;
-        $customer = $request->customer;
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
 
-        $quotes = Quote::query()
-            ->with('customer')
-            ->where('state', $state)
-            ->orWhere('user_id', $user)
-            ->orWhere('customer_id', $customer)
-            ->get();
+        if (!is_null($startDate) && !is_null($endDate)) {
+            try {
+                $startDate = Carbon::parse($startDate);
+                $endDate = Carbon::parse($endDate);
 
-        // dd($quotes);
+                // Asegúrate de que las fechas se hayan analizado correctamente antes de usarlas en la consulta.
+                if ($startDate instanceof Carbon && $endDate instanceof Carbon) {
+                    $query->whereBetween('registration_date', [$startDate, $endDate]);
+                } else {
+                    // Manejar el caso en el que las fechas no se analizaron correctamente.
+                }
+            } catch (\Exception $e) {
+                // Manejar cualquier excepción que pueda ocurrir al analizar las fechas.
+                Log::error('Error al analizar fechas: ' . $e->getMessage());
+                return response()->json(['error' => 'Hubo un error al procesar las fechas.'], 500);
+            }
+        }
+
+        if (!is_null($request->input('state'))) {
+            $query->orWhere('state', $request->state);
+        }
+
+        if (!is_null($request->input('user'))) {
+            $query->orWhere('user_id', $request->user);
+        }
+
+        if (!is_null($request->input('customer'))) {
+            $query->orWhere('customer_id', $request->customer);
+        }
+
+        $quotes = $query->get();
 
         return Inertia::render('Report/Index', [
             'quotes' => $quotes,
             'users' => User::all('id', 'name'),
             'customers' => Customer::all('id', 'names')
         ]);
-
-        // return response()->json($response);
     }
 }

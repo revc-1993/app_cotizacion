@@ -54,12 +54,23 @@ class QuoteController extends Controller
      */
     public function index()
     {
+        if (!$this->hasConfiguration()) {
+            $company = null;
+        } else {
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
+            if ($company->logo) {
+                $company->logoUrl = asset('storage/' . $company->logo);
+            }
+        }
+
         return Inertia::render('Quote/Index', [
             'quotes' => Quote::with([
                 'customer' => function ($query) {
                     $query->select('id', 'ruc', 'name', 'last_name', 'address');
                 },
-            ])->get()
+                'user'
+            ])->get(),
+            'company' => $company
         ]);
     }
 
@@ -73,7 +84,10 @@ class QuoteController extends Controller
         if (!$this->hasConfiguration()) {
             $company = null;
         } else {
-            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
+            if ($company->logo) {
+                $company->logoUrl = asset('storage/' . $company->logo);
+            }
         }
 
         return Inertia::render('Quote/Create', compact('company'));
@@ -163,13 +177,17 @@ class QuoteController extends Controller
         if (!$this->hasConfiguration()) {
             $company = null;
         } else {
-            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
+            if ($company->logo) {
+                $company->logoUrl = asset('storage/' . $company->logo);
+            }
         }
 
         $quote = Quote::with([
             'customer' => function ($query) {
                 $query->select('id', 'ruc', 'name', 'last_name', 'address');
             },
+            'user',
             'productDetails',
             'serviceDetails',
         ])
@@ -190,7 +208,10 @@ class QuoteController extends Controller
         if (!$this->hasConfiguration()) {
             $company = null;
         } else {
-            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email')->firstOrFail();
+            $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'logo')->firstOrFail();
+            if ($company->logo) {
+                $company->logoUrl = asset('storage/' . $company->logo);
+            }
         }
 
         $quote = Quote::with([

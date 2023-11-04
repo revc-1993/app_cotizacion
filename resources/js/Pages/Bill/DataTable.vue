@@ -153,6 +153,7 @@
             v-if="showPdf"
             :quote="quote"
             :preview="false"
+            :company="company"
             :client="quote.customer"
             @close="showPdf = false"
             ref="modalPDF"
@@ -181,6 +182,7 @@ import Toggle from "@vueform/toggle";
 export default defineComponent({
     props: {
         quotes: Array,
+        company: Object,
     },
 
     components: {

@@ -36,13 +36,13 @@
                             {{ __("registration date") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("amount") }} USD
-                        </th>
-                        <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("client ruc") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("client name") }}
+                        </th>
+                        <th class="border border-slate-200 px-3 py-2 uppercase">
+                            {{ __("amount") }} USD
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("state") }}
@@ -78,9 +78,6 @@
                             }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            $ {{ quote.total }}
-                        </td>
-                        <td class="border border-slate-200 px-3 py-1 uppercase">
                             {{ quote.customer.ruc }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
@@ -89,6 +86,9 @@
                                 " " +
                                 quote.customer.last_name
                             }}
+                        </td>
+                        <td class="border border-slate-200 px-3 py-1 uppercase">
+                            $ {{ quote.total }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
                             <div
@@ -178,6 +178,7 @@
             :quote="quote"
             :preview="false"
             :client="quote.customer"
+            :company="company"
             @close="showPdf = false"
             ref="modalPDF"
         />
@@ -197,6 +198,7 @@ import axios from "axios";
 export default defineComponent({
     props: {
         quotes: Array,
+        company: Object,
     },
 
     components: {

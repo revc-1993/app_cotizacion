@@ -21,7 +21,8 @@
                         <label
                             for="client"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("client") }}</label
+                            >{{ __("client") }}
+                            <b class="text-red-500">*</b></label
                         >
                         <form @submit.prevent="searchCustomerByRuc('alert')">
                             <div class="relative">
@@ -119,7 +120,8 @@
                         <label
                             for="registration_date"
                             class="first-letter:capitalize lowercase text-sm"
-                            >{{ __("registration date") }}</label
+                            >{{ __("registration date") }}
+                            <b class="text-red-500">*</b></label
                         >
                         <input
                             v-model="form.registration_date"
@@ -150,10 +152,9 @@
                     class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
-                        <label
-                            for="type_of_transport"
-                            class="lowercase text-sm"
-                            >{{ __("type of transport") }}</label
+                        <label for="type_of_transport" class="lowercase text-sm"
+                            >{{ __("type of transport") }}
+                            <b class="text-red-500">*</b></label
                         >
 
                         <div class="w-full">
@@ -187,9 +188,10 @@
                         </div>
                     </div>
                     <div class="mb-2 last:mb-0 first-letter:capitalize">
-                        <label for="cargo_type" class="lowercase text-sm">{{
-                            __("cargo type")
-                        }}</label>
+                        <label for="cargo_type" class="lowercase text-sm"
+                            >{{ __("cargo type") }}
+                            <b class="text-red-500">*</b></label
+                        >
 
                         <div class="w-full">
                             <Multiselect
@@ -268,9 +270,10 @@
                         </div>
                     </div>
                     <div class="first-letter:capitalize">
-                        <label for="incoterm" class="capitalize text-sm">{{
-                            __("incoterm")
-                        }}</label>
+                        <label for="incoterm" class="capitalize text-sm"
+                            >{{ __("incoterm") }}
+                            <b class="text-red-500">*</b></label
+                        >
 
                         <Multiselect
                             v-model="form.incoterm"
@@ -798,7 +801,8 @@
                                     <label
                                         for="transit_time"
                                         class="first-letter:capitalize lowercase text-sm"
-                                        >{{ __("transit time") }}</label
+                                        >{{ __("transit time") }}
+                                        <b class="text-red-500">*</b></label
                                     >
                                     <div
                                         class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
@@ -873,7 +877,8 @@
                                     <label
                                         for="quote_validity"
                                         class="first-letter:capitalize lowercase text-sm"
-                                        >{{ __("quote validity") }}</label
+                                        >{{ __("quote validity") }}
+                                        <b class="text-red-500">*</b></label
                                     >
                                     <div
                                         class="grid grid-cols-1 gap-x-3 lg:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
@@ -1030,7 +1035,7 @@
                                 <div class="p-2 rounded-md">
                                     <label class="capitalize text-sm"
                                         ><b> {{ __("user") }} </b>:
-                                        {{ form.user }}
+                                        {{ form.user.name }}
                                     </label>
                                 </div>
                             </div>
@@ -1074,7 +1079,7 @@
                 <button
                     class="bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
                 >
-                    {{ __("edit") }}
+                    {{ __("save and send") }}
                 </button>
 
                 <Link
@@ -1099,6 +1104,7 @@
                 :quote="form"
                 :company="company"
                 :client="formSearchCustomer"
+                @submit="submit"
                 @close="showModalPDF = false"
                 ref="modalPDF"
             />
@@ -1590,7 +1596,7 @@ export default defineComponent({
         this.newDetailChargeData.length = 0;
         this.newDetailChargeData.width = 0;
         this.newDetailChargeData.high = 0;
-        this.form.user = this.quote.user.name;
+        this.form.user = this.quote.user;
     },
 });
 </script>

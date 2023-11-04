@@ -29,7 +29,7 @@ class MailRequest extends FormRequest
             'email' => ['required'],
             'mail_password' => ['required'],
             'mail_port' => ['numeric'],
-            'mail_from_address' => ['email'],
+            'mail_from_address' => ['nullable'],
             'mail_from_name' => ['required'],
 
         ];

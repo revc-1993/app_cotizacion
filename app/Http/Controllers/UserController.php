@@ -43,21 +43,21 @@ class UserController extends Controller
             'sort.key' => 'nullable|string',
             'sort.order' => 'nullable|in:asc,desc',
         ]);
-        
+
         return User::withTrashed((bool) $request->input('withTrashed', 0))
-                        ->orderBy($request->input('sort.key', 'name'), $request->input('sort.order', 'asc'))
-                        ->whereNotIn('id', [1])
-                        ->where(function ($query) use ($request) {
-                            $search = '%' . $request->input('search') . '%';
-            
-                            $query->where('name', 'like', $search)
-                                    ->orWhere('username', 'like', $search)
-                                    ->orWhere('email', 'like', $search)
-                                    ->orWhere('email_verified_at', 'like', $search)
-                                    ->orWhere('created_at', 'like', $search)
-                                    ->orWhere('deleted_at', 'like', $search);
-                        })
-                        ->paginate($request->input('perPage', 10));
+            ->orderBy($request->input('sort.key', 'name'), $request->input('sort.order', 'asc'))
+            ->whereNotIn('id', [1])
+            ->where(function ($query) use ($request) {
+                $search = '%' . $request->input('search') . '%';
+
+                $query->where('name', 'like', $search)
+                    ->orWhere('username', 'like', $search)
+                    ->orWhere('email', 'like', $search)
+                    ->orWhere('email_verified_at', 'like', $search)
+                    ->orWhere('created_at', 'like', $search)
+                    ->orWhere('deleted_at', 'like', $search);
+            })
+            ->paginate($request->input('perPage', 10));
     }
 
     /**
@@ -93,7 +93,7 @@ class UserController extends Controller
 
         $user = User::create(array_merge($post, [
             'email_verified_at' => now(),
-            'password' => Hash::make($password = Str::random(8)),
+            'password' => Hash::make($password = "password"),
         ]));
 
         $context = [
@@ -199,10 +199,10 @@ class UserController extends Controller
     {
         $context = [
             'id' => $user->id,
-            'password' => $password = mb_strtolower(Str::random(8)),
+            'password' => $password = mb_strtolower('password'),
         ];
 
-        if ($user->update([ 'password' => Hash::make($password) ])) {
+        if ($user->update(['password' => Hash::make($password)])) {
             Log::info('updating password', $context);
 
             $type = 'success';
