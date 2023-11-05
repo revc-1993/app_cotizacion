@@ -28,6 +28,7 @@
                 <h1>
                     <!-- <b>EJEMPLO:</b>
                     {{ quote.cargo_type }} -->
+                    <!-- <img :src="company.logoUrl" alt="Logo" /> -->
                     <iframe
                         ref="pdfIframe"
                         title="PDF preview"
@@ -88,11 +89,6 @@ export default defineComponent({
         Multiselect,
         Icon,
     },
-    data() {
-        return {
-            // logoDataUrl: "",
-        };
-    },
     mounted() {
         this.generatePDF();
     },
@@ -100,6 +96,8 @@ export default defineComponent({
         generatePDF() {
             // Crear el contenido del PDF
             const docDefinition = this.getContent;
+
+            // pdfMake.addImage(this.company.logoUrl, 10, 10);
 
             // Generar el PDF y mostrarlo en el iframe
             const pdf = pdfMake.createPdf(docDefinition);
@@ -136,11 +134,12 @@ export default defineComponent({
         getContent: function () {
             return {
                 content: [
-                    // {
-                    //     image: this.logoDataUrl,
-                    //     width: 100, // Ajusta el ancho según tus necesidades
-                    //     margin: [0, 0, 0, 10], // Márgenes si es necesario
-                    // },
+                    {
+                        image: "logoImage",
+                        width: 50,
+                        height: 50,
+                        alignment: "right",
+                    },
                     {
                         text: `${this.company?.company_name ?? ""}`,
                         style: "header",
@@ -392,6 +391,11 @@ export default defineComponent({
                         style: "footer",
                     },
                 ],
+                images: {
+                    logoImage: {
+                        url: this.company.logoUrl,
+                    },
+                },
                 styles: {
                     header: { bold: true, fontSize: 11, margin: [0, 2] },
                     title: {

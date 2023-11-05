@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 11px;
-            /* Reducir el tamaño de letra en general en -2 */
+            font-size: 12px;
+            /* Tamaño de letra ligeramente más grande */
         }
 
         .cotizacion {
@@ -17,10 +17,20 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #f9f9f9;
+            /* Fondo de la cotización */
         }
 
         .header {
-            text-align: left;
+            text-align: center;
+            /* Centrar el encabezado */
+            margin-bottom: 20px;
+            /* Espaciado inferior */
+        }
+
+        .header h3 {
+            font-size: 20px;
+            /* Tamaño de letra más grande para el nombre de la empresa */
         }
 
         .subtitle {
@@ -30,9 +40,9 @@
         }
 
         .infor {
+            font-size: 10px;
+            /* Tamaño de letra un poco más grande para la información */
             margin-top: 10px;
-            font-size: 9px;
-            /* Establecer un tamaño de letra más pequeño para la clase "infor" */
         }
 
         .bold {
@@ -42,13 +52,15 @@
         .tabla-cotizacion {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
+            /* Mayor espacio entre la información y la tabla */
         }
 
         .tabla-cotizacion th,
         .tabla-cotizacion td {
             border: 1px solid #ccc;
-            padding: 8px;
+            padding: 10px;
+            /* Mayor espacio interno en las celdas */
             text-align: center;
         }
 
@@ -61,9 +73,6 @@
 
 <body>
     <div class="cotizacion">
-        {{-- <img src="{{ asset('storage/' . $configuration->logo) }}" alt="Logo de la empresa"
-            style="max-width: 100px; margin-bottom: 20px;"> --}}
-
         <div class="header">
             <h3>{{ $configuration->company_name }}</h3>
             <p>{{ $configuration->ruc }}</p>

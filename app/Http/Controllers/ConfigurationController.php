@@ -80,20 +80,25 @@ class ConfigurationController extends Controller
 
     public function submitMail(MailRequest $request)
     {
+        $post = $request->validated();
+
+        $post['mail_from_address'] = $post['email'] . (app()->environment('local') ? "@prueba.com" : "");
+
         if (!$this->hasConfiguration()) {
-            $configuration = Configuration::create($request->validated());
+            $configuration = Configuration::create($post);
         } else {
             $configuration = Configuration::where('id', 1)->firstOrFail();
-            $configuration->update($request->validated());
+            $configuration->update($post);
         }
 
-        Config::set('mail.mailers.smtp.transport', $request->mail_mailer);
-        Config::set('mail.mailers.smtp.host', $request->mail_host);
-        Config::set('mail.mailers.smtp.port', $request->mail_port);
-        Config::set('mail.mailers.smtp.username', $request->email);
-        Config::set('mail.mailers.smtp.password', $request->mail_password);
-        Config::set('mail.mailers.smtp.from_address', $request->mail_from_address . "@correo.com");
-        Config::set('mail.mailers.smtp.from_name', $request->mail_from_name);
+        Config::set('mail.mailers.smtp.transport', $post['mail_mailer']);
+        Config::set('mail.mailers.smtp.host', $post['mail_host']);
+        Config::set('mail.mailers.smtp.port', $post['mail_port']);
+        Config::set('mail.mailers.smtp.username', $post['email']);
+        Config::set('mail.mailers.smtp.password', $post['mail_password']);
+        Config::set('mail.mailers.smtp.from_address', $post['mail_from_address']);
+        Config::set('mail.mailers.smtp.from_name', $post['mail_from_name']);
+        Config::set('mail.from.address', $post['mail_from_address']);
 
         $this->saveMailConfig();
 
