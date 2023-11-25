@@ -226,8 +226,14 @@ export default defineComponent({
                                                   text: detail.amount_of_charge,
                                                   alignment: "center",
                                               },
-                                              this.quote.cargo_type,
-                                              detail.cargo_name,
+                                              {
+                                                  text: this.quote.cargo_type,
+                                                  alignment: "center",
+                                              },
+                                              {
+                                                  text: detail.cargo_name,
+                                                  alignment: "center",
+                                              },
                                               {
                                                   text:
                                                       detail.weight_calculated ??
@@ -247,8 +253,14 @@ export default defineComponent({
                                                   text: detail.amount_of_charge,
                                                   alignment: "center",
                                               },
-                                              this.quote.cargo_type,
-                                              detail.cargo_name,
+                                              {
+                                                  text: this.quote.cargo_type,
+                                                  alignment: "center",
+                                              },
+                                              {
+                                                  text: detail.cargo_name,
+                                                  alignment: "center",
+                                              },
                                               {
                                                   text: detail.weight_calculated,
                                                   alignment: "center",
@@ -281,14 +293,17 @@ export default defineComponent({
                                               i + 1,
                                               {
                                                   text: detail.amount_of_service,
-                                                  alignment: "right",
+                                                  alignment: "center",
                                               },
-                                              detail.service,
+                                              {
+                                                  text: detail.service,
+                                                  alignment: "center",
+                                              },
                                               {
                                                   text: `$${detail.subtotal.toFixed(
                                                       2
                                                   )}`,
-                                                  alignment: "right",
+                                                  alignment: "center",
                                               },
                                           ]
                                       )
@@ -297,14 +312,17 @@ export default defineComponent({
                                               i + 1,
                                               {
                                                   text: detail.amount_of_service,
-                                                  alignment: "right",
+                                                  alignment: "center",
                                               },
-                                              detail.service,
+                                              {
+                                                  text: detail.service,
+                                                  alignment: "center",
+                                              },
                                               {
                                                   text: `$${detail.subtotal.toFixed(
                                                       2
                                                   )}`,
-                                                  alignment: "right",
+                                                  alignment: "center",
                                               },
                                           ]
                                       )),
@@ -323,7 +341,7 @@ export default defineComponent({
                                         text: `$${this.quote.subtotal_0.toFixed(
                                             2
                                         )}`,
-                                        alignment: "right",
+                                        alignment: "center",
                                     },
                                 ],
                                 [
@@ -332,21 +350,21 @@ export default defineComponent({
                                         text: `$${this.quote.subtotal_12.toFixed(
                                             2
                                         )}`,
-                                        alignment: "right",
+                                        alignment: "center",
                                     },
                                 ],
                                 [
                                     "IVA (12%)",
                                     {
                                         text: `$${this.quote.iva.toFixed(2)}`,
-                                        alignment: "right",
+                                        alignment: "center",
                                     },
                                 ],
                                 [
                                     "Total",
                                     {
                                         text: `$${this.quote.total.toFixed(2)}`,
-                                        alignment: "right",
+                                        alignment: "center",
                                     },
                                 ],
                             ],

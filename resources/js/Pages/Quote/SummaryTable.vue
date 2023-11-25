@@ -14,13 +14,13 @@
                         {{ __("no") }}
                     </th>
                     <th class="border border-slate-200 px-3 py-2 uppercase">
+                        {{ __("count") }}
+                    </th>
+                    <th class="border border-slate-200 px-3 py-2 uppercase">
                         {{ __("cargo type") }}
                     </th>
                     <th class="border border-slate-200 px-3 py-2 uppercase">
                         {{ __("product name") }}
-                    </th>
-                    <th class="border border-slate-200 px-3 py-2 uppercase">
-                        {{ __("count") }}
                     </th>
                     <th
                         v-if="looseCargo"
@@ -44,13 +44,13 @@
                         {{ index + 1 }}
                     </td>
                     <td class="border border-slate-200 px-3 py-1 text-center">
+                        {{ row.amount_of_charge }}
+                    </td>
+                    <td class="border border-slate-200 px-3 py-1 text-center">
                         {{ cargoType }}
                     </td>
                     <td class="border border-slate-200 px-3 py-1 text-center">
                         {{ row.cargo_name }}
-                    </td>
-                    <td class="border border-slate-200 px-3 py-1 text-center">
-                        {{ row.amount_of_charge }}
                     </td>
                     <td
                         v-if="looseCargo"

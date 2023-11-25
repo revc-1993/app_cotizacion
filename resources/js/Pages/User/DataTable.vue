@@ -27,38 +27,47 @@
             >
                 <template v-slot:head="props">
                     <tr class="border-b border-slate-300">
-                        <DTh class="sticky left-0 px-3 py-1" :sortable="false"
-                            >no</DTh
+                        <DTh
+                            class="sticky left-0 px-3 py-1"
+                            :sortable="false"
+                            >{{ __("no") }}</DTh
                         >
-                        <DTh class="px-3 py-1" :sortable="false">profile</DTh>
-                        <DTh class="px-3 py-1" :table="props" column="name"
-                            >name</DTh
+                        <DTh class="px-3 py-1" :sortable="false">{{
+                            __("profile")
+                        }}</DTh>
+                        <DTh class="px-3 py-1" :table="props" column="name">{{
+                            __("name")
+                        }}</DTh>
+                        <DTh
+                            class="px-3 py-1"
+                            :table="props"
+                            column="username"
+                            >{{ __("username") }}</DTh
                         >
-                        <DTh class="px-3 py-1" :table="props" column="username"
-                            >username</DTh
-                        >
-                        <DTh class="px-3 py-1" :table="props" column="email"
-                            >email</DTh
-                        >
+                        <DTh class="px-3 py-1" :table="props" column="email">{{
+                            __("email")
+                        }}</DTh>
                         <DTh
                             class="px-3 py-1"
                             :table="props"
                             column="email_verified_at"
-                            >verified at</DTh
-                        >
+                            >{{ __("verified at") }}
+                        </DTh>
                         <DTh
                             class="px-3 py-1"
                             :table="props"
                             column="created_at"
-                            >created at</DTh
+                            >{{ __("created at") }}</DTh
                         >
                         <DTh
                             class="px-3 py-1"
                             :table="props"
                             column="deleted_at"
-                            >deleted at</DTh
+                            >{{ __("deleted at") }}</DTh
                         >
-                        <DTh class="px-3 py-1" :sortable="false">action</DTh>
+                        <DTh class="px-3 py-1" :sortable="false">{{
+                            __("action")
+                        }}</DTh>
                     </tr>
                 </template>
 
@@ -121,7 +130,7 @@
                                 <template #text>
                                     <span
                                         class="font-semibold text-sm uppercase"
-                                        >action</span
+                                        >{{ __("action") }}</span
                                     >
                                 </template>
 

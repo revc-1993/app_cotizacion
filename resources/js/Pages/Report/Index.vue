@@ -11,67 +11,96 @@
                 </label>
             </div>
             <div class="flex flex-col space-y-2 p-4 mb-2 lg:mb-0 last:mb-0">
+                <!-- VOY A AGREGAR PARTE OBTENIDA DE QUOTE -->
                 <div
-                    class="mb-2 last:mb-0 first-letter:capitalize lowercase text-sm"
+                    class="grid grid-cols-1 gap-x-3 lg:grid-cols-5 md:grid-cols-2 mb-2 lg:mb-0 last:mb-0"
                 >
-                    <div class="w-full flex space-x-2">
-                        <Multiselect
-                            v-model="customer"
-                            :options="customerss"
-                            :clearOnSearch="false"
-                            :clearOnSelect="false"
-                            :searchable="true"
-                            :createTag="true"
-                            class="capitalize placeholder:capitalize"
-                            :placeholder="__('customer')"
-                        />
-                        <Multiselect
-                            v-model="user"
-                            :options="userss"
-                            :clearOnSearch="false"
-                            :clearOnSelect="false"
-                            :searchable="true"
-                            :createTag="true"
-                            class="capitalize placeholder:capitalize"
-                            :placeholder="__('user')"
-                        />
-                        <Multiselect
-                            v-model="state"
-                            :options="states"
-                            :clearOnSearch="false"
-                            :clearOnSelect="false"
-                            :searchable="true"
-                            :createTag="true"
-                            class="capitalize placeholder:capitalize"
-                            :placeholder="__('state')"
-                        />
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label for="customer" class="lowercase text-sm"
+                            >{{ __("customer") }}
+                            <b class="text-red-500">*</b></label
+                        >
+
+                        <div class="w-full">
+                            <Multiselect
+                                v-model="customer"
+                                :options="customerss"
+                                :clearOnSearch="false"
+                                :clearOnSelect="false"
+                                :searchable="true"
+                                :createTag="true"
+                                class="capitalize placeholder:capitalize"
+                                :placeholder="__('all')"
+                            />
+                        </div>
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label for="user" class="lowercase text-sm"
+                            >{{ __("user") }}
+                            <b class="text-red-500">*</b></label
+                        >
+
+                        <div class="w-full">
+                            <Multiselect
+                                v-model="user"
+                                :options="userss"
+                                :clearOnSearch="false"
+                                :clearOnSelect="false"
+                                :searchable="true"
+                                :createTag="true"
+                                class="capitalize placeholder:capitalize"
+                                :placeholder="__('all')"
+                            />
+                        </div>
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label for="state" class="lowercase text-sm"
+                            >{{ __("state") }}
+                            <b class="text-red-500">*</b></label
+                        >
+
+                        <div class="w-full">
+                            <Multiselect
+                                v-model="state"
+                                :options="states"
+                                :clearOnSearch="false"
+                                :clearOnSelect="false"
+                                :searchable="true"
+                                :createTag="true"
+                                class="capitalize placeholder:capitalize"
+                                :placeholder="__('all')"
+                            />
+                        </div>
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label for="startDate" class="lowercase text-sm"
+                            >{{ __("start date") }}
+                        </label>
                         <input
                             v-model="startDate"
                             type="date"
                             name="startDate"
                             class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
                         />
-                        <input
-                            v-model="endDate"
-                            type="date"
-                            name="startDate"
-                            class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
-                        />
-                        <button
-                            @click.prevent="searchReport"
-                            class="inline-flex rounded-tr-md bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
-                        >
-                            {{ __("search") }}
-                        </button>
-                        <!-- <ul
-                                    class="flex-wrap text-xs text-slate-400 mt-2 list-disc list-inside"
-                                >
-                                    <li
-                                        class="first-letter:capitalize lowercase"
-                                    >
-                                        {{ __("choose the type of transport") }}
-                                    </li>
-                                </ul> -->
+                    </div>
+                    <div class="mb-2 last:mb-0 first-letter:capitalize">
+                        <label for="endDate" class="lowercase text-sm"
+                            >{{ __("end date") }}
+                        </label>
+                        <div class="flex space-x-2">
+                            <input
+                                v-model="endDate"
+                                type="date"
+                                name="endDate"
+                                class="w-full bg-white text-sm border border-slate-300 rounded-md shadow placeholder:capitalize"
+                            />
+                            <button
+                                @click.prevent="searchReport"
+                                class="inline-flex rounded-tr-md bg-slate-700 text-slate-200 border border-slate-800 rounded-md shadow px-3 py-2 uppercase font-bold"
+                            >
+                                {{ __("search") }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

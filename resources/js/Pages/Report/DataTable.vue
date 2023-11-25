@@ -16,7 +16,7 @@
                     {{ __("excel") }}
                 </button>
                 <button
-                    @click.prevent="exportToPDF"
+                    @click="exportToPDF"
                     class="bg-red-600 border border-red-700 rounded shadow px-3 py-1 m-[1px] text-xs uppercase text-white font-semibold"
                 >
                     {{ __("pdf") }}
@@ -35,13 +35,13 @@
                             {{ __("registration date") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
-                            {{ __("amount") }} USD
-                        </th>
-                        <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("client ruc") }}
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("client name") }}
+                        </th>
+                        <th class="border border-slate-200 px-3 py-2 uppercase">
+                            {{ __("amount") }} USD
                         </th>
                         <th class="border border-slate-200 px-3 py-2 uppercase">
                             {{ __("state") }}
@@ -69,9 +69,6 @@
                             }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
-                            $ {{ quote.total }}
-                        </td>
-                        <td class="border border-slate-200 px-3 py-1 uppercase">
                             {{ quote.customer.ruc }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
@@ -80,6 +77,9 @@
                                 " " +
                                 quote.customer.last_name
                             }}
+                        </td>
+                        <td class="border border-slate-200 px-3 py-1 uppercase">
+                            $ {{ quote.total }}
                         </td>
                         <td class="border border-slate-200 px-3 py-1 uppercase">
                             <div
@@ -125,7 +125,7 @@ import SpanState from "@/Components/SpanState";
 import axios from "axios";
 import XLSX from "xlsx/dist/xlsx.full.min";
 import { jsPDF } from "jspdf";
-// import "jspdf-autotable";
+import "jspdf-autotable";
 
 export default defineComponent({
     props: {
@@ -152,9 +152,9 @@ export default defineComponent({
             const quotesForExport = this.quotes.map((quote, i) => [
                 i + 1,
                 new Date(quote.registration_date).toISOString().split("T")[0],
-                `$ ${quote.total}`,
                 quote.customer.ruc,
                 quote.customer.name + " " + quote.customer.last_name,
+                `$ ${quote.total}`,
                 this.state(quote.registration_date, quote.quote_validity),
             ]);
 
@@ -162,9 +162,9 @@ export default defineComponent({
                 [
                     "No",
                     "Fecha de Registro",
-                    "Monto",
                     "RUC del Cliente",
                     "Nombre del Cliente",
+                    "Monto",
                     "Estado",
                 ],
                 ...quotesForExport,
@@ -172,10 +172,41 @@ export default defineComponent({
 
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Quotes");
-            XLSX.writeFile(workbook, "quotes.xlsx");
+            XLSX.writeFile(workbook, `exportado.xlsx`);
         },
+        exportToPDF() {
+            // Crear instancia de jsPDF
+            const pdf = new jsPDF();
 
-        exportToPDF() {},
+            // Definir encabezado de la tabla
+            const headers = [
+                "No",
+                "Fecha de Registro",
+                "RUC del Cliente",
+                "Nombre del Cliente",
+                "Monto",
+                "Estado",
+            ];
+
+            // Obtener datos de las cotizaciones
+            const data = this.quotes.map((quote, i) => [
+                i + 1,
+                new Date(quote.registration_date).toISOString().split("T")[0],
+                quote.customer.ruc,
+                quote.customer.name + " " + quote.customer.last_name,
+                `$ ${quote.total}`,
+                this.state(quote.registration_date, quote.quote_validity),
+            ]);
+
+            // Configurar la tabla en el PDF
+            pdf.autoTable({
+                head: [headers],
+                body: data,
+            });
+
+            // Guardar el PDF con un nombre específico
+            pdf.save("exportado.pdf");
+        },
         viewPdf(id) {
             axios.get(route("quotes.show", { id: id })).then((response) => {
                 this.quote = response.data.quote;

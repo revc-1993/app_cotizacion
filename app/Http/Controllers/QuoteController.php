@@ -147,7 +147,18 @@ class QuoteController extends Controller
         }
         $quote->serviceDetails()->saveMany($service_details);
 
+        // Preparar para pdf
         $configuration = Configuration::all()->first();
+        if ($configuration['logo']) {
+            $configuration['logoUrl'] = asset('storage/' . $configuration['logo']);
+        }
+        // dd($configuration['logoUrl']);
+
+        $quoteValidity = Carbon::parse($quote->quote_validity);
+        $transitTime = Carbon::parse($quote->transit_time);
+        $now = Carbon::now();
+        $quote['quoteValidity'] = $now->diffInDays($quoteValidity);
+        $quote['transitTime'] = $now->diffInDays($transitTime);
 
         $pdfData = [
             'quote' => $quote,

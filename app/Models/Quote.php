@@ -72,4 +72,9 @@ class Quote extends Model
     {
         return $this->hasMany(ServiceDetail::class, 'quote_id');
     }
+
+    public function quoteValidity()
+    {
+        $startDate = now();
+    }
 }
