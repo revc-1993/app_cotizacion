@@ -58,8 +58,8 @@ class QuoteController extends Controller
             $company = null;
         } else {
             $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
-            if ($company->logo) {
-                $company->logoUrl = asset('storage/' . $company->logo);
+            if ($company['logo']) {
+                $company['logoUrl'] = asset('storage/' . $company['logo']);
             }
         }
 
@@ -85,8 +85,8 @@ class QuoteController extends Controller
             $company = null;
         } else {
             $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
-            if ($company->logo) {
-                $company->logoUrl = asset('storage/' . $company->logo);
+            if ($company['logo']) {
+                $company['logoUrl'] = asset('storage/' . $company['logo']);
             }
         }
 
@@ -189,8 +189,8 @@ class QuoteController extends Controller
             $company = null;
         } else {
             $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'regime_category', 'logo')->firstOrFail();
-            if ($company->logo) {
-                $company->logoUrl = asset('storage/' . $company->logo);
+            if ($company['logo']) {
+                $company['logoUrl'] = asset('storage/' . $company['logo']);
             }
         }
 
@@ -220,8 +220,8 @@ class QuoteController extends Controller
             $company = null;
         } else {
             $company = Configuration::all('id', 'company_name', 'ruc', 'address', 'contact_number', 'email', 'logo')->firstOrFail();
-            if ($company->logo) {
-                $company->logoUrl = asset('storage/' . $company->logo);
+            if ($company['logo']) {
+                $company['logoUrl'] = asset('storage/' . $company['logo']);
             }
         }
 

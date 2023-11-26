@@ -14,8 +14,8 @@ class HomeController extends Controller
             $company = null;
         } else {
             $company = Configuration::all()->firstOrFail();
-            if ($company->logo) {
-                $company->logoUrl = asset('storage/' . $company->logo);
+            if ($company['logo']) {
+                $company['logoUrl'] = asset('storage/' . $company['logo']);
             }
         }
 

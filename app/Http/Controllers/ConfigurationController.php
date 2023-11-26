@@ -21,8 +21,8 @@ class ConfigurationController extends Controller
         } else {
             $configuration = Configuration::find(1);
 
-            if ($configuration->logo) {
-                $configuration->logoUrl = asset('storage/' . $configuration->logo);
+            if ($configuration['logo']) {
+                $configuration['logoUrl'] = asset('storage/' . $configuration['logo']);
             }
         }
 
@@ -55,13 +55,13 @@ class ConfigurationController extends Controller
         // Si se proporcionó un nuevo logotipo, almacenarlo
         if ($request->hasFile('logo')) {
             // Eliminar el logotipo anterior si existe
-            if ($configuration->logo) {
-                Storage::disk('public')->delete($configuration->logo);
+            if ($configuration['logo']) {
+                Storage::disk('public')->delete($configuration['logo']);
             }
 
             // Almacenar el nuevo logotipo y guardar la ruta en la base de datos
             $logoPath = $request->file('logo')->store('logos', 'public');
-            $configuration->logo = $logoPath;
+            $configuration['logo'] = $logoPath;
         }
 
         // Guardar la configuración
@@ -122,6 +122,7 @@ class ConfigurationController extends Controller
 
         // Limpiar y recargar la configuración para que los cambios surtan efecto
         Artisan::call('config:clear');
+        Artisan::call('config:cache');
     }
 
     public function hasConfiguration()

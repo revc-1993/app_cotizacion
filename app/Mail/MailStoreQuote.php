@@ -25,8 +25,8 @@ class MailStoreQuote extends Mailable
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('pdf-quote', $this->pdfData);
 
-        return $this->from($configuration->mail_from_address, $configuration->mail_from_name)
-            ->subject("Cotización - " . $configuration->company_name . " - " . now())
+        return $this->from($configuration['mail_from_address'], $configuration['mail_from_name'])
+            ->subject("Cotización - " . $configuration['company_name'] . " - " . now())
             ->view('emails.create_quote', $this->pdfData)
             ->attachData($pdf->output(), now() . '.pdf');
     }
