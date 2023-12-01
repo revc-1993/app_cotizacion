@@ -1035,7 +1035,7 @@
                                 <div class="p-2 rounded-md">
                                     <label class="capitalize text-sm"
                                         ><b> {{ __("user") }} </b>:
-                                        {{ form.user.name }}
+                                        {{ form.user }}
                                     </label>
                                 </div>
                             </div>
@@ -1596,7 +1596,7 @@ export default defineComponent({
         this.newDetailChargeData.length = 0;
         this.newDetailChargeData.width = 0;
         this.newDetailChargeData.high = 0;
-        this.form.user = this.quote.user;
+        this.form.user = this.quote.user.name;
     },
 });
 </script>

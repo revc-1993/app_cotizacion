@@ -205,7 +205,7 @@ export default defineComponent({
                                 "auto",
                                 "auto",
                                 "auto",
-                                "auto",
+                                "*",
                                 "auto",
                                 "auto",
                             ],
@@ -276,7 +276,7 @@ export default defineComponent({
                         layout: "lightHorizontalLines",
                     },
                     { text: "", margin: [0, 10] }, // Empty space for separation
-                    { text: "Detalles de la Cotización", style: "subTitle" },
+                    { text: "Detalle de cotización", style: "subTitle" },
                     {
                         table: {
                             widths: ["auto", "auto", "*", "auto"],

@@ -14,8 +14,8 @@ return array (
       'password' => 'f9502c88ca4e91',
       'timeout' => NULL,
       'auth_mode' => NULL,
-      'from_address' => '@correo.com',
-      'from_name' => 'Remitente Info',
+      'from_address' => '0d4216150dbb76@prueba.com',
+      'from_name' => 'Info Empresa 1',
     ),
     'ses' => 
     array (
@@ -55,7 +55,7 @@ return array (
   ),
   'from' => 
   array (
-    'address' => 'desde_env@hotmail.com',
+    'address' => '0d4216150dbb76@prueba.com',
     'name' => 'APP WEB',
   ),
   'markdown' => 

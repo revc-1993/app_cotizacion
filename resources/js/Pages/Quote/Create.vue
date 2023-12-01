@@ -1164,6 +1164,18 @@ export default defineComponent({
     },
 
     data() {
+        const guayaquilTimeZone = "America/Guayaquil";
+        const formatDateWithGuayaquilTimeZone = (date) => {
+            const options = {
+                timeZone: guayaquilTimeZone,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+            };
+            return new Date(date.toLocaleString("en-US", options))
+                .toISOString()
+                .split("T")[0];
+        };
         return {
             currentDate: new Date().toISOString().split("T")[0],
             form: useForm({
@@ -1172,7 +1184,7 @@ export default defineComponent({
                 containerized_cargo_type: new String(),
                 incoterm: new String(),
                 customer_id: new String(),
-                registration_date: new Date().toISOString().split("T")[0],
+                registration_date: formatDateWithGuayaquilTimeZone(new Date()),
                 details_charge: new Array(),
                 details_service: new Array(),
                 subtotal_12: new Number(),
@@ -1181,8 +1193,8 @@ export default defineComponent({
                 total: new Number(),
                 international_freight_information: new String(),
                 additional_information: new String(),
-                transit_time: new Date().toISOString().split("T")[0],
-                quote_validity: new Date().toISOString().split("T")[0],
+                transit_time: formatDateWithGuayaquilTimeZone(new Date()),
+                quote_validity: formatDateWithGuayaquilTimeZone(new Date()),
                 state: new String(),
                 comments: new String(),
                 user: new String(),

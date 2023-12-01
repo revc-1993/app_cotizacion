@@ -113,11 +113,10 @@
         <p><span class="bold">Cliente:</span> {{ $quote->customer->names }}</p>
         <p><span class="bold">Dirección:</span> {{ $quote->customer->address }}</p>
     </div>
-    <div class="subtitle">Detalles de carga</div>
+    <div class="subtitle">Detalle de carga</div>
     <table class="tabla-cotizacion">
         <thead>
             <tr>
-                <th>N.</th>
                 <th>Cantidad</th>
                 <th>Tipo de carga</th>
                 <th>Nombre de Producto</th>
@@ -128,7 +127,6 @@
         <tbody>
             @foreach ($quote->productDetails as $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
                     <td>{{ $item->amount_of_charge }}</td>
                     <td>{{ $quote->cargo_type }}</td>
                     <td>{{ $item->cargo_name }}</td>
@@ -139,22 +137,20 @@
         </tbody>
     </table>
 
-    <div class="subtitle">Detalles de la Cotización</div>
+    <div class="subtitle">Detalle de cotización</div>
     <table class="tabla-cotizacion">
         <thead>
             <tr>
-                <th>N.</th>
-                <th>Descripción</th>
                 <th>Cantidad</th>
+                <th>Descripción</th>
                 <th>Subtotal (USD)</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($quote->serviceDetails as $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
-                    <td>{{ $item->service }}</td>
                     <td>{{ $item->amount_of_service }}</td>
+                    <td>{{ $item->service }}</td>
                     <td>${{ $item->subtotal }}</td>
                 </tr>
             @endforeach

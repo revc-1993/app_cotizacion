@@ -2,6 +2,16 @@
  * @license MIT */
 
 /*!
+ * 
+ *               jsPDF AutoTable plugin v3.7.1
+ *
+ *               Copyright (c) 2023 Simon Bengtsson, https://github.com/simonbengtsson/jsPDF-AutoTable
+ *               Licensed under the MIT License.
+ *               http://opensource.org/licenses/mit-license
+ *
+ */
+
+/*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
